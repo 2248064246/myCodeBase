@@ -1,18 +1,18 @@
 # Blob File Base64 ArrayBuffer 之间的转换
 
-## base64 文件转为 File 类型
+## base64文件(dataURI) 转为 File 类型
 > 适用于需要上传File类型的文件, 而拿到的是base64字符串格式文件
 
 > 例如 `jspdf` 生成的文件上传后端
 
 ```javascript
   /**
- * 将 base64 格式文件转为 File
+ * 将 base64 格式文件(dataURI) 转为 File
  * @param {String} dataurlstring base64格式的文件
  * @param {String} filename 文件名
  * @returns {File} 文件对象
  */
-export function base64toFile(dataurlstring, filename = 'file') {
+export function dataURItoFile(dataurlstring, filename = 'file') {
   let arr = dataurlstring.split(',');
   let hasFilename = arr[0].indexOf('filename') > -1
   if (hasFilename) {
@@ -34,7 +34,7 @@ export function base64toFile(dataurlstring, filename = 'file') {
 
 ```
 
-## 将 base64 转 blob
+## 将 base64文件(dataURI) 转 blob
 ```javascript
 function dataURItoBlob(dataURI) {  
   var byteString = atob(dataURI.split(',')[1]);  
@@ -48,7 +48,7 @@ function dataURItoBlob(dataURI) {
 }
 ```
 
-## 将 File 转为 base64 | blob | ArrayBuffer (支持IE10)
+## 将 File 转为 base64文件 | blob | ArrayBuffer (支持IE10)
 
 ```javaScript
 var dataurl = '' // base64字符串
@@ -66,6 +66,8 @@ reader.onload = (e) => {
 ```javascript
   new File(Blob|ArrayBuffer, filename, {type: fileMIME})
 ```
+
+
 
 ## 将 `Blob` 流文件通过新窗口打开
 > 主要针对 pdf 文件的预览
@@ -132,7 +134,7 @@ reader.onload = (e) => {
           + type: 文件MIME类型
           + lastModify: 时间戳(默认`Date.now()`)
   + ArrayBuffer
-    + 用来表示一个通用的、固定长度的二进制数据缓冲区, 不同直接操作ArrayBuffer
+    + 用来表示一个通用的、固定长度的二进制数据缓冲区, 不能直接操作ArrayBuffer
       + 通过`FileReader.readAsArrayBuffer` 将File, Blob 对象转为ArrayBuffer
     + 操作ArrayBuffer方式
       + 通过 `DataView`对象来进行操作
@@ -161,7 +163,93 @@ reader.onload = (e) => {
     + 一般用于接收数据, 并将数据整合
     + ![buffer](https://pic1.zhimg.com/80/v2-93aae2f807bf379e2749db194047ada4_720w.jpg)
 
+  + 其实 Buffer 和 ArrayBuffer 是一样的, Buffer对应Node环境, ArrayBuffer 对应浏览器环境
   + Unit8Array Unit16Array Unit32Array ... 都是JS的类型化数据, 用来操作二进制数据
     + 类型数据架构: 缓冲 和 视图
       + 缓冲指的是 ArrayBuffer, 它用于存储二进制数据, 缓冲没有格式可言
       + 视图提供了上下文--即数据类型, 起始偏移量和元素数
+
+## 将 string 和 ArrayBuffer 互转
+
+> 方案 1 => 使用 charCodeAt
+
+  ```javaScript
+    // 这个方法支持支 ASCII 字符, 存在特殊字符, 中文不要用
+    // 要去重温一下node的buffer操作
+    function str2buffer(str) {
+      // new Blob([str]).size
+      const buf = new ArrayBuffer(str.length);
+      const bufView = new Uint8Array(buf);
+      for (let i = 0, strLen = str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+        // charCodeAt 是 0-65535 的 UTF-16 code
+        // 推荐使用 codePointAt, 但是 codePoint 只支持 chrome 41+
+        // 要使用请看 codePointAt 的 polyfill
+        // (其实用 codePointAt 也是没有意义的, Unit8Array 支持 0-255)
+      }
+      return buf;
+    }
+
+    function buffer2str(buffer) {
+      const asStr = String.fromCharCode.apply(null, new Uint8Array(buffer))
+      return asStr
+    }
+
+  ```
+
+> 方案2 => 使用 TextDecoder TextEncoder
+
+  ```javaScript
+    // TextEncoder 支持chrome 38+, 要兼容请查看 polyfill文件
+    // 支持特殊字符
+    function str2buffer(str) {
+      return new TextEncoder().encode(str).buffer // 返回的是 Unit8Array
+      // 默认是用 utf8
+    }
+
+    function buffer2str(buffer) {
+      return new TextDecode().decode(buffer) // 返回 string
+    }
+  ```
+
+> 方案3 => 使用 FileReader API
+
+  ```javaScript
+    // 这种方案支持到 IE 10, 并且支持特殊字符
+    function str2buffer(str, cb) {
+        var b = new Blob([str]);
+        var f = new FileReader();
+        f.onload = function(e) {
+            cb(e.target.result);
+        }
+        f.readAsArrayBuffer(b);
+    }
+
+    function buffer2str(buffer, cb) {
+      var f = new FileReader();
+      f.onload = function(e) {
+            cb(e.target.result);
+      }
+      f.readAsText(new Blob([buffer]));
+    }
+  ```
+
+
+## 单纯 Base64 字符 和 ArrayBuffer 互转
+> 如果没有特殊字符, 可以使用 btoa, atob API
+
+> 建议使用 js-base64 标准API
+```javaScript
+  // 思路: 先将base64转为string, 然后将string转为ArrayBuffer
+  function base64ToBuffer(base64) {
+    return str2buffer(atob(base64))
+    // atob() 方法兼容 IE10
+    
+  }
+
+  // 思路: 先将buffer转string, 再将string转base64
+  function bufferToBase64(buffer) {
+    return btoa(buffer2str(buffer))
+    // btoa 不支持比较特殊字符, 支持中文(编码UTF-16, code值: 0-65535)
+  }
+```

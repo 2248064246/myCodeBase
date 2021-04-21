@@ -74,3 +74,9 @@
 + int(8|16|32)Array
 
 ## DataView
+
+## TextDecoder
+> 文本解码器, 将 ArrayBuffer 解码为文本
+
+## TextEncoder
+> 文本编码器, 将 文本 编码为 ArrayBuffer
