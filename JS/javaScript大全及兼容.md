@@ -35,7 +35,7 @@
     + `keys`
     + `entries`
     + `includes`
-    + `copyWhin`
+    + `copyWithin`
     + `findIndex`
   + `chrome 66+`, `IE 不支持`
     + `values`

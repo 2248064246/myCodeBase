@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-02-21 17:31:53
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-04-21 15:44:01
+ * @LastEditTime: 2021-04-22 14:44:13
  * @Description: 
  */
 
@@ -43,7 +43,7 @@ class CRY {
    * @param {Buffer} messageBuffer buffer数据
    */
   decodeMessage(messageBuffer) {
-    return new TextDecoder().decode(messageBuffer)
+    return new TextDecoder().decode(messageBuffer) 
   }
 
   paramsFromType(type, length, iv) {
@@ -490,17 +490,17 @@ class HMAC extends CRY {
 // console.log(new SHA('hello', 'SHA-256').encode().then(res => {
 //   console.log(res)
 // }))
-new SHA().encode('H3CCloud', 'SHA-1').then(res => {
-  console.log(res.hex)
+// new SHA().encode('H3CCloud', 'SHA-1').then(res => {
+//   console.log(res.hex)
 
-  // new SHA(atob(new CRY().buffer2base64(res.messageBuffer)), 'SHA-1').encode().then(result => {
-  //     console.log(result)
-  //     console.log(result.hex)
-  // })
-  crypto.subtle.digest('SHA-1', res.messageBuffer).then(rsult => {
-    console.log(new CRY().buffer2hex(rsult))
-  })
-})
+//   // new SHA(atob(new CRY().buffer2base64(res.messageBuffer)), 'SHA-1').encode().then(result => {
+//   //     console.log(result)
+//   //     console.log(result.hex)
+//   // })
+//   crypto.subtle.digest('SHA-1', res.messageBuffer).then(rsult => {
+//     console.log(new CRY().buffer2hex(rsult))
+//   })
+// })
 
 
 
@@ -527,25 +527,26 @@ new SHA().encode('H3CCloud', 'SHA-1').then(res => {
 
 // })
 
-// var rsa = new RSA('你好,世界', 'RSA-OAEP')
-// rsa.encode().then(res => {
-//   console.log(res)
-//   rsa.decode(res.messageBuffer).then(result => {
-//     console.log(result)
-//     console.log(rsa.key)
-//     rsa.exportKey(rsa.key).then(key => {
-//       console.log(key.publicKey)
-//       console.log(key.privateKey)
-//       rsa.importDecodeKey(key.privateKey).then(priKey => {
-//         console.log(priKey)
-//         rsa.decode(res.messageBuffer, priKey).then(res => {
-//           console.log(res)
-//         })
-//       })
-//     })
+var rsa = new RSA('卐〓™♣☛✔', 'RSA-OAEP')
+rsa.encode().then(res => {
+  console.log(res)
+  rsa.decode(res.messageBuffer).then(result => {
+    console.log(result)
+    console.log(rsa.key)
+    rsa.exportKey(rsa.key).then(key => {
+      console.log(key.publicKey)
+      console.log(key.privateKey)
+      rsa.importDecodeKey(key.privateKey).then(priKey => {
+        console.log(priKey)
+        rsa.decode(res.messageBuffer, priKey).then(res => {
+          console.log(res)
+          window.res= res
+        })
+      })
+    })
 
-//   })
-// })
+  })
+})
 
 // var rsa = new RSA('你好, 世界', 'RSA-PSS')
 // rsa.encode().then(res => {

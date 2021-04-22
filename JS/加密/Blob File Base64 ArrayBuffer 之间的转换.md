@@ -51,9 +51,9 @@ function dataURItoBlob(dataURI) {
 ## 将 File 转为 base64文件 | blob | ArrayBuffer (支持IE10)
 
 ```javaScript
-var dataurl = '' // base64字符串
+var file = '' // base64字符串
 var reader = new FileReader();
-reader.readAsDataURL(dataurl)
+reader.readAsDataURL(file)
 reader.onload = (e) => {
   console.log(e.target.result)
 }
@@ -208,7 +208,7 @@ reader.onload = (e) => {
     }
 
     function buffer2str(buffer) {
-      return new TextDecode().decode(buffer) // 返回 string
+      return new TextDecoder().decode(buffer) // 返回 string
     }
   ```
 
@@ -238,7 +238,8 @@ reader.onload = (e) => {
 ## 单纯 Base64 字符 和 ArrayBuffer 互转
 > 如果没有特殊字符, 可以使用 btoa, atob API
 
-> 建议使用 js-base64 标准API
+> 建议使用 js-base64 标准库
+
 ```javaScript
   // 思路: 先将base64转为string, 然后将string转为ArrayBuffer
   function base64ToBuffer(base64) {
@@ -250,6 +251,90 @@ reader.onload = (e) => {
   // 思路: 先将buffer转string, 再将string转base64
   function bufferToBase64(buffer) {
     return btoa(buffer2str(buffer))
-    // btoa 不支持比较特殊字符, 支持中文(编码UTF-16, code值: 0-65535)
+    // btoa 不支持比较特殊字符, 不支持中文
+    // 只对 ASCII 码支持
   }
+```
+
+> 为了支持中文字符串和特殊字符, 有一种变种方式是使用 decodeURIComponent 的 encodeURIComponent 先将字符串转为 URI 编码,  然后在将 URI 编码转为 base64 (URI编码是% + 16进制形式)
+
+```javaScript
+
+  function base64ToBuffer(base64) {
+    return str2buffer(decodeURIComponent(atob(base64)))
+  }
+
+   function bufferToBase64(buffer) {
+    return btoa(encodeURIComponent(buffer2str(buffer)))
+  }
+
+```
+
+> 还有一种方式是使用 16位 UnitArray 来编码数据, 然后再转为 8位UnitArray
+
+> 源自 MDN atob API
+
+```javaScript
+
+  function toBinary(string) {
+    const codeUnits = new Uint16Array(string.length);
+    for (let i = 0; i < codeUnits.length; i++) {
+      codeUnits[i] = string.charCodeAt(i);
+    }
+    return String.fromCharCode(...new Uint8Array(codeUnits.buffer));
+  }
+
+  function fromBinary(binary) {
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return String.fromCharCode(...new Uint16Array(bytes.buffer));
+  }
+
+  // 这两个方法在 str2buffer 和 buffer2str 里面也是有用的, 科室解决特殊字符问题
+
+  let binaryStr = toBinary('〼卐☛')
+  let base64Str = btoa(binaryStr)
+
+  let str = fromBinary(atob(base64Str))
+
+```
+
+> 上述这些编码方式都有局限性, 都只能算是私有协议, 不共用
+
+> 使用 FileReader API的 readAsDataURL 只获取base64部分, 这种方法获取的base64字符串在js-base64中也能解码
+
+```javaScript
+  function str2base64 (string, cb) {
+    var reader = new FileReader()
+    reader.onload = () => {
+      var base64 = reader.result.split(',')[1]
+      cb(base64)
+    }
+    reader.readAsDataURL(new Blob([string]))
+  }
+
+  // 但问题是如何使用原生 JS API 解码呢??
+  // 还是推荐使用 js-base64 来做base64处理
+```
+
+## 16进制数 和 ArrayBuffer 互转
+
+```javaScript
+
+  buffer2hex(buffer) {
+    const hex = Array.from(new Uint8Array(buffer))
+      .map((x) => x.toString(16).padStart(2, '0'))
+      .join('');
+    return hex;
+  }
+
+  hex2buffer(hex) {
+    const typedArray = new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
+      return parseInt(h, 16)
+    }))
+    return typedArray.buffer
+  }
+
 ```

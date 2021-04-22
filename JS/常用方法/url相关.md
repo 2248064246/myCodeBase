@@ -84,8 +84,35 @@ function parseUrl(url, parseSearch = true) {
 }
 ```
 
+> 使用 JS URL API (详细见 加密/前端涉及文件操作API)
+
+
 ## 将对象转为 URL 查询参数
 
+> 自己写的简易版本
+
+```javaScript
+function obj2search(obj, decode) {
+  if (typeof obj !== 'object') return ''
+  let searchAry = []
+  for (const key in obj) {
+    let value = obj[key]
+    value = (typeof value === 'object' ? JSON.stringify(value) : value)
+    let searchItem = (key + '=') + (decode ? encodeURIComponent(value) : value)
+    searchAry.push(searchItem)
+  }
+  return searchAry.join('&')
+}
+
+function search2ojb(search, obj) {
+  search = decodeURIComponent(search)
+  var searchObject = {}
+  search.replace(/([^?=&#]+)=([^?=&#)]+)/g, (n, x, y) => searchObject[x] = y)
+  return searchObject
+}
+```
+
+> 推荐使用标准JS库 =>  qs 或者 urijs
 
 
 
