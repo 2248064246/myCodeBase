@@ -1,0 +1,47 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-04-26 15:24:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-04-26 17:02:46
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <p>{{ userInfo.name }} </p>
+    <p> {{ userInfo.age}}</p>
+  </div>
+
+  <script src="./vue响应式.js"></script>
+
+  <script>
+    let myVue = new MyVue({
+      el: '#app',
+      data() {
+        return {
+          userInfo: {
+            name: '小明',
+            age: 18
+          }
+        }
+      }
+    })
+    myVue.$mount()
+    console.log(myVue.$data.userInfo.name)
+    setTimeout(() => {
+      ++myVue.$data.userInfo.age
+      // console.log(myVue.userInfo)
+    }, 3000);
+  </script>
+</body>
+
+</html>
