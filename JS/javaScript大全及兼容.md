@@ -158,7 +158,7 @@
       + 转位本地文字, 并且会根据每个地区的不同使用不同的分隔方式
         ```javaScript
           (12312312).toLocaleString() // => "12,312,312"
-          (12312312).toLocaleString('zh', { style: 'currency', currency: 'CNY' }); // ￥12,312,312.00，人民币形式
+          (12312312).toLocaleString('zh', { style: 'currency', currency: 'CNY' }); // "¥12,312,312.00"
           (1).toLocaleString('zh', {style:'percent'}) // => 100%
         ``` 
 
