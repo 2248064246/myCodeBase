@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .watermark {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            pointer-events: none;
+            background-repeat: repeat;
+        }
+    </style>
+
+    <script src="../../node_modules/imagediff/imagediff.js"></script>
+    <!-- <script src="../../node_modules/image-diff/lib//image-diff.js"></script> -->
+</head>
+
+<body>
+
+    <div class="container">
+
+        <canvas id="demo" width="256" height="256"></canvas>
+
+        <div id="clear" class="imgBox">
+            <img src="pic2.png" alt="">
+        </div>
+
+        <canvas id="canvas" width="256" height="256"></canvas>
+        <canvas id="canvas2" width="256" height="256"></canvas>
+        <canvas id="canvas3" width="256" height="256"></canvas>
+        <canvas id="diff" width="256" height="256"></canvas>
+
+        <canvas id="canvas4" width="256" height="256"></canvas>
+        <canvas id="canvas_jpeg" width="256" height="256"></canvas>
+        <canvas id="diff2" width="256" height="256"></canvas>
+        <!-- <canvas id="diff_jpeg" width="256" height="256"></canvas> -->
+        <!-- <canvas id="diff2" width="256" height="256"></canvas> -->
+
+    </div>
+
+    <script>
+        function createWaterMark() {
+            const svgStr =
+                `<svg xmlns="http://www.w3.org/2000/svg" width="180px" height="50px">
+      <text x="0px" y="30px" dy="16px"
+      text-anchor="start"
+      stroke="#000"
+      stroke-opacity="0.1"
+      fill="none"
+      transform="rotate(-20)"
+      font-weight="100"
+      font-size="16"
+      >
+          我爱Web前端
+      </text>
+    </svg>`;
+            return `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(svgStr)))}`;
+        }
+        const watermakr = document.createElement('div');
+        watermakr.className = 'watermark';
+        watermakr.style.backgroundImage = `url(${createWaterMark()})`
+        document.getElementById('clear').appendChild(watermakr);
+
+
+        //============================================================
+        var ctx = document.getElementById('canvas').getContext('2d');
+        var textData;
+        ctx.font = '30px Microsoft Yahei';
+        ctx.fillText('洛水赋神', 40, 130);
+        textData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height).data;
+
+
+        var ctx = document.getElementById('canvas2').getContext('2d');
+        var ctx_3 = document.getElementById('canvas3').getContext('2d');
+        var demo = document.getElementById('demo').getContext('2d')
+        var img = new Image();
+        var originalData;
+        img.src = 'pic2.png';
+        img.onload = function () {
+            demo.drawImage(img, 0, 0)
+            ctx.drawImage(img, 0, 0);
+            // 获取指定区域的canvas像素信息
+            originalData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+            mergeData(textData, 'R', ctx, originalData)
+            decode(ctx, ctx_3)
+            diff(demo, ctx_3, 'diff')
+            decode_jpeg()
+        };
+
+        var mergeData = function (newData, color, ctx, originalData) {
+            var oData = originalData.data;
+            var bit, offset; // offset的作用是找到alpha通道值，这里需要大家自己动动脑筋
+
+            switch (color) {
+                case 'R':
+                    bit = 0;
+                    offset = 3;
+                    break;
+                case 'G':
+                    bit = 1;
+                    offset = 2;
+                    break;
+                case 'B':
+                    bit = 2;
+                    offset = 1;
+                    break;
+            }
+
+            for (var i = 0; i < oData.length; i++) {
+                if (i % 4 == bit) {
+                    // 只处理目标通道
+                    if (newData[i + offset] === 0 && (oData[i] % 2 === 1)) {
+                        // 没有信息的像素，该通道最低位置0，但不要越界
+                        if (oData[i] === 255) {
+                            oData[i]--;
+                        } else {
+                            oData[i]++;
+                        }
+                    } else if (newData[i + offset] !== 0 && (oData[i] % 2 === 0)) {
+                        // // 有信息的像素，该通道最低位置1，可以想想上面的斑点效果是怎么实现的
+                        if (oData[i] === 255) {
+                            oData[i]--;
+                        } else {
+                            oData[i]++;
+                        }
+                    }
+                }
+            }
+            ctx.putImageData(originalData, 0, 0);
+
+            // downLoadImage(document.getElementById('canvas2'), 'pic_salt')
+
+        }
+
+        function downLoadImage(canvas, name) {
+            var a = document.createElement("a");
+            a.href = canvas.toDataURL();
+            a.download = name;
+            a.click();
+        }
+
+        function decode(ctx, ctx_3) {
+
+            var originalData = ctx.getImageData(0, 0, 256, 256)
+            var data = originalData.data;
+            // 这个data数据非常大, 循环速度还可以
+            for (var i = 0; i < data.length; i++) {
+                if (i % 4 == 0) {
+                    // R分量
+                    if (data[i] % 2 == 0) {
+                        data[i] = 0;
+                    } else {
+                        data[i] = 255;
+                    }
+                } else if (i % 4 == 3) {
+                    // alpha通道不做处理
+                    continue;
+                } else {
+                    // 关闭其他分量，不关闭也不影响答案
+                    data[i] = 0;
+                }
+            }
+            console.log(originalData)
+            // 将结果绘制到画布
+            // originalData.data = data
+            ctx_3.putImageData(originalData, 0, 0);
+        }
+
+        function diff(demo, ctx, name) {
+            var diff = this.imagediff.diff(demo, ctx, {
+                align: 'top'
+            })
+            console.log(diff)
+            var diff_ctx = document.getElementById(name).getContext('2d')
+            diff_ctx.putImageData(diff, 0, 0)
+        }
+
+        // function diff2(demo, ctx) {
+        //     this.imageDiff({
+
+        //     })
+        // }
+
+        function decode_jpeg() {
+            var img = new Image();
+            img.src = 'pic_salt.jpg';
+            img.onload = function () {
+                var ctx_4 = document.getElementById('canvas4').getContext('2d');
+                ctx_4.drawImage(img, 0, 0);
+                originalData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+                decode(ctx_4, document.getElementById('canvas_jpeg').getContext('2d'))
+                diff(demo, ctx_4, 'diff2')
+            }
+        }
+    </script>
+
+</body>
+
+</html>
