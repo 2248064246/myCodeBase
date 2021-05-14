@@ -126,5 +126,10 @@
 
 ## 怎么开启硬件加速
 
-+ 
++ transform 属性
++ opacity 属性
++ filter 属性
+
+
+
 
