@@ -1,0 +1,135 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-05-16 17:56:44
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-05-16 18:37:03
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0px;
+            margin-right: 0px;
+        }
+
+        .container {
+            height: 24px;
+            width: 24px;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            margin: auto;
+            background: #000;
+            cursor: pointer;
+        }
+
+        .line {
+            display: block;
+            position: absolute;
+            left: 5px;
+            width: 14px;
+            height: 2px;
+            background: #fff;
+            transition: .5s ease;
+        }
+
+        .top {
+            top: 4px;
+        }
+
+        .middle {
+            top: 10px;
+        }
+
+        .bottom {
+            top: 16px;
+        }
+
+        .container-hover .line {
+            background: #008833;
+        }
+
+        .container-hover .top {
+            width: 7px;
+            left: 12px;
+            top: 7px;
+            transform: rotate(45deg);
+        }
+
+        .container-hover .bottom {
+            width: 7px;
+            left: 12px;
+            top: 13px;
+            transform: rotate(-45deg);
+        }
+
+        .container-click .line{
+            background: lightcyan;
+        }
+
+        .container-click .top {
+            width: 16px;
+            left: 5px;
+            top: 12px;
+            transform: rotate(-45deg);
+        }
+        .container-click .middle {
+            opacity: 0;
+        }
+        .container-click .bottom {
+            width: 16px;
+            left: 5px;
+            top: 12px;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <span class="line top"></span>
+        <span class="line middle"></span>
+        <span class="line bottom"></span>
+    </div>
+
+    <script>
+        
+        ((window, document) => {
+
+            const $ = (ele) => typeof ele === 'string' ? document.querySelector(ele) : ''
+
+            const con = $(".container")
+            con.onmouseenter = event => {
+                con.classList.add('container-hover')
+            }
+            con.onmouseleave = event => con.classList.remove('container-hover')
+
+            con.onclick = event => {
+                con.classList.remove('container-hover')
+                con.classList.add('container-click')
+            }
+
+            window.onclick = event => {
+                if(!event.target.classList.contains('container')) {
+                    con.classList.remove('container-click')
+                }
+            }
+        })(window, document)
+
+        
+    </script>
+</body>
+
+</html>

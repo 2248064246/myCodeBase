@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 100vh;
+        }
+        .box {
+            position: relative;
+            width: 100px;
+            height: 30px;
+            background-color: cyan;
+        }
+
+        .shop-cart {
+            position: absolute;
+            top: 30px;
+            left: 0px;
+            width: 300px;
+            height: 0px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .23);
+            transition: height .5s ease-out;
+        }
+        .shop-cart.active {
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box" id="box">
+        <span>shop-cart</span>
+        <div class="shop-cart" id="shop-cart" ></div>
+    </div>
+
+    <script>
+        let body = document.body,
+            box = document.getElementById('box'),
+            shopCart = document.getElementById('shop-cart');
+        
+        // 基于事件委托, 来实现绑定
+        // 事件委托的核心是: 事件的冒泡传递机制
+        // 通过这个机制, 可以在最上层统一捕获到某事件的触发, 对应做出相应操作
+        // 而不用每一个元素都绑定一个事件
+        // 通过这种方法可以使效率大幅度增加, 提高性能
+        body.onclick = function (e) {
+            if (e.target.id === 'box' ||
+                e.target.parentNode.id === 'box' &&
+                e.target.tagName.toLocaleLowerCase() === 'span') {
+                    shopCart.classList.toggle('active');
+                    return;
+            }
+            if(e.target.id === 'shop-cart') {
+                return;
+            }
+            shopCart.classList.remove('active');
+        }
+    </script>
+</body>
+
+</html>

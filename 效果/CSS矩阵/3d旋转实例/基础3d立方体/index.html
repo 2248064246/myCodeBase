@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./main.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="scene">
+        <div class="cube">
+            <div class="cube__face cube__face--front">front</div>
+            <div class="cube__face cube__face--back">back</div>
+            <div class="cube__face cube__face--right">right</div>
+            <div class="cube__face cube__face--left">left</div>
+            <div class="cube__face cube__face--top">top</div>
+            <div class="cube__face cube__face--bottom">bottom</div>
+        </div>
+    </div>
+
+    <p>
+        <label for="">perspective
+            <input type="range" class="perspective-range" max="1000" min="1" value="400" data-units="px">
+        </label>
+    </p>
+
+    <p>
+        <label for="">perspective-origin x
+            <input type="range" class="origin-x-range" max="100" min="0" value="50" data-units="%">
+        </label>
+    </p>
+
+    <p>
+        <label for="">perspective-origin y
+            <input type="range" class="origin-y-range" max="100" min="0" value="50" data-units="%">
+        </label>
+    </p>
+
+    <p>
+        <label for="spin-cube-checkbox">spin cube
+            <input type="checkbox" class="spin-cube-checkbox" id="spin-cube-checkbox">
+        </label>
+    </p>
+
+    <p>
+        <label for="">backface visible
+            <input type="checkbox" class="backface-checkbox" checked>
+        </label>
+    </p>
+
+    <script src="./main.js"></script>
+
+</body>
+
+</html>

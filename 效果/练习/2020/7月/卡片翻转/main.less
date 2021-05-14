@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(45deg, #d8f2f3 0%, #ebf9f9 100%);
+}
+
+.center,
+.front-face,
+.contents,
+.back-face {
+    position: absolute;
+}
+
+.center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
+    width: 290px;
+    // backface-visibility: hidden;
+    transform-style: preserve-3d;
+    perspective: 800px;
+   
+}
+
+.center:hover{
+    .front-face {
+        transform: rotateY(-180deg);
+    }
+    .back-face {
+        transform: rotateY(0);
+    }
+    
+}
+
+.front-face, .back-face {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    background:  tomato;
+    // background-size: cover;
+    border-radius: 10px;
+    backface-visibility: hidden; // 背面元素不可见
+    transform-style: preserve-3d; // 在元素里面开启3d效果, 可以让元素里面的字转动的时候看起来有立体感
+    transition: all .4s cubic-bezier(.4, .2, .2, .1);
+    // transition: all .4s ;
+
+}
+
+.contents {
+    left: 0;
+    top: 50%;
+    width: 100%;
+    perspective: 100px;
+    transform-style: preserve-3d; // 在元素里面开启3d效果, 可以让元素里面的字转动的时候看起来有立体感
+
+    transform: translateY(-50%) translateZ(60px); // 文字转动有立体感是来源于这个设置
+}
+
+.container p {
+    color: white;
+    font-size: 35px;
+    margin-bottom: 15px;
+    // transform: translateZ(-20px)
+}
+
+.container p::after {
+    content: '';
+    display: block;
+    left: 0;
+    right: 0;
+    height: 2px;
+    width: 100px;
+    background-color: white;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.container span {
+    color: white;
+    font-size: 16px;
+}
+
+.back-face {
+    background: steelblue;
+    transform: rotateY(180deg);
+}
+
+.back {
+    color: white;
+}
+
+

@@ -1,0 +1,95 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-05-06 23:39:57
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-05-28 17:34:39
+ * @Description:
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+ -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>tracking.js - face hello world</title>
+  <link rel="stylesheet" href="assets/demo.css" >
+
+  <script src="../build/tracking-min.js"></script>
+  <script src="../build/data/face-min.js"></script>
+
+  <style>
+  .rect {
+    border: 2px solid #a64ceb;
+    left: -1000px;
+    position: absolute;
+    top: -1000px;
+  }
+
+  #img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -173px 0 0 -300px;
+  }
+  </style>
+</head>
+<body>
+  <div class="demo-title">
+    <p><a href="http://trackingjs.com" target="_parent">tracking.js</a> － detect faces, eyes and mouths in a image</p>
+  </div>
+
+  <div class="demo-frame">
+    <div class="demo-container">
+      <img id="img" src="../test/assets/faces.png" width="600"/>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      var img = document.getElementById('img');
+
+      // 创建人脸识别类
+      // 需要引用 face.js 库支持
+      var tracker = new tracking.ObjectTracker(['face']);
+      // 默认设置
+      tracker.setStepSize(1.7);
+
+      // 通过这条代码启动人脸识别, 同时触发track事件
+      // 第一个参数: 承载图片数的元素, 第二个是tracker类
+      tracking.track('#img', tracker);
+
+      // 监听track事件, 返回的值是识别出来的人脸数据
+      // 返回值说明: x: 距离图片的左偏移量
+      //            y: 距离图片的右偏移
+      //            width: 人脸宽度
+      //            height: 人脸高度
+      //      (x,y)----width---=
+      //           |           |
+      //           |   face    |height
+      //           |           |
+      //           -------------
+      tracker.on('track', function(event) {
+        console.log(event)
+        event.data.forEach(function(rect) {
+          console.log(rect)
+          // 通过得到的数据绘制方框
+          window.plot(rect.x, rect.y, rect.width, rect.height);
+        });
+      });
+
+      // 通过canvas绘制识别框
+      window.plot = function(x, y, w, h) {
+        var rect = document.createElement('div');
+        document.querySelector('.demo-container').appendChild(rect);
+        rect.classList.add('rect');
+        rect.style.width = w + 'px';
+        rect.style.height = h + 'px';
+        rect.style.left = (img.offsetLeft + x) + 'px';
+        rect.style.top = (img.offsetTop + y) + 'px';
+      };
+    };
+  </script>
+
+</body>
+</html>

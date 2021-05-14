@@ -1,0 +1,128 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-04-29 12:40:39
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-04-29 13:22:56
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xDate
+ * @youWant: add you want
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        background-color: #111;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+      }
+
+      .blinking-cursor {
+        animation: blink 1s steps(2, start) infinite;
+      }
+      @keyframes blink {
+        to {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <span id="type-text">...</span>
+    <span class="blinking-cursor">_</span>
+
+    <script>
+      let text = ''
+      const textNode = document.getElementById('type-text')
+      window.onkeydown = event=>{
+          console.log(event)
+          typeText(event.key)
+      }
+      init()
+      function init() {
+        function typeLoop() {
+          typeText('BiliBili')
+        }
+
+        wait(1000).then(() => {
+          typeLoop()
+        })
+      }
+
+      function wait(interval) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve()
+          }, interval)
+        })
+      }
+
+      function updateText() {
+          textNode.innerHTML = text;
+      }
+      function typeText(text) {
+        return new Promise((resolve, reject) => {
+          function _type(index) {
+            typeCharacter(text[index]).then(() => {
+              if (index + 1 < text.length) {
+                _type(index + 1)
+              } else {
+                resolve()
+              }
+            })
+          }
+          _type(0)
+        })
+      }
+      function getRandomInterval() {
+        let randomInterval = 100 * Math.random()
+        return randomInterval < 50 ? 10 : randomInterval
+      }
+      function typeCharacter(character) {
+        return new Promise((resolve) => {
+          let msInterval = getRandomInterval()
+          pushCharacter(character)
+          wait(msInterval).then(resolve)
+        })
+      }
+      function pushCharacter(character) {
+        text += character
+        console.log(text);
+        updateText()
+      }
+      function removeText(amount) {
+        return new Promise((resolve) => {
+          function _move(index) {
+            removeCharacter()
+          }
+        })
+      }
+      function removeCharacter() {
+        return new Promise((resolve) => {
+          let msInterval = getRandomInterval()
+          popCharacter()
+          wait(msInterval).then(resolve)
+        })
+      }
+      function removeCharacter() {
+        text = text.slice(0, text.length - 1)
+        updateText()
+      }
+      function clearText() {
+        text = ''
+        updateText()
+      }
+    </script>
+  </body>
+</html>

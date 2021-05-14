@@ -1,0 +1,204 @@
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+body{
+    height: 100vh;
+    background-color: #353b48;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container{
+    display: flex;
+    width: 1000px;
+    height: 200px;
+    
+}
+#hour-wrap,#minute-wrap, #second-wrap{
+    display: flex;
+    justify-content: space-between;
+    width: 270px;
+    height: 100%;
+}
+
+#container ul{
+    position: relative;
+    width: 125px;
+    height: 100%;
+
+}
+#container ul li{
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 0 1px 2px rgba(255 , 255,255, .2);
+}
+.top {
+    top: 5px;
+    width: 80px;
+    height: 25px;
+    /* top: 0; */
+    left:0;
+    right: 0;
+    margin: 0 auto;
+    border-radius: 18px/ 8px 8px 17px 17px;
+}
+.bottom {
+    bottom: 5px;
+    width: 80px;
+    height: 25px;
+    /* bottom: 0; */
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    /* border-radius: 12.5px; */
+    border-radius: 18px/ 17px 17px 8px 8px;
+}
+.center {
+    width: 70px;
+    height: 25px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 20px/12.5px;
+    /* border-radius: 18px/ 8px 8px 17px 17px; */
+}
+.top-right{
+    width: 80px;
+    height: 25px;
+    top: 23%;
+    left: 70px;
+    transform: rotate(90deg);
+    /* border-radius: 12.5px; */
+    border-radius: 18px/ 8px 8px 17px 17px;
+}
+.bottom-right {
+    width: 80px;
+    height: 25px;
+    bottom: 23%;
+    left: 70px;
+    transform: rotate(90deg);
+    /* border-radius: 12.5px; */
+    border-radius: 18px/ 8px 8px 17px 17px;
+}
+.top-left {
+    width: 80px;
+    height: 25px;
+    top: 23%;
+    left: -25px;
+    transform: rotate(90deg);
+    /* border-radius: 12.5px; */
+    border-radius: 18px/ 17px 17px 8px 8px;
+}
+.bottom-left{
+    width: 80px;
+    height: 25px;
+    bottom: 23%;
+    left: -25px;
+    transform: rotate(90deg);
+    /* border-radius: 12.5px; */
+    border-radius: 18px/ 17px 17px 8px 8px;
+}
+
+.point{
+    width: 70px;
+    height: 100%;
+    /* background-color: cadetblue; */
+    /* box-sizing: border-box; */
+    position: relative;
+}
+
+.point div{
+    position: absolute;
+    width: 30px;
+    height: 40px;
+    border-radius: 15px;
+    background-color: white;
+    left: 20px;
+}
+.point .one {
+    top: 20%;
+}
+.point .two {
+    bottom: 20%;
+}
+
+.one .top{
+    display: none;
+}
+.one .bottom{
+    display: none;
+}
+.one .center{
+    display: none;
+}
+.one .top-left{
+    display: none;
+}
+.one .bottom-left{
+    display: none;
+}
+
+.two .top-left{
+    display: none;
+}
+.two .bottom-right{
+    display: none;
+}
+
+.three .top-left{
+    display: none;
+}
+.three .bottom-left{
+    display: none;
+}
+
+.four .top{
+    display: none;
+}
+.four .bottom-left{
+    display: none;
+}
+.four .bottom {
+    display: none;
+}
+
+.five .top-right{
+    display: none;
+}
+.five .bottom-left {
+    display: none;
+}
+
+.six .top-right{
+    display: none;
+}
+
+.seven .center{
+    display: none;
+}
+.seven .bottom{
+    display: none;
+}
+.seven .top-left{
+    display: none;
+}
+.seven .bottom-left{
+    display: none;
+}
+
+.eight li{
+    display: block;
+}
+.nine .bottom-left{
+    display: none;
+}
+
+.zero .center {
+    display: none;
+}

@@ -1,0 +1,42 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-05-13 10:52:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-20 17:52:37
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+ --> 
+ 
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <!-- 引入水波纹样式 -->
+     <link rel="stylesheet" href="./css/waves.min.css">
+     <style>
+         .button {
+             border: none;
+             outline: none;
+             height: 100px;
+             width: 100px;
+             background-color: gray;
+         }
+     </style>
+ </head>
+ <body>
+     <!-- 添加 waves-effect 样式 -->
+     <button class="waves-effect button"> 水波纹案例 </button>  
+
+     <!-- 引入水波纹js， 注意文件中有一个语音， 在不同的文件中需要更改 new Audio（） 里面的路径 -->
+     <script src="./js/waves.js"></script>
+     <script>
+        //  启动水波纹
+         Waves.init({
+         })
+     </script>
+ </body>
+ </html>

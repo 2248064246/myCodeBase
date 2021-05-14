@@ -1,0 +1,60 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: #2d3436;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+
+span {
+  /* color: #636e72; */
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  font-family: '宋体';
+  font-size: 60px;
+  font-weight: bold;
+
+
+}
+
+.normal {
+  color: #636e72;
+}
+
+.other {
+  background-image: linear-gradient(to right, #0984e3, #00cec9, #fdcb6e, #ff7675, #fd79a8, #d63031);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  /* clip-path: circle(50px at 0 50%); */
+  animation: animate 3s ease-in-out infinite alternate;
+}
+
+@keyframes animate {
+  from {
+    clip-path: circle(50px at 0 50%);
+  }
+  to {
+    clip-path: circle(50px at 100% 50%);
+  }
+}

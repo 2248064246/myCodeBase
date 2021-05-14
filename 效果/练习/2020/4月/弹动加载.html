@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+       .loading-bar {
+           width: 230px;
+           height: 4px;
+           background-color: #cfcfcf;
+           position: relative;
+           overflow: hidden;
+       }
+
+       .loading-bar::before {
+           /* 核心思想就是利用绝对定位, 用left让滑动块移动,并超出两边, 得到一个看起来弹动的效果 */
+           content: '';
+           width: 80px;
+           height: 4px;
+           background-color: #0073b1;
+           position: absolute;
+           left: -40px;
+           animation: bluebar 1.5s infinite ease-in-out;
+           animation-direction: alternate;
+       }
+
+       /* 这里只设置 50%, 就能实现来回往复运动, 而不需要设置 alternate */
+       /* @keyframes bluebar {
+           50% {
+               left: 190px;
+           }
+       } */
+
+       @keyframes bluebar {
+           100%{
+               left: 190px;
+           }
+       }
+
+    </style>
+</head>
+
+<body>
+    <div class="loading-screen">
+        <div class="loading-animation">
+            <img src="../image/bilibili.png" alt="" class="logo">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+</body>
+
+</html>

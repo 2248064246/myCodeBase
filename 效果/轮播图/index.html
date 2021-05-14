@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 100vh;
+        }
+
+        #banner {
+            position: relative;
+            width: 1226px;
+            height: 460px;
+            margin: 100px auto;
+            overflow: hidden;
+        }
+
+        #banner .img-container {
+            position: relative;
+            left: 0;
+            transform: translateX(0);
+            overflow: hidden;
+            height: 100%;
+        }
+        #banner .img-wrapper{
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #banner .img-container div {
+            width: 1226px;
+            height: 100%;
+            float: left;
+            /* position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0; */
+            background-color: #ddd;
+        }
+
+        #banner .img-container a {
+            display: block;
+        }
+
+        #banner .img-container img {
+            vertical-align: middle;
+            width: 100%;
+            height: 100%;
+            display: none;
+            opacity: 0;
+        }
+
+        #banner .circle-btn-container {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        #banner .circle-btn-container a {
+            display: inline-block;
+            height: 6px;
+            width: 6px;
+            margin: 0 5px;
+            border: 2px solid #fff;
+            border-color: hsla(0, 0%, 100%, .3);
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, .3);
+            background-clip: content-box;
+        }
+
+        #banner .circle-btn-container a:hover {
+            background-color: hsla(0, 0%, 100%, .4);
+            border-color: rgba(0, 0, 0, .4);
+        }
+
+        #banner .circle-btn-container a.circle-active {
+            background-color: hsla(0, 0%, 100%, .4);
+            border-color: rgba(0, 0, 0, .4);
+        }
+
+        #banner .trigger-container {
+            width: 1226px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+
+        }
+
+        #banner .trigger-container a {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            padding: 0;
+            margin: auto 0;
+            height: 65px;
+            width: 40px;
+            background-color: transparent;
+            border-radius: 5px;
+            background-image: url('./image/icon-slides.png');
+        }
+
+        #banner .trigger-container a:hover {
+            background-color: rgb(138, 140, 143);
+        }
+
+        #banner .trigger-container a.trigger-right {
+            right: 0;
+            background-position: 42px center;
+        }
+
+        #banner .trigger-container a.trigger-left {
+            background-position: 83px center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="banner" class="banner">
+        <div id="img-wrapper" class="img-wrapper">
+            <div class="img-container">
+            </div>
+        </div>
+        
+        <div class="circle-btn-container">
+        </div>
+        <div class="trigger-container">
+            <a href="javascript:;" class="trigger-left"></a>
+            <a href="javascript:;" class="trigger-right"></a>
+        </div>
+    </div>
+    <script src="./DOM相关工具.js"></script>
+    <script src="./myTween.js"></script>
+    <script src="./myCarousel.js"></script>
+    <script>
+        // myCarousel(banner,'img_data.txt', 2).to({'z-index': 1,'opacity':1}, 3000).start();
+        myCarousel(banner,'img_data.txt', 2).to({scrollLeft: 1226}, 3000).start();
+    </script>
+</body>
+
+</html>

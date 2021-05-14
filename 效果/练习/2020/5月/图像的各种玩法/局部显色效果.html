@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 50%;
+            height: 50%;
+            /* background: cyan; */
+        }
+
+        .image-gray {
+            width: 100%;
+            height: 100%;
+            background: url('../img/6 (1).jpg') no-repeat;
+            background-position: center;
+            background-size: 100%;
+            filter: grayscale(100%);
+        }
+
+        .image-color-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* background-color: lightcyan; */
+        }
+
+        .move {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            /* background-color: lightcyan; */
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .image-color {
+            position: absolute;
+            width: 50vw;
+            height: 50vh;
+            background: url('../img/6 (1).jpg') no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="image-wrapper">
+
+        <!-- 灰度图 -->
+        <div class="image-gray">
+
+        </div>
+
+        <div class="image-color-container">
+
+            <!-- 可以移动的圆圈 -->
+            <div class="move">
+                <!-- 原图 -->
+                <div class="image-color"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        // js部分
+
+        // 1. 让圆圈动起来, 让背景保持不动
+        // 2. 边界判断
+
+        const imageWrapper = document.querySelector('.image-wrapper')
+        const move = document.querySelector('.move')
+        const imageColor = move.firstElementChild
+
+        move.addEventListener('mouseenter', e => {
+
+            move.style.cursor = 'none'
+            move.setPointerCapture(1) // 将鼠标于元素绑定, 防止迅速移动时鼠标移出
+        })
+
+        move.addEventListener('mousemove', e => {
+
+            // 获取需要的 left 和 top 值
+            let result = getResultPosition(e, imageWrapper, move)
+
+            move.style.left = result.left + 'px'
+            move.style.top = result.top + 'px'
+            // 要让 imag-color 元素保持不动, 需要反向设置 left 和 top
+            imageColor.style.left = -result.left + 'px'
+            imageColor.style.top = -result.top + 'px'
+        })
+
+        function getResultPosition(e, fatherBox, box) {
+
+            // 计算 left 和 top
+            // 当前鼠标位置 - 父元素盒子的top和left - 需要移动的元素盒子的大小的一半
+            let left = e.clientX - fatherBox.offsetLeft - box.offsetWidth / 2,
+                top = e.clientY - fatherBox.offsetTop - box.offsetHeight / 2
+
+            // 边界判断
+            let minL = 0,
+                minT = 0,
+                maxL = fatherBox.offsetWidth - box.offsetWidth,
+                maxT= fatherBox.offsetHeight - box.offsetHeight
+
+            if (left <= minL) left = minL
+            if (left >= maxL) left = maxL
+            if (top <= minL) top = minT
+            if (top >= maxT) top = maxT
+
+            return {
+                top, left
+            }
+        }
+    </script>
+</body>
+
+</html>

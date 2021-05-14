@@ -1,0 +1,54 @@
+<!--
+ * @Author: 黄宇/hyuishine
+ * @Date: 2020-05-20 15:55:40
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-05-21 01:06:37
+ * @Description: 
+ * @Email: hyuishine@gmail.com
+ * @Company: 3xDate
+ * @youWant: add you want
+-->
+<html>
+
+<head>
+    <title></title>
+</head>
+<style></style>
+
+<body>
+    <img src="" id="transform">
+</body>
+<script>　　
+    dealImage("../../img/6 (1).jpg", function (base) {
+        //将压缩后的图片放入img标签中
+        document.getElementById("transform").src = base;
+        // 返回压缩后的base64
+        console.log("压缩后：" + base.length / 1024 + " " + base);
+    })
+    function dealImage(path, callback) {
+        var img = new Image();
+        img.src = path;
+        img.onload = function () {
+            //默认按比例压缩  
+            var w = this.width,
+                h = this.height;
+            var quality = 0.6; // 压缩图片质量
+
+            //生成canvas  
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            // 创建属性节点  
+            canvas.setAttribute("width", w);
+            canvas.setAttribute("height", h);
+
+            ctx.drawImage(this, 0, 0, w, h);
+            // quality值越小，所绘制出的图像越模糊  
+            var base64 = canvas.toDataURL('image/jpeg', quality);
+            // 回调函数返回base64的值  
+            callback(base64);
+        };
+    };
+</script>
+
+</html>

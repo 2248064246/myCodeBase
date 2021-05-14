@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        body {
+            position: relative;
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+            color: #666;
+        }
+
+        a:active {
+            color: #666;
+        }
+
+        .floor {
+            height: 110vh;
+            margin-left: 30px;
+        }
+
+        .floor-nav-container {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            width: 170px;
+            height: 180px;
+
+            overflow: hidden;
+        }
+
+        .floor-nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 170px;
+            padding-top: 10px;
+
+            overflow: auto;
+        }
+
+        .floor-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .floor-nav li {
+            position: relative;
+            padding-left: 2em;
+            height: 30px;
+            line-height: 30px;
+            margin-bottom: 5px;
+        }
+
+        .slide-bar {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            height: 100%;
+            width: 0;
+            border-left: 1px solid #eaeaea;
+            border-left: 1px solid #eaeaea;
+        }
+
+        .circle {
+            position: absolute;
+            left: 7.5px;
+            top: calc(50% - 4px);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: lightslategray;
+        }
+
+        .title-index {
+            margin-right: 8px;
+            margin-left: 8px;
+        }
+
+        .title-content {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .circle-start {
+            position: absolute;
+            top: 0;
+            left: -4px;
+            background-color: white;
+            border: 1px solid lightslategray;
+        }
+
+        .circle-end {
+            position: absolute;
+            top: calc(100% - 10px);
+            left: -4px;
+            background-color: white;
+            border: 1px solid lightslategray;
+        }
+
+        .slide-tag {
+            position: absolute;
+            top: 0;
+            left: 5px;
+            height: 10px;
+            width: 15px;
+            background-color: lightskyblue;
+            transition: top .3s ease-in-out;
+        }
+
+        .slide-tag::after {
+            content: '';
+            display: block;
+            position: absolute;
+            height: 0;
+            width: 0;
+            left: 100%;
+            border: 5px solid transparent;
+            border-left-color: lightskyblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="floor" id="1">
+        <h2>第1楼</h2>
+    </div>
+    <div class="floor" id="2">
+        <h2>第2楼</h2>
+    </div>
+    <div class="floor" id="3">
+        <h2>第3楼</h2>
+    </div>
+    <div class="floor" id="4">
+        <h2>第4楼</h2>
+    </div>
+    <div class="floor" id="5">
+        <h2>第5楼</h2>
+    </div>
+    <div class="floor" id="6">
+        <h2>第6楼</h2>
+    </div>
+    <div class="floor" id="7">
+        <h2>第7楼</h2>
+    </div>
+    <div class="floor" id="8">
+        <h2>第8楼</h2>
+    </div>
+    <div class="floor" id="9">
+        <h2>第9楼</h2>
+    </div>
+    <div class="floor" id="10">
+        <h2>第10楼</h2>
+    </div>
+
+    <div class="floor-nav-container">
+        <!-- 侧边滑动条 -->
+        <div class="slide-bar">
+            <em class="circle circle-start"></em>
+            <em class="circle circle-end"></em>
+        </div>
+
+        <!-- 导航列表 -->
+        <div class="floor-nav">
+            <ul>
+                <li>
+                    <a href="#1">
+                        <em class="circle"></em>
+                        <span class="title-index">1.</span>
+                        <span class="title-content">第1楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#2">
+                        <em class="circle"></em>
+                        <span class="title-index">2.</span>
+                        <span class="title-content">第2楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#3">
+                        <em class="circle"></em>
+                        <span class="title-index">3.</span>
+                        <span class="title-content">第3楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#4">
+                        <em class="circle"></em>
+                        <span class="title-index">4.</span>
+                        <span class="title-content">第4楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#5">
+                        <em class="circle"></em>
+                        <span class="title-index">5.</span>
+                        <span class="title-content">第5楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#6">
+                        <em class="circle"></em>
+                        <span class="title-index">6.</span>
+                        <span class="title-content">第6楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#7">
+                        <em class="circle"></em>
+                        <span class="title-index">7.</span>
+                        <span class="title-content">第7楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#8">
+                        <em class="circle"></em>
+                        <span class="title-index">8.</span>
+                        <span class="title-content">第8楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#9">
+                        <em class="circle"></em>
+                        <span class="title-index">9.</span>
+                        <span class="title-content">第9楼</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#10">
+                        <em class="circle"></em>
+                        <span class="title-index">10.</span>
+                        <span class="title-content">第10楼</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="slide-tag"></div>
+        </div>
+    </div>
+
+   
+    <script>
+        const floorList = document.getElementsByClassName('floor');
+        const floorNav = document.getElementsByClassName('floor-nav')[0];
+        const floorUl = floorNav.firstElementChild;
+        const floorLi = floorUl.children;
+        const slideTag = floorNav.lastElementChild;
+
+        window.onscroll = detection;
+
+        function detection() {
+            for (let i = 0; i < floorList.length; i++) {
+                let curEle = floorList[i];
+
+                // 用来判断当前楼层的头部是否位于窗口内
+                let a = curEle.offsetTop - document.documentElement.scrollTop -10;
+
+                // 用来判断当前楼层的尾部是否为窗口内
+                let b = a + curEle.clientHeight;
+
+
+                if (a <= 0 && b > 0) {
+                    // 用来限制执行次数, 只执行一次
+                    if (!curEle.out) {
+
+                        setSlide(curEle.id);
+                        curEle.out = true;
+                    }
+                } else {
+                    curEle.out = false;
+                }
+                
+            }
+        }
+
+        function setSlide(id) {
+            console.log(id);
+            let curEleTop = floorLi[id - 1].offsetTop,
+                floorLiHeight = floorLi[id - 1].offsetHeight;
+
+            // 计算滑动标签的top值;
+            let top = curEleTop + floorLiHeight / 2 - slideTag.offsetHeight / 2;
+
+            slideTag.style.top = top + 'px';
+
+            // 让列表动起来
+            let target = curEleTop - floorNav.offsetHeight /2 - floorLiHeight /2 + floorLiHeight;
+
+            // floorNav.scrollTo(0, target);
+            // 动画
+
+            // // 自己写的动画库
+            // myTween(floorNav).to({scrollTop: target}, 200).start("Linear", 5);
+
+            moveTo(floorNav, target);
+        }
+
+        let timer = null;
+        function moveTo (curEle, target) {
+
+            // 每次执行前,清除上次的方法
+            if(timer) clearInterval(timer);
+            let time = 0,
+                begin = curEle.scrollTop,
+                duration = 200,
+                distance = target - begin;
+            
+            timer = setInterval(function() {
+                time += 5;
+                if(time >= duration) {
+                    clearInterval(timer);
+                    curEle.scrollTop = target;
+                    return;
+                }
+                // 线性动画
+                let curPos = distance * time / duration + begin;
+
+                curEle.scrollTop = curPos;
+            }, 10)
+        }
+    </script>
+</body>
+
+</html>

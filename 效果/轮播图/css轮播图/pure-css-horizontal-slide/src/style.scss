@@ -1,0 +1,122 @@
+@import url(https://fonts.googleapis.com/css?family=Audiowide);
+//mixins
+@mixin bp($bp, $min-max: min-width) {
+    $em: $bp/16;
+    @media(#{$min-max}: #{$em}em) {
+        @content;
+    }
+}
+
+html {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    font-size: 16px; 
+    font-weight: normal;
+    line-height: 1.4;
+}
+
+*,
+*:before,
+*:after  { box-sizing: inherit; }
+
+h1 { 
+    color: #fff;
+    font-family: "Audiowide", cursive;
+    font-size: 2em;
+    font-size: 6vw;
+    line-height: 1.2;
+    margin: 0.5em 0 3em;
+    text-shadow: 1px 1px 1px #333;
+}
+
+@include bp(1075) { h1 { font-size: 4em; } }
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.wrap {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background: #120103;
+    color: #fff;
+    text-align: center;
+}
+
+header {
+    background: #3E474F;
+    box-shadow: 0 .5em 1em #111;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 900;
+    width: 100%;
+    
+    label {
+        color: #788188;
+        cursor: pointer;
+        display: inline-block;
+        line-height: 4.25em;
+        font-size: .75em;
+        font-weight: bold;
+        padding: 0 1em;
+    }
+}
+
+header label:hover {
+    background: #2e353b;
+}
+
+.slide {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 10;
+    padding:  8em 1em 0;
+    background-color: #120103;
+    background-position: 50% 50%;
+    background-size: cover;
+    transition: left 0s .75s;        
+    
+    &-one { background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/65463/starryFarm.jpg'); }
+
+    &-two { background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/65463/campusDarkDays.jpg'); }
+
+    &-three { background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/65463/autumn.jpg'); }
+
+    &-four { background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/65463/lakehouse.jpg'); }
+    
+    h1 {
+        opacity: 0;
+        transform: translateY(100%);
+        transition: transform .5s .5s, opacity .5s;
+    }
+}
+
+[id^="slide"]:checked + .slide {
+    left: 0;
+    z-index: 100;
+    transition: left .65s ease-out;
+    
+    & h1 {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all .5s .5s;
+    }
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,198 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-02-04 21:29:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-02-04 23:00:38
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .color-matrix {
+      position: absolute;
+      left: 350px;
+      top: 8px;
+    }
+
+    input {
+      width: 50px;
+    }
+
+    .color-box {
+      width: 800px;
+      height: 300px;
+      /* border: 1px solid; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: url(#gooey);
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      background: #0984e3;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="color-box">
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+  <br>
+
+  两个小球的距离:<input type="range" name="distance" id="distance" style="width: 200px;" value="0" max="100" min="-100">
+  <span id="distance-value">0</span>
+  <br>
+  <br>
+
+  高斯模糊度: <input type="range" name="blur" id="blur" style="width: 200px;" value="0" max="100" min="0">
+  <span id="blur-value">0</span>
+  <br>
+  <br>
+
+  <div class="matrix-box">
+    <div class="a1">
+      <input type="number" id="11" value="1" max="255" min="-255">
+      <input type="number" id="12" value="0" max="255" min="-255">
+      <input type="number" id="13" value="0" max="255" min="-255">
+      <input type="number" id="14" value="0" max="255" min="-255">
+      <input type="number" id="15" value="0" max="1" min="-1">
+      R: <span id="R_"></span>
+    </div>
+    <div class="a2">
+      <input type="number" id="21" value="0" max="255" min="-255">
+      <input type="number" id="22" value="1" max="255" min="-255">
+      <input type="number" id="23" value="0" max="255" min="-255">
+      <input type="number" id="24" value="0" max="255" min="-255">
+      <input type="number" id="25" value="0" max="1" min="-1">
+      G: <span id="G_"></span>
+    </div>
+    <div class="a3">
+      <input type="number" id="31" value="0" max="255" min="-255">
+      <input type="number" id="32" value="0" max="255" min="-255">
+      <input type="number" id="33" value="1" max="255" min="-255">
+      <input type="number" id="34" value="0" max="255" min="-255">
+      <input type="number" id="35" value="0" max="1" min="-1">
+      B: <span id="B_"></span>
+    </div>
+    <div class="a4">
+      <input type="number" id="41" value="0" max="255" min="-255">
+      <input type="number" id="42" value="0" max="255" min="-255">
+      <input type="number" id="43" value="0" max="255" min="-255">
+      <input type="number" id="44" value="1" max="255" min="-255">
+      <input type="number" id="45" value="0" max="1" min="-1">
+      A: <span id="A_"></span>
+    </div>
+    <br>
+  </div>
+
+  <svg style="width: 0; height: 0;">
+    <filter id="gooey">
+      <!-- 高斯模糊 -->
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0">
+      </feGaussianBlur>
+      <!-- 颜色矩阵 -->
+      <feColorMatrix values=""></feColorMatrix>
+
+    </filter>
+  </svg>
+
+  <script>
+    let colorAry = []
+
+    function getMatrix() {
+      let matrixInput = document.querySelectorAll('.matrix-box input')
+      let matrixAry = []
+      let rowAry = []
+      matrixInput.forEach((item, index) => {
+        rowAry.push(Number(item.value))
+        if ((index + 1) % 5 === 0) {
+          matrixAry.push(rowAry)
+          rowAry = []
+        }
+      })
+      colorAry.push(1)
+      console.log(colorAry)
+      console.log(new MatrixColor(colorAry, matrixAry).computeColor())
+      let values = ''
+      matrixAry.forEach(ary => {
+        values += ary.join(' ') + ','
+      })
+      return values.slice(0, values.length - 1)
+    }
+
+    document.querySelectorAll('input[type=number]').forEach(item => {
+      item.addEventListener('change', inputChange)
+    })
+
+    let feColorMatrix = document.querySelector('feColorMatrix')
+
+    function inputChange() {
+      var values = getMatrix()
+      feColorMatrix.setAttribute('values', values)
+    }
+
+
+    var range = document.querySelectorAll('input[type=range]')
+    range.forEach(item => {
+      item.addEventListener('input', setRange)
+    })
+
+    class MatrixColor {
+      constructor(rgba = [], colorMatrix = []) {
+        this.rgba = rgba;
+        this.colorMatrix = colorMatrix;
+      }
+      computeColor() {
+        let colorAry = []
+        this.colorMatrix.forEach(colorItem => {
+          // 得到行的数组, 需要将数组相加
+          console.log(colorItem)
+          colorAry.push(colorItem.map((item, index) => {
+            if (index < 4) {
+              return this.rgba[index] * item
+            } else {
+              return item
+            }
+          }).reduce((sum, cur) => sum += cur))
+        })
+        return colorAry
+      }
+    }
+
+    colorAry = window.getComputedStyle(document.querySelectorAll('.circle')[0]).backgroundColor.match(/\d+/g).map(
+      item => Number(item))
+
+    function setRange(e) {
+      switch (e.target.id) {
+        case 'distance':
+          let circle = document.querySelectorAll('.circle')
+          let left = circle[0],
+            right = circle[1];
+          colorAry = window.getComputedStyle(left).backgroundColor.match(/\d+/g).map(item => Number(item))
+
+          left.style.marginRight = e.target.value / 2 + 'px';
+          right.style.marginLeft = e.target.value / 2 + 'px';
+          document.getElementById(e.target.id + '-value').innerHTML = e.target.value;
+          break;
+        case 'blur':
+          document.querySelector('feGaussianBlur').setAttribute('stdDeviation', e.target.value)
+          document.getElementById(e.target.id + '-value').innerHTML = e.target.value;
+
+      }
+    }
+  </script>
+</body>
+
+</html>

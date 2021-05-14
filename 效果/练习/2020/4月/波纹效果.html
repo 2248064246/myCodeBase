@@ -1,0 +1,90 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-04-14 13:05:31
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-04-14 13:26:19
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xDate
+ * @youWant: add you want
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .box span {
+            box-sizing: border-box;
+            position: absolute;
+           
+            border-radius: 50%;
+            animation: animate 5s linear infinite;
+            animation-delay: calc(0.5s * var(--i));
+        }
+
+        @keyframes animate {
+            0% {
+                border: 2px solid #009FFF;
+                width: 0;
+                height: 0;
+            }
+
+            50% {
+                opacity: 1;
+                /* border: 2px solid white; */
+            }
+
+            100% {
+                border: 2px solid #ec2F4B;
+                height: 500px;
+                width: 500px;
+                opacity: .1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <span style="--i:0"></span>
+            <span style="--i:1"></span>
+            <span style="--i:2"></span>
+            <span style="--i:3"></span>
+            <span style="--i:4"></span>
+            <span style="--i:5"></span>
+            <span style="--i:6"></span>
+            <span style="--i:7"></span>
+            <span style="--i:8"></span>
+            <span style="--i:9"></span>
+        </div>
+</body>
+
+</html>

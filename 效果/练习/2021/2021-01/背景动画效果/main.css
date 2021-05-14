@@ -1,0 +1,43 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
+  overflow: hidden;
+}
+.container .cell {
+  width: 5vw;
+  height: 5vh;
+  animation: show 0.7s ease-in-out forwards;
+}
+.container .cell:nth-child(even) {
+  animation: show 1s ease-in-out forwards;
+}
+.container .cell:nth-child(7n+3) {
+  animation: show 2.5s ease-in-out forwards;
+}
+.container .cell:nth-child((7n+7)) {
+  animation: show 1.5s ease-in-out forwards;
+}
+@keyframes show {
+  0% {
+    transform: scale(0) translateY(1000px);
+    opacity: 0;
+  }
+  50% {
+    background-image: url('../模仿edge首页背景/bg.jpg');
+    background-position: center;
+    background-attachment: fixed;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    background-image: url('../模仿edge首页背景/bg.jpg');
+    background-position: center;
+    background-attachment: fixed;
+  }
+}

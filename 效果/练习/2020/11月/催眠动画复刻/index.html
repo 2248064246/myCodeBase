@@ -1,0 +1,70 @@
+<!--
+ * @Author: 洛水赋神
+ * @Date: 2020-11-21 23:37:15
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-22 00:23:23
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+
+
+  <div class="container">
+    <div class="circle" style="--i:1;--color:#55efc4;"></div>
+    <div class="circle" style="--i:2; --color: #81ecec;"></div>
+    <div class="circle" style="--i:3; --color: #74b9ff;"></div>
+    <div class="circle" style="--i:4; --color: #a29bfe;"></div>
+    <div class="circle" style="--i:5; --color: #ffeaa7;"></div>
+    <div class="circle" style="--i:6; --color: #fab1a0;"></div>
+    <div class="circle" style="--i:7; --color: #ff7675;"></div>
+    <div class="circle" style="--i:8; --color: #fd79a8;"></div>
+    <div class="circle" style="--i:9;--color:#55efc4;"></div>
+    <div class="circle" style="--i:10; --color: #81ecec;"></div>
+    <div class="circle" style="--i:11 --color: #74b9ff;"></div>
+    <div class="circle" style="--i:12; --color: #a29bfe;"></div>
+    <div class="circle" style="--i:13; --color: #ffeaa7;"></div>
+    <div class="circle" style="--i:14; --color: #fab1a0;"></div>
+    <div class="circle" style="--i:15; --color: #ff7675;"></div>
+    <div class="circle" style="--i:16; --color: #fd79a8;"></div>
+
+  </div>
+
+  <script>
+
+    // 改变透视原点
+
+    var container = document.querySelector('.container')
+
+    var win_width = document.documentElement.clientWidth
+    var win_height = document.documentElement.clientHeight
+
+    container.addEventListener('mousemove', (e)=> {
+        
+      let left = e.clientX
+      let top = e.clientY
+
+      let leftP = left / win_width * 100
+      let topP = top / win_height * 100
+
+      container.style.perspectiveOrigin = leftP + '% ' + topP + '%'
+
+    })
+
+  </script>
+
+</body>
+
+</html>

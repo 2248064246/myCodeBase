@@ -1,0 +1,49 @@
+
+
+* {box-sizing: border-box;}
+
+body {font-family: sans-serif;}
+
+.scene {
+    width: 200px;
+    height: 260px;
+    border: 1px solid #ccc;
+    margin: 50px;
+    perspective: 800px;
+}
+
+.card {
+    width: 200px;
+    height: 260px;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    transform-origin: center right;
+    cursor: pointer;
+    position: relative;
+}
+
+.card__face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    line-height: 260px;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    backface-visibility: hidden;
+}
+
+.card__face--front {
+    background: red;
+}
+
+.card__face--back {
+    background: blue;
+    transform: rotateY(180deg)
+}
+
+.card.is-flipped {
+    /* 关于 transform 属性的效果顺序, 从左到右 */
+    transform: translateX(-100%) rotateY(180deg) ;
+}

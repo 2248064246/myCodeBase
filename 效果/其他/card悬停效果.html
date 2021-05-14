@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+            background-color: #60a3bc;
+
+        }
+        .container {
+            position: relative;
+            width: 1000px;
+            height: 600px;
+            /* margin: 0 auto; */
+            /* background-color: magenta; */
+        }
+        .card-wrap {
+            display: flex;
+            justify-content: space-between;
+            /* 元素要有高度, 不能默认撑开, 不然没有效果 */
+            align-items: center; 
+            width: 100%;
+            height: 100%;
+        }
+        .card-wrap>div{
+            position: relative;
+            align-self: center;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            box-shadow:0 0 2px 1px rgba(0, 0, 0, .3);
+        }
+        .card-wrap .content h2{
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            margin-top: 140px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        .content p{
+            display: block;
+            height: 120px;
+            padding: 10px;
+            /* background-color: darkcyan; */
+            color: #2d3436;
+            text-indent: 2em;
+            text-align: justify;
+            word-break: break-all;
+        }
+        .card-wrap>div .face{
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #0a3d62;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            letter-spacing: .2em;
+            color: white;
+            transition: .5s;
+        }
+        .card-wrap>div:hover .face{
+            width: 80px;
+            height: 80px;
+            font-size: 25px;
+            margin-top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+            border-radius: 50%;
+            border: 2px solid #0a3d62; 
+            color: black;
+        }
+        .content a{
+            display: block;
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            margin: 0 auto;
+            text-align: center;
+            text-transform: uppercase;
+            border: 2px solid #1e3799;
+            box-shadow: 0 0 2px rgba(0, 0, 0, .5);
+            transition: .3s;
+        }
+        .content a:hover{
+            background-color: #1e3799;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card-wrap">
+            <div class="card-1">
+                <div class="content">
+                    <h2>to be best</h2>
+                    <p>Happiness is not about being immortal nor having food or rights in one's hand. It’s about having each
+                        tiny wish come true, or having something to eat when you are hungry or having someone's love when
+                        you need loved.
+                    </p>
+                    <a href="#">read more</a>
+                </div>
+                <div class="face">
+                    <h2>01</h2>
+                </div>
+            </div>
+            <div class="card-2">
+                <div class="content">
+                    <h2>to be best</h2>
+                    <p>Happiness is not about being immortal nor having food or rights in one's hand. It’s about having each
+                        tiny wish come true, or having something to eat when you are hungry or having someone's love when
+                        you need love.
+                    </p>
+                    <a href="#">read more</a>
+                </div>
+                <div class="face">
+                    <h2>02</h2>
+                </div>
+
+            </div>
+            <div class="card-3">
+                <div class="content">
+                    <h2>to be best</h2>
+                    <p>Happiness is not about being immortal nor having food or rights in one's hand. It’s about having each
+                        tiny wish come true, or having something to eat when you are hungry or having someone's love when
+                        you need love.
+                    </p>
+                    <a href="#">read more</a>
+                </div>
+                <div class="face">
+                    <h2>03</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

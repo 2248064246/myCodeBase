@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            box-shadow: 0 2px 5px rgba(0,0,0,.5);
+        }
+        img {
+            vertical-align: middle;
+        }
+
+        .box>img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .magnify {
+            position: absolute;
+            display: none;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 50%;
+            background-color: grey;
+            opacity: .6;
+        }
+        .magnify:hover {
+            cursor: move;
+        }
+
+        .display {
+            position: absolute;
+            display: none;
+            left: 360px;
+            top: 0;
+            width: 350px;
+            height: 350px;
+            border: 1px solid lightblue;
+            overflow: hidden;
+        }
+        .display > img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="box" class="box">
+        <img src="./image/2.png" alt="">
+        <div id="magnify" class="magnify"></div>
+        <div id="display" class="display">
+            <img src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        let box = document.getElementById('box'),
+            magnify = document.getElementById('magnify'),
+            display = document.getElementById('display');
+            displayImg = display.firstElementChild;
+            boxImg = box.firstElementChild;
+
+        box.onmouseenter = function (e) {
+            magnify.style.display = 'block';
+            display.style.display = 'block';
+            displayImg.src = boxImg.src;
+            magnifyPosition = setMagnifyPosition(e);
+            setDisplayImgPosition(magnifyPosition);
+        }
+
+        box.onmousemove = function(e) {
+            magnifyPosition = setMagnifyPosition(e);
+            setDisplayImgPosition(magnifyPosition);
+        }
+
+        box.onmouseleave = function(e) {
+            magnify.style.display = 'none';
+            display.style.display = 'none';
+        }
+
+        function setMagnifyPosition(e) {
+            let left = e.clientX - box.offsetLeft - magnify.offsetWidth / 2,
+                top = e.clientY - box.offsetTop - magnify.offsetHeight / 2;
+            // 边界判断
+            let minL = 0,
+                minT = 0,
+                maxL = box.offsetWidth - magnify.offsetWidth,
+                maxT = box.offsetHeight - magnify.offsetHeight;
+            if(left> maxL-2) left = maxL;
+            if(top > maxT-2) top = maxT;
+            if(left < minL+2) left = minL;
+            if(top < minT+2) top = minT;
+            magnify.style.left = left + 'px';
+            magnify.style.top = top + 'px';
+            return {top,left};
+        }
+
+        function setDisplayImgPosition(magnifyPosition) {
+            let left = -magnifyPosition.left,
+                top = -magnifyPosition.top;
+            displayImg.style.left = left*2 + 'px';
+            displayImg.style.top = top*2 + 'px';
+        }
+    
+    </script>
+</body>
+
+</html>

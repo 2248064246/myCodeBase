@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <!-- 引入字体图标 -->
+    <link rel="stylesheet" href="../../../图标字体/fontawesome-free-5.12.0-web/css/all.css">
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    <!-- 整个页面容器 -->
+    <div class="container" id="container">
+        <!-- 登入页面容器 -->
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Create Account</h1>
+                <div class="social-container">
+                    <a href="" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email for registration</span>
+                <input type="text" placeholder="Name">
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Password">
+                <button>Sign Up</button>
+            </form>
+        </div>
+        <!-- 注册页面容器 -->
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Sign in</h1>
+                <div class="social-container">
+                    <a href="" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your account</span>
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Password">
+                <a href="#">Forgot your password</a>
+                <button>Sign in</button>
+            </form>
+        </div>
+        <!-- 覆盖图容器 -->
+         <div class="overlay-container">
+             <div class="overlay">
+                 <div class="overlay-panel overlay-left">
+                     <h1>Welcome Back!</h1>
+                     <p>
+                         To keep connected with us please login with your personal info
+                     </p>
+                     <button class="ghost" id="signIn">Sign In</button>
+                 </div>
+                 <div class="overlay-panel overlay-right">
+                    <h1>Hello Friend!</h1>
+                    <p>
+                        Enter your personal details and start journey with us
+                    </p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+             </div>
+         </div>
+    </div>
+
+    <!-- 导入JS -->
+    <script src="./main.js"></script>
+</body>
+</html>

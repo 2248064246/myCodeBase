@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        .search {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 500px;
+            height: 50px;
+            background-color: cyan;
+            /* overflow: hidden; */
+        }
+        .input {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border: 1px solid lightgrey;
+            outline: none;
+            font-size: 25px;
+            padding-left: 20px;
+        }
+        .input:focus {
+            border-color: lightskyblue;
+        }
+        .search-ul {
+            display: none;
+            box-sizing: border-box;
+            width: 100%;
+            margin-top: -1px;
+            padding: 0;
+            list-style: none;
+            background-color: white;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+            /* border: 1px solid lightgrey;s */
+            transition: height .5s ease-out;
+            overflow: hidden;
+        }
+        .search-ul li{
+            box-sizing: border-box;
+            height: 40px;
+            width: 100%;
+            padding-left: 20px;
+            /* background-color: cyan; */
+            line-height: 40px;
+        }
+        .search-ul li:hover {
+            background-color: lightskyblue;
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="search" id="search">
+        <input type="text" class="input" id="input"> 
+        <ul class="search-ul" id="search-ul">
+            <!-- 搜一下阻止a标签默认行为的方法 -->
+            <li><a href="javascript:;">1111</a></li>
+            <li><a href="javascript:;">2222</a></li>
+            <li><a href="javascript:;">3333</a></li>
+            <li><a href="javascript:;">4444</a></li>
+            <li><a href="javascript:;">5555</a></li>
+            <li><a href="javascript:;">6666</a></li>
+        </ul>
+    </div>
+
+    <script>
+        let search = document.getElementById('search'),
+            input = document.getElementById('input'),
+            searchUl = document.getElementById('search-ul'),
+            ulHeight = searchUl.offsetHeight;
+        document.body.onclick = function (e) {
+            if(e.target.id === 'input') {
+                searchUl.style.display = 'block';
+                return;
+            }
+            if(e.target.id === 'search-ul') {
+                return;
+            }
+            if(e.target.parentNode.id === 'search-ul' && e.target.tagName.toLowerCase() === 'li') {
+                let val = e.target.firstChild.innerText.trim();
+                input.value = val;
+            }
+            searchUl.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

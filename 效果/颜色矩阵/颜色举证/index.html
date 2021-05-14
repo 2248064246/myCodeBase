@@ -1,0 +1,159 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-01-30 20:06:42
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-01-31 14:16:56
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .color,
+    .color-matrix {
+      width: 300px;
+      height: 300px;
+      border: 1px solid;
+      margin-bottom: 20px;
+    }
+
+    .color-matrix {
+      position: absolute;
+      left: 350px;
+      top: 8px;
+    }
+
+    input {
+      width: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="color"></div>
+    <div class="color-matrix"></div>
+    R:<input type="number" id="R" value="0" max="255" min="-255">
+    G:<input type="number" id="G" value="0" max="255" min="-255">
+    B:<input type="number" id="B" value="0" max="255" min="-255">
+    A:<input type="number" id="A" value="1" max="1" min="-1">
+    <button onclick="createColor()">生成颜色</button>
+
+    <h3>颜色矩阵(用上面的样色 * 下面矩阵)</h3>
+
+    <div class="matrix-box">
+      <div class="a1">
+        <input type="number" id="11" value="0" max="255" min="-255">
+        <input type="number" id="12" value="0" max="255" min="-255">
+        <input type="number" id="13" value="0" max="255" min="-255">
+        <input type="number" id="14" value="0" max="255" min="-255">
+        <input type="number" id="15" value="0" max="1" min="-1">
+        R: <span id="R_"></span>
+      </div>
+      <div class="a2">
+        <input type="number" id="21" value="0" max="255" min="-255">
+        <input type="number" id="22" value="0" max="255" min="-255">
+        <input type="number" id="23" value="0" max="255" min="-255">
+        <input type="number" id="24" value="0" max="255" min="-255">
+        <input type="number" id="25" value="0" max="1" min="-1">
+        G: <span id="G_"></span>
+      </div>
+      <div class="a3">
+        <input type="number" id="31" value="0" max="255" min="-255">
+        <input type="number" id="32" value="0" max="255" min="-255">
+        <input type="number" id="33" value="0" max="255" min="-255">
+        <input type="number" id="34" value="0" max="255" min="-255">
+        <input type="number" id="35" value="0" max="1" min="-1">
+        B: <span id="B_"></span>
+      </div>
+      <div class="a4">
+        <input type="number" id="41" value="0" max="255" min="-255">
+        <input type="number" id="42" value="0" max="255" min="-255">
+        <input type="number" id="43" value="0" max="255" min="-255">
+        <input type="number" id="44" value="0" max="255" min="-255">
+        <input type="number" id="45" value="0" max="1" min="-1">
+        A: <span id="A_"></span>
+      </div>
+      <br>
+      <button onclick="createMatrixColor()">生成新颜色</button>
+    </div>
+
+
+  </div>
+
+  <script>
+    function getColor() {
+      let R = document.getElementById('R').value
+      let G = document.getElementById('G').value
+      let B = document.getElementById('B').value
+      let A = document.getElementById('A').value
+      return [R, G, B, A]
+    }
+
+    function createColor() {
+      let colorAry = getColor()
+      let colorBox = document.querySelector('.color')
+      colorBox.style.backgroundColor = `rgba(${colorAry.join(',')})`
+    }
+
+    class MatrixColor {
+      constructor(rgba = [], colorMatrix = []) {
+        this.rgba = rgba;
+        this.colorMatrix = colorMatrix;
+      }
+      computeColor() {
+        let colorAry = []
+        this.colorMatrix.forEach(colorItem => {
+          // 得到行的数组, 需要将数组相加
+          console.log(colorItem)
+          colorAry.push(colorItem.map((item, index) => {
+            if (index < 4) {
+              return this.rgba[index] * item
+            } else {
+              return item
+            }
+          }).reduce((sum, cur) => sum += cur))
+        })
+        return colorAry
+      }
+    }
+
+    let matrix = [
+      [0, 1, 0, 0, 0],
+      [1, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0],
+      [0, 0, 0, 1, 0]
+    ]
+
+    function getMatrix() {
+      let matrixInput = document.querySelectorAll('.matrix-box input')
+      let matrixAry = []
+      let rowAry = []
+      matrixInput.forEach((item, index) => {
+        rowAry.push(Number(item.value))
+        if ((index + 1) % 5 === 0) {
+          matrixAry.push(rowAry)
+          rowAry = []
+        }
+
+
+      })
+      return matrixAry
+    }
+
+    function createMatrixColor() {
+      let rgba = getColor()
+      let matrix = getMatrix()
+      let colorAry = new MatrixColor(rgba, matrix).computeColor()
+      console.log(colorAry)
+      let colorBox = document.querySelector('.color-matrix')
+      colorBox.style.backgroundColor = `rgba(${colorAry.join(',')})`
+    }
+  </script>
+</body>
+
+</html>

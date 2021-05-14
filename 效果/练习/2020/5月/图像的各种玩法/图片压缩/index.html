@@ -1,0 +1,298 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-05-18 13:25:01
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-05-21 01:53:50
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img src="../../img/6 (1).jpg" alt="" class="maxSrc">
+
+    <img src="" alt="" id="minSrc">
+
+    <script>
+        function compressImage(file, success, error) {
+            // 图片小于1M不压缩
+            if (file.size < Math.pow(1024, 2)) {
+                return success(file);
+            }
+
+            const name = file.name; //文件名
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = e => {
+                const src = e.target.result;
+
+                const img = new Image();
+                img.src = src;
+                img.onload = e => {
+                    const w = img.width;
+                    const h = img.height;
+                    const quality = 0.8; // 默认图片质量为0.92
+                    // 生成canvas
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    // 创建属性节点
+                    const anw = document.createAttribute("width");
+                    anw.nodeValue = w;
+                    const anh = document.createAttribute("height");
+                    anh.nodeValue = h;
+                    canvas.setAttributeNode(anw);
+                    canvas.setAttributeNode(anh);
+
+                    // 铺底色 PNG转JPEG时透明区域会变黑色
+                    ctx.fillStyle = "#fff";
+                    ctx.fillRect(0, 0, w, h);
+
+                    ctx.drawImage(img, 0, 0, w, h);
+                    // quality值越小，所绘制出的图像越模糊
+                    const base64 = canvas.toDataURL('image/jpeg', quality); // 图片格式jpeg或webp可以选0-1质量区间
+
+                    // 返回base64转blob的值
+                    console.log(`原图${(src.length/1024).toFixed(2)}kb`,
+                        `新图${(base64.length/1024).toFixed(2)}kb`);
+                    // 去掉url的头，并转换为byte
+                    const bytes = window.atob(base64.split(',')[1]);
+                    // 处理异常,将ascii码小于0的转换为大于0
+                    console.log(bytes)
+                    const ab = new ArrayBuffer(bytes.length);
+                    const ia = new Uint8Array(ab);
+                    for (let i = 0; i < bytes.length; i++) {
+                        ia[i] = bytes.charCodeAt(i);
+                    }
+                    file = new Blob([ab], {
+                        type: 'image/jpeg'
+                    });
+                    file.name = name;
+
+                    success(file);
+                }
+                img.onerror = e => {
+                    error(e);
+                }
+            }
+            reader.onerror = e => {
+                error(e);
+            }
+        }
+    </script>
+
+    <script>
+        function compress(base64String, w, quality) {
+            var getMimeType = function (urlData) {
+                var arr = urlData.split(',');
+                var mime = arr[0].match(/:(.*?);/)[1];
+                // return mime.replace("image/", "");
+                return mime;
+            };
+            var newImage = new Image();
+            var imgWidth, imgHeight;
+
+            var promise = new Promise(resolve => newImage.onload = resolve);
+            newImage.src = base64String;
+            return promise.then(() => {
+                imgWidth = newImage.width;
+                imgHeight = newImage.height;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                if (Math.max(imgWidth, imgHeight) > w) {
+                    if (imgWidth > imgHeight) {
+                        canvas.width = w;
+                        canvas.height = w * imgHeight / imgWidth;
+                    } else {
+                        canvas.height = w;
+                        canvas.width = w * imgWidth / imgHeight;
+                    }
+                } else {
+                    canvas.width = imgWidth;
+                    canvas.height = imgHeight;
+                }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(newImage, 0, 0, canvas.width, canvas.height);
+                var base64 = canvas.toDataURL(getMimeType(base64String), quality);
+                console.log(base64);
+                return base64;
+            });
+        }
+
+        function compress_2(base64String, quality) {
+            var getMimeType = function (urlData) {
+                var arr = urlData.split(',');
+                var mime = arr[0].match(/:(.*?);/)[1];
+                // return mime.replace("image/", "");
+                return mime;
+            };
+            var newImage = new Image();
+            var imgWidth, imgHeight;
+
+            var promise = new Promise(resolve => newImage.onload = resolve);
+            newImage.src = base64String;
+            return promise.then(() => {
+                imgWidth = newImage.width;
+                imgHeight = newImage.height;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                canvas.width = imgWidth;
+                canvas.height = imgHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(newImage, 0, 0, canvas.width, canvas.height);
+                var base64 = canvas.toDataURL(getMimeType(base64String), quality);
+                console.log('压缩结果', base64)
+                return base64;
+            });
+        }
+    </script>
+
+    <script>
+        // 获取base64图片大小，返回MB数字
+        function calSize(base64url) {
+            let str = base64url.replace('data:image/png;base64,', '');
+            const equalIndex = str.indexOf('=');
+            if (str.indexOf('=') > 0) {
+                str = str.substring(0, equalIndex);
+            }
+            const strLength = str.length;
+            // const fileLength = strLength - (strLength / 8) * 2;
+            const fileLength = strLength
+            // 返回单位为MB的大小
+            return (fileLength / (1024)).toFixed(2);
+        }
+
+        function getUrlBase64(url, ext, callback) {
+            var canvas = document.createElement("canvas"); //创建canvas DOM元素
+            var ctx = canvas.getContext("2d");
+            var img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = url;
+            img.onload = function () {
+                console.dir(img.fileSize)
+
+                canvas.height = img.height; //指定画板的高度,自定义
+                canvas.width = img.width; //指定画板的宽度，自定义
+                ctx.drawImage(img, 0, 0, img.width, img.height); //参数可自定义
+                var dataURL = canvas.toDataURL(ext);
+                callback.call(this, dataURL); //回掉函数获取Base64编码
+                canvas = null;
+            };
+        }
+        String.prototype.getBytesLength = function () {
+            var totalLength = 0;
+            var charCode;
+            for (var i = 0; i < this.length; i++) {
+                charCode = this.charCodeAt(i);
+                if (charCode < 0x007f) {
+                    totalLength++;
+                } else if ((0x0080 <= charCode) && (charCode <= 0x07ff)) {
+                    totalLength += 2;
+                } else if ((0x0800 <= charCode) && (charCode <= 0xffff)) {
+                    totalLength += 3;
+                } else {
+                    totalLength += 4;
+                }
+            }
+            return totalLength;
+        }
+        var base64String = null
+        getUrlBase64('../../img/6 (1).jpg', 'image/jpeg', base64 => {
+            console.log('base64', base64)
+            console.log('长度', base64.length, '字节长度', base64.getBytesLength(), "kb", base64.getBytesLength() /
+                1024)
+            base64String = base64
+
+            console.log(base64)
+
+            compress_2(base64, 0.8).then(res => {
+                document.getElementById('minSrc').src = res
+                console.log('压缩之前的大小', calSize(base64) *2)
+                console.log('压缩之后', calSize(res) *2)
+            })
+
+        })
+    </script>
+
+    <script>
+        /*
+        三个参数
+        file：一个是文件(类型是图片格式)，
+        w：一个是文件压缩的后宽度，宽度越小，字节越小
+        objDiv：一个是容器或者回调函数
+        photoCompress()
+         */
+        function photoCompress(file, w, objDiv) {
+            var ready = new FileReader();
+            /*开始读取指定的Blob对象或File对象中的内容. 当读取操作完成时,readyState属性的值会成为DONE,如果设置了onloadend事件处理程序,则调用之.同时,result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容.*/
+            ready.readAsDataURL(file);
+            ready.οnlοad = function () {
+                var re = this.result;
+                canvasDataURL(re, w, objDiv)
+            }
+        }
+
+        function canvasDataURL(path, obj, callback) {
+            var img = new Image();
+            img.src = path;
+            img.onload = function () {
+                var that = this;
+                // 默认按比例压缩
+                var w = that.width,
+                    h = that.height,
+                    scale = w / h;
+                w = obj.width || w;
+                h = obj.height || (w / scale);
+                var quality = 0.7; // 默认图片质量为0.7
+                //生成canvas
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                // 创建属性节点
+                var anw = document.createAttribute("width");
+                anw.nodeValue = w;
+                var anh = document.createAttribute("height");
+                anh.nodeValue = h;
+                canvas.setAttributeNode(anw);
+                canvas.setAttributeNode(anh);
+                ctx.drawImage(that, 0, 0, w, h);
+                // 图像质量
+                if (obj.quality && obj.quality <= 1 && obj.quality > 0) {
+                    quality = obj.quality;
+                }
+                // quality值越小，所绘制出的图像越模糊
+                var base64 = canvas.toDataURL('image/jpeg', quality);
+                // 回调函数返回base64的值
+                callback(base64);
+            }
+        }
+        /**
+         * 将以base64的图片url数据转换为Blob
+         * @param urlData
+         *            用url方式表示的base64图片数据
+         */
+        function convertBase64UrlToBlob(urlData) {
+            var arr = urlData.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {
+                type: mime
+            });
+        }
+    </script>
+</body>
+
+</html>

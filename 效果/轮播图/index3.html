@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 100vh;
+        }
+
+        #banner {
+            position: relative;
+            width: 618px;
+            height: 230px;
+            margin: 100px auto;
+            overflow: hidden;
+        }
+
+        #banner .img-container {
+            position: relative;
+            left: 0;
+            transform: translateX(0);
+            overflow: hidden;
+            height: 100%;
+        }
+        #banner .img-wrapper{
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #banner .img-container div {
+            width: 618px;
+            height: 100%;
+            /* float: left; */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0;
+            background-color: #ccc;
+        }
+
+        #banner .img-container a {
+            display: block;
+            
+        }
+
+        #banner .img-container img {
+            vertical-align: middle;
+            width: 100%;
+            height: 100%;
+            display: none;
+            opacity: 0 ;
+        }
+
+        #banner .circle-btn-container {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        #banner .circle-btn-container a {
+            display: inline-block;
+            height: 6px;
+            width: 6px;
+            margin: 0 5px;
+            border: 2px solid #fff;
+            border-color: hsla(0, 0%, 100%, .3);
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, .3);
+            background-clip: content-box;
+        }
+
+        #banner .circle-btn-container a:hover {
+            background-color: hsla(0, 0%, 100%, .4);
+            border-color: rgba(0, 0, 0, .4);
+        }
+
+        #banner .circle-btn-container a.circle-active {
+            background-color: hsla(0, 0%, 100%, .4);
+            border-color: rgba(0, 0, 0, .4);
+        }
+
+        #banner .trigger-container {
+            width: 618px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+
+        }
+
+        #banner .trigger-container a {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            padding: 0;
+            margin: auto 0;
+            height: 65px;
+            width: 40px;
+            background-color: transparent;
+            border-radius: 5px;
+            background-image: url('./image/icon-slides.png');
+        }
+
+        #banner .trigger-container a:hover {
+            background-color: rgb(138, 140, 143);
+        }
+
+        #banner .trigger-container a.trigger-right {
+            right: 0;
+            background-position: 42px center;
+        }
+
+        #banner .trigger-container a.trigger-left {
+            left:0;
+            background-position: 83px center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="banner" class="banner">
+        <div id="img-wrapper" class="img-wrapper">
+            <div class="img-container">
+            </div>
+        </div>
+        
+        <div class="circle-btn-container">
+        </div>
+        <div class="trigger-container">
+            <a href="javascript:;" class="trigger-left"></a>
+            <a href="javascript:;" class="trigger-right"></a>
+        </div>
+    </div>
+    <script src="./DOM相关工具.js"></script>
+    <script src="./myTween.js"></script>
+    <script src="./myCarousel.js"></script>
+    <script>
+        // // 1. 先实现动态加载和图片懒加载
+
+        // // 1.1 使用Ajax 获取数据
+        // var jsonData = null;
+        // jsonData = utils.getJsonData('img_data.txt');
+
+        // // 1.2 数据绑定
+        var banner = document.getElementById('banner');
+        // var imgContainer = utils.getElementsByClass('img-container', banner)[0];
+        // var circleBtnContainer = utils.getElementsByClass('circle-btn-container', banner)[0];
+        // var triggerContainer = utils.getElementsByClass('trigger-container', banner)[0];
+
+        // (function () {
+        //     var str = '';
+        //     utils.setJsonData(imgContainer, jsonData,
+        //         '<div><a href="javascript:;"><img src="" imgSrc="{imgSrc}"></a></div>');
+        //     // 在最后在添加个节点
+        //     str += '<div>';
+        //     str += '<a href="' + jsonData[0]['hrefURL'] + '">';
+        //     str += '<img src=""" imgSrc="' + jsonData[0]['imgSrc'] + '">';
+        //     str += '</a></div>'
+        //     imgContainer.innerHTML += str;
+        //     utils.setJsonData(circleBtnContainer, jsonData, '<a href="javascript:;"></a>');
+        //     utils.css(imgContainer, 'width', 1226 * (jsonData.length + 1));
+        // })();
+       
+
+        // // 2. 图片的懒加载
+
+        // // 2.1 单张图片的懒加载
+        // function lazyImg(curImg) {
+        //     var oImg = new Image;
+        //     oImg.src = curImg.getAttribute('imgSrc');
+        //     oImg.onload = function () {
+        //         curImg.src = this.src;
+        //         curImg.style.display = 'block';
+        //         myTween(curImg).to({
+        //             opacity: 1
+        //         }, 100).start('Quart.easeIn', 10);
+        //         oImg = null;
+        //     }
+        //     curImg.isLoad = true;
+        // }
+
+        // // 2.2 多张图片的懒加载
+
+        // function loadAllImg() {
+        //     var imgList = imgContainer.getElementsByTagName('img');
+        //     for (var i = 0; i < imgList.length; i++) {
+
+        //         (function (i) {
+        //             var curImg = imgList[i];
+        //             // if (curImg.isLoad) ;
+        //             // lazyImg(curImg);
+        //             var oImg = new Image;
+        //             oImg.src = curImg.getAttribute('imgSrc');
+        //             // 在 IE 中不能识别 webp 图片
+        //             oImg.onload = function () {
+        //                 curImg.src = this.src;
+        //                 curImg.style.display = 'block';
+        //                 myTween(curImg).to({
+        //                     opacity: 1
+        //                 }, 100).start('Quart.easeIn', 10);
+        //                 oImg = null;
+        //             }
+        //             curImg.isLoad = true;
+        //         })(i)
+        //     }
+        //     clearTimeout(imgLazyTimer);
+        // }
+        // // 加载图片
+        // var imgLazyTimer = setTimeout(loadAllImg, 500);
+
+        // ================================================
+        // 使用封装好的方法实现
+        myCarousel(banner, 'img_data.txt', 3).start();
+        // myCarousel(banner,'img_data.txt', 2).to({scrollLeft: 1226}, 3000).start();
+
+        // ================================================
+
+
+        // var aList = utils.children(circleBtnContainer);
+
+        // // 让图片自己动起来
+        // var step = 0
+        // utils.addClass(aList[step], 'circle-active');
+
+        // function imgAutoMove() {
+        //     if (step >= aList.length) {
+        //         step = 0;
+        //         utils.setCss(imgContainer, 'left', 0);
+        //     }
+
+        //     myTween(imgContainer).to({
+        //         left: -1226 * (step + 1)
+        //     }, 200).start('Quart.easeOut', 5);
+
+        //     var index = step + 1;
+        //     if (index >= aList.length) {
+        //         index = 0;
+        //     }
+        //     utils.addClass(aList[index], 'circle-active');
+        //     var aBrotherList = utils.siblings(aList[index]);
+        //     for (var i = 0; i < aBrotherList.length; i++) {
+        //         utils.removeClass(aBrotherList[i], 'circle-active');
+        //     }
+        //     step++;
+        // }
+        // var imgAnimTimer = setInterval(imgAutoMove, 2000);
+        // banner.onmouseenter = function () {
+        //     clearInterval(imgAnimTimer);
+        // }
+        // banner.onmouseleave = function () {
+        //     imgAnimTimer = setInterval(imgAutoMove, 2000);
+        // }
+
+        // // 点击小圆点换图片
+        // function clickCircleBtn() {
+        //     var curIndex = null;
+        //     for (var i = 0; i < aList.length; i++) {
+        //         aList[i].index = i;
+        //         aList[i].onclick = function () {
+        //             if (this.index === step) return;
+        //             curIndex = this.index - 1;
+        //             console.log(curIndex);
+        //             console.log(step);
+        //             var num = this.index - step - 1;
+        //             if (Math.abs(num) >= 1) {
+        //                 var curLeft = utils.css(imgContainer, 'left');
+        //                 var targetLeft = (curLeft + (-1226 * num));
+        //                 utils.setCss(imgContainer, 'left', targetLeft);
+        //             }
+
+        //             step = curIndex;
+        //             imgAutoMove();
+        //         }
+        //     }
+        // }
+        // clickCircleBtn();
+
+        // // 点击两侧换图片
+        // function clickTrigger() {
+        //     var triggerLeft = utils.firstChild(triggerContainer);
+        //     var triggerRight = utils.lastChild(triggerContainer);
+        //     triggerLeft.onclick = function () {
+        //         if (step === 0) {
+        //             utils.setCss(imgContainer, 'left', -1226 * 5);
+        //             step = 5;
+        //         }
+        //         step -= 2;
+        //         imgAutoMove();
+
+        //     }
+        //     triggerRight.onclick = function () {
+        //         imgAutoMove();
+        //     }
+        // }
+        // clickTrigger();
+    </script>
+</body>
+
+</html>

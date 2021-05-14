@@ -1,0 +1,70 @@
+<!--
+ * @Author: 洛水赋神
+ * @Date: 2020-11-21 23:11:31
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-21 23:15:54
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+-->
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编译中梦见未来</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <!-- <div class="channel">
+        bilibili 编译中梦见未来
+    </div> -->
+    <div class="container">
+        <div class="circle" style="--i:1;--color:#EC3E27"></div>
+        <div class="circle" style="--i:2;--color:#fd79a8"></div>
+        <div class="circle" style="--i:3;--color:#0984e3"></div>
+        <div class="circle" style="--i:4;--color:#00b894"></div>
+        <div class="circle" style="--i:5;--color:#fdcb6e"></div>
+        <div class="circle" style="--i:6;--color:#e056fd"></div>
+        <div class="circle" style="--i:7;--color:#F97F51"></div>
+        <div class="circle" style="--i:8;--color:#BDC581"></div>
+        <div class="circle" style="--i:9;--color:#EC3E27"></div>
+        <div class="circle" style="--i:10;--color:#fd79a8"></div>
+        <div class="circle" style="--i:11;--color:#0984e3"></div>
+        <div class="circle" style="--i:12;--color:#00b894"></div>
+        <div class="circle" style="--i:13;--color:#fdcb6e"></div>
+        <div class="circle" style="--i:14;--color:#e056fd"></div>
+        <div class="circle" style="--i:15;--color:#F97F51"></div>
+        <div class="circle" style="--i:16;--color:#BDC581"></div>
+    </div>
+    <script>
+        // 提前写好的要给代码可以通过鼠标控制perspective-origin
+        // 这个属性可以让你从不同视角查看3d变换
+        // 之前的案例用过
+        // 容器
+        let container = document.querySelector('.container');
+
+        // 可是区域大小
+        let window_width = document.documentElement.clientWidth;
+        let window_height = document.documentElement.clientHeight;
+        // console.log(window_width, window_height);
+
+        // 监听鼠标移动事件，获取鼠标位置，计算鼠标在屏幕中的百分比
+        container.addEventListener('mousemove', (e) => {
+            // 鼠标坐标
+            let left = e.clientX;
+            let top = e.clientY;
+            // 百分比
+            let left_p = left / window_width * 100;
+            let top_p = top / window_height * 100;
+            // 透视基点
+            container.style.perspectiveOrigin = left_p + "% " + top_p + "%";
+        });
+
+    </script>
+</body>
+
+</html>

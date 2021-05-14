@@ -1,0 +1,68 @@
+:root {
+  --bgColor: #2d3436;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+
+  height: 100vh;
+  background-color: var(--bgColor);
+}
+
+.container {
+  perspective: 200px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  .circle {
+    // top: 0;
+    position: absolute;
+    box-sizing: border-box;
+    width: 60vh;
+    height: 60vh;
+    border: 20px solid var(--color);
+    border-radius: 50%;
+    animation: animate 2.4s ease-in-out infinite reverse both;
+    animation-delay: calc(var(--i)*0.15s);
+
+    &::after {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      content: '';
+      box-sizing: border-box;
+      width: 60vh;
+      height: 60vh;
+      border: 20px solid var(--color);
+      border-radius: 50%;
+      filter: blur(5px);
+    }
+  }
+
+
+  @keyframes animate {
+    0% {
+      transform: translateZ(160px) scale(1);
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateZ(-600px) scale(.2);
+      opacity: 0;
+    }
+  }
+
+}

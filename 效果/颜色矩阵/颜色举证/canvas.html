@@ -1,0 +1,172 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-02-05 10:04:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-02-05 17:52:47
+ * @Description: 
+-->
+<!-- canvas 图形操作 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* background-color: grey; */
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- dom 已经有 filter 加持, 基本上很多图形操作都可以实现了 -->
+  <!-- 但是 canvas 写入的图片 并无法单独应用 css, 要实现一些图片操作, 需要操作像素 -->
+
+  <canvas id="img-canvas" width="960" height="540"></canvas>
+
+  <script>
+    function getImg(src, callback) {
+      var img = new Image()
+      img.src = src
+      img.onload = () => {
+        callback(img)
+      }
+    }
+
+    function setImg() {
+      var canvas = document.getElementById('img-canvas')
+      var ctx = canvas.getContext('2d')
+      getImg('../../前端练习/html/2021-01/模仿edge首页背景/bg.jpg', (img) => {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+        var effect = new CanvasImg(ctx)
+        // effect.grayscale(2)
+        // effect.invert()
+        // effect.brightness()
+        effect.constrast()
+      })
+
+
+
+    }
+
+    setImg()
+
+    class CanvasImg {
+      constructor(ctx) {
+        this.ctx = ctx
+        this.canvas = ctx.canvas
+
+      }
+      // sx, xy: x轴,y轴偏移, sw sh: 要获取图片数据的宽高
+      grayscale(type = 1, sx, sy, sw, sh) { // 灰度图
+        // 通过参数做到局部灰度?
+        var {
+          imgData,
+          data
+        } = this.getImageData(sx, sy, sw, sh)
+        var avg
+        for (var i = 0; i < data.length; i += 4) {
+          switch (type) {
+            // 1. 一般来说, 加权平均效果比较理想
+            // 2. 三色平均效果看起来似乎更符合灰度这个说法
+            case 1:
+              avg = (data[i] * 0.299 + 0.578 * data[i + 1] + 0.114 * data[i + 2]) / 3 // 加权平均
+              break;
+            case 2:
+              avg = (data[i] + data[i + 1] + data[i + 2]) / 3 // 三色平均
+              break;
+          }
+
+          data[i] = avg; // red
+          data[i + 1] = avg; // green
+          data[i + 2] = avg; // blue
+        }
+        this.ctx.putImageData(imgData, 0, 0)
+        imgData = null
+        data = null
+        return this
+      }
+
+      invert(type = 255, sx, sy, sw, sh) {
+        // 反色原理: 255 - 当前的颜色
+        // 反色的实际含义是将R、G、B值反转
+        var {
+          imgData,
+          data
+        } = this.getImageData(sx, sy, sw, sh)
+        var avg = type
+        for (var i = 0; i < data.length; i += 4) {
+          data[i] = avg - data[i]; // red
+          data[i + 1] = avg - data[i + 1]; // green
+          data[i + 2] = avg - data[i + 2]; // blue
+        }
+        this.ctx.putImageData(imgData, 0, 0)
+        imgData = null
+        data = null
+        return this
+      }
+
+      brightness(type = 0, sx, sy, sw, sh) {
+        // 高亮: 当前颜色 + 需要增量的值
+        var {
+          imgData,
+          data
+        } = this.getImageData(sx, sy, sw, sh)
+        var avg = type
+        for (var i = 0; i < data.length; i += 4) {
+          data[i] = avg + data[i]; // red
+          data[i + 1] = avg + data[i + 1]; // green
+          data[i + 2] = avg + data[i + 2]; // blue
+        }
+        this.ctx.putImageData(imgData, 0, 0)
+        imgData = null
+        data = null
+        return this
+      }
+
+      constrast(type = 1, sx, sy, sw, sh) {
+        // 对比度: 当前颜色 * 一个值
+        var {
+          imgData,
+          data
+        } = this.getImageData(sx, sy, sw, sh)
+        var avg = type
+        for (var i = 0; i < data.length; i += 4) {
+          data[i] = avg * data[i]; // red
+          data[i + 1] = avg * data[i + 1]; // green
+          data[i + 2] = avg * data[i + 2]; // blue
+        }
+        this.ctx.putImageData(imgData, 0, 0)
+        imgData = null
+        data = null
+        return this
+      }
+
+
+
+      getImageData(sx, sy, sw, sh) {
+        var imgData = this.ctx.getImageData(sx || 0, sy || 0, sw || this.canvas.width, sh || this.canvas.height)
+        var data = imgData.data
+        return {
+          imgData,
+          data
+        }
+      }
+
+
+
+
+    }
+  </script>
+
+</body>
+
+</html>

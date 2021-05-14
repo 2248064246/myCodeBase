@@ -1,0 +1,77 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+  background: linear-gradient(45deg, #d8f2f3 0%, #ebf9f9 100%);
+}
+.center,
+.front-face,
+.contents,
+.back-face {
+  position: absolute;
+}
+.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 400px;
+  width: 290px;
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+.center:hover .front-face {
+  transform: rotateY(-180deg);
+}
+.center:hover .back-face {
+  transform: rotateY(0);
+}
+.front-face,
+.back-face {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  background: tomato;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.4, 0.2, 0.2, 0.1);
+}
+.contents {
+  left: 0;
+  top: 50%;
+  width: 100%;
+  perspective: 100px;
+  transform-style: preserve-3d;
+  /* 文字的旋转立体效果来自这个 translateZ 属性 */
+  transform: translateY(-50%) translateZ(60px);
+}
+.container p {
+  color: white;
+  font-size: 35px;
+  margin-bottom: 15px;
+}
+.container p::after {
+  content: '';
+  display: block;
+  left: 0;
+  right: 0;
+  height: 2px;
+  width: 100px;
+  background-color: white;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+.container span {
+  color: white;
+  font-size: 16px;
+}
+.back-face {
+  background: steelblue;
+  transform: rotateY(180deg);
+}
+.back {
+  color: white;
+}

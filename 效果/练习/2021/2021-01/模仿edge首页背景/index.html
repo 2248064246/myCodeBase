@@ -1,0 +1,73 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-01-23 11:57:43
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-03-26 00:51:40
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      filter: sepia(100%);
+    }
+
+
+    .bg-container {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .bg {
+      height: 100%;
+      background-image: url('./bg.jpg'), radial-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%), radial-gradient(rgba(0, 0, 0, 0) 33%, rgba(0, 0, 0, 0.3) 166%), linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 0% 75%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+      /* background-size: 100% 100%; */
+      background-position: 50%;
+      background-attachment: fixed;
+      transform: scale(1);
+      transition: all .3s;
+
+      /* background-size: cover; // 可以将背景大小固定, 不受视口, 缩放影响 */
+    }
+
+    @media screen and (min-width: 1400px) {
+      .bg {
+        transform: scale(1.1);
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="bg-container">
+    <div class="bg"></div>
+  </div>
+
+  <script>
+    let bgCon = document.querySelector('.bg-container')
+    let bg = document.querySelector('.bg')
+
+    let {
+      width,
+      height
+    } = window.screen
+    bg.style.backgroundSize = `${width}px ${height}px`
+  </script>
+</body>
+
+</html>

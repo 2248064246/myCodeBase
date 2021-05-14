@@ -1,0 +1,56 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-05-17 12:55:15
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-05-17 15:46:40
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        #container {
+            transform:translateX(5px);
+            width: 300px;
+            height: 200px;
+            border: 5px dashed black;
+            padding: 5px;
+            overflow: scroll;
+            /* filter: grayscale(100) */
+        }
+
+        #bloat {
+            height: 1000px;
+            background: cyan;
+        }
+
+        #child {
+            position:fixed;
+            right: 0;
+            bottom: 0;
+            width: 10%;
+            height: 10%;
+            background: green;
+        }
+
+    </style>
+
+    <div id="container" style="">
+        <div id="bloat"></div>
+        <div id="child" style=""></div>
+    </div>
+
+</body>
+
+</html>

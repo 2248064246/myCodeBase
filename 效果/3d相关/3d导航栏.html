@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        body {
+            height: 100vh;
+            background-color: #353b48;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        
+        ul{
+            height: 30px;
+        }
+        li{
+            float: left;
+            perspective: 800px;
+            cursor: pointer;
+        }
+        li:hover .box{
+            transform: rotateX(90deg);
+
+        }
+        /* 要构建出一个有前面和底面的盒子 */
+        .box{
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all .2s;
+        }
+        .box div{
+            height: 30px;
+            font: bold 20px/30px "宋体";
+            padding: 0 10px;
+            margin: 0 5px;
+        }
+        .box .box1{
+            background-color: #00a8ff;
+            /* 这个要向前平移 */
+            transform: translateZ(15px);
+        }
+        .box .box2{ 
+            position: absolute;
+            top: 0;
+            background-color: #e84393;
+            /* 一定要先平移再旋转 */
+            transform:translateY(15px) rotateX(-90deg) ;
+        }
+        
+        
+    </style>
+</head>
+
+<body>
+    <!-- 3d导航栏 -->
+    <nav class="nav-wrapper">
+        <ul>
+            <li>
+                <div class="box">
+                    <div class="box1">HTML</div>
+                    <div class="box2">HTML</div>
+                </div>
+            </li>
+            <li>
+                <div class="box">
+                    <div class="box1">CSS</div>
+                    <div class="box2">CSS</div>
+                </div>
+            </li>
+            <li>
+                <div class="box">
+                    <div class="box1">JavaScript</div>
+                    <div class="box2">JavaScript</div>
+                </div>
+            </li>
+            <li>
+                <div class="box">
+                    <div class="box1">Node.js</div>
+                    <div class="box2">Node.js</div>
+                </div>
+            </li>
+            <li>
+                <div class="box">
+                    <div class="box1">PHP</div>
+                    <div class="box2">PHP</div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</body>
+
+</html>

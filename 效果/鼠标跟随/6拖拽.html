@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        .box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100px;
+            height: 100px;
+            background-color: cyan;
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="box">
+
+    </div>
+
+    <script>
+        let box = document.getElementById('box');
+
+        box.onmousedown = function(e) {
+            console.log(e.button);
+            this.strMX = e.clientX;
+            this.strMY = e.clientY;  
+            this.strBX = box.offsetLeft;
+            this.strBY = box.offsetTop;
+            
+            this.disX = this.strMX - this.strBX;
+            this.disY = this.strMY - this.strBY;
+            // 将鼠标和这个盒子(this=>box) 绑定到一起, 解决鼠标运动过快导致的鼠标焦点丢失问题
+            // 就是过速移动导致致鼠标移出盒子, 这边没有检测到(没反应过来)...非常操蛋
+            // 使用这个, 无论你怎么移动都鼠标都不会丢失盒子了...
+            this.setPointerCapture(1);
+            
+            this.style.cursor = 'move2';
+            this.onmousemove = move2;
+            this.onmouseup = mouseUp;
+ 
+        }
+
+        // document.body.onmousedown = function(e) {
+        //     console.log(e.target);
+        // }
+
+        // document.body.onmouseup = function() {
+        //     box.onmousemove = null;
+        //     console.log(111);
+        //     box.style.cursor = 'default';
+        // }
+        // document.body.onmouseout = function() {
+        //     box.onmousemove = null;
+        //     box.style.cursor = 'default';
+        // }
+        function move(e) {
+            let distanceX = e.clientX - this.strMX,
+                distanceY = e.clientY - this.strMY;
+            let targetX = this.strBX + distanceX,
+                targetY = this.strBY + distanceY;
+            box.style.left = targetX + 'px';
+            box.style.top = targetY + 'px';
+        }
+
+        function move2(e) {
+        //     box.style.left = e.clientX - this.disX + 'px';
+        //     box.style.top = e.clientY - this.disY + 'px';
+            box.style.left = box.offsetLeft + e.movementX  + 'px';
+            box.style.top = box.offsetTop + e.movementY   + 'px';
+        }
+        function mouseUp() {
+            this.style.cursor = 'default';
+            this.releasePointerCapture(1);
+            this.onmouseup = null;
+            this.onmousemove = null;
+        }
+    </script>
+</body>
+</html>
