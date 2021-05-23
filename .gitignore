@@ -13,3 +13,5 @@ yarn-error.log*
 *.sln
 nodeModule
 .history
+node_modules
+
