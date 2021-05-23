@@ -1,0 +1,77 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-05-23 18:06:24
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-23 20:51:07
+ * @Description: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="../../../node_modules/_animejs@3.2.1@animejs/lib/anime.js"></script>
+
+  <style>
+    .css-selector-demo {
+      width: 100px;
+      height: 100px;
+      background-color: tomato;
+    }
+
+    .dom-demo {
+      margin-top: 20px;
+      width: 100px;
+      height: 100px;
+      background-color: cyan;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="css-selector-demo"></div>
+  <!-- <div class="dom-demo"></div> -->
+
+  <ul>
+    <li class="dom-demo"></li>
+    <li class="dom-demo"></li>
+    <li class="dom-demo"></li>
+  </ul>
+
+  <div class="text"></div>
+
+  <script>
+    anime({
+      targets: '.css-selector-demo', // 可以是css选择器
+      translateX: 250
+    })
+
+    let dom = document.querySelectorAll('.dom-demo')
+    anime({
+      targets: dom, // 可以是 dom
+      translateX: 250
+    })
+
+    let obj = {
+      value: 0
+    }
+    let logEl = document.querySelector('.text')
+    anime({
+      targets: obj,
+      value: 100,
+      round: 1,
+      easing: 'linear',
+      update: function () {
+        logEl.innerHTML = obj.value;
+      }
+    });
+  </script>
+
+</body>
+
+</html>

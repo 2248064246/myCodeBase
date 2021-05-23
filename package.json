@@ -1,0 +1,18 @@
+{
+  "name": "my-code-base",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/h2248064246/my-code-base.git"
+  },
+  "author": "洛水赋神",
+  "license": "ISC",
+  "devDependencies": {
+    "animejs": "^3.2.1"
+  }
+}
