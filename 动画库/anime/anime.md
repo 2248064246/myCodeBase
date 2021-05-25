@@ -68,6 +68,70 @@
       }
     });
   ```
+
+### 方向和循环
+
++ `direction` 方向
+  + normal
+  + reverse
+  + alternate 往返
++ `loop` 循环
+  + Number, 指定循环次数
+  + true 无限循环
++ `autoplay` 自动播放
+  + true
+  + false
+  
+### 动画赋值方式
+
++ 无单位数值
+  + 没有写单位, 会根据css属性的补充默认值
++ 有单位数值
+  + 可以自己指定单位, 例如: `rem`, `%`
++ 相对数值(允许写 运算符)
+  + `+=100`
+  + `-=100`
+  + `*=100`
+  + 为什么没有 `/=`...
++ 颜色
+  + 接受 16进制, rgb|a, hsl|a
++ 设置动画初始值 `[from, to]`
+  + `translateX: [100, 250], // from 100 to 250` translateX: [100, 250], // from 100 to 250
++ **函数返回值**
+  + target 当前动画的目标
+  + index 当前元素的索引
+  + targetsLength 动画目标总数
+
+### `keyframes` 关键帧
+
++ 动画关键帧
+  > 如果关键帧内没有指定duration（持续时间），则每个关键帧的持续时间将等于动画总持续时间除以关键帧数。 
+  ```javaScript
+    anime({
+      targets: '.animation-keyframes-demo .el',
+      keyframes: [
+        {translateY: -40},
+        {translateX: 250},
+        {translateY: 40},
+        {translateX: 0},
+        {translateY: 0}
+      ],
+      duration: 4000,
+      easing: 'easeOutElastic(1, .8)',
+      loop: true
+    });
+  ``` 
++ 属性关键帧
+  > 如果关键帧内没有指定duration（持续时间），则每个关键帧的持续时间将等于动画总持续时间除以关键帧数。
+  ```javaScript
+    {
+      translateX: [
+        {value: 100, easing: 'easeOutExpo'},
+        {value: 200, delay: 500},
+        {value: 300, duration: 1000}
+      ]
+    }
+  ```
 ### 时间曲线
 
 + 匀速 
