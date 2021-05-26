@@ -16,6 +16,7 @@ function rem() {
 }
 ```
 
+在 postcss.config.js 配置
 ```javaScript
 postcss: {
   plugins: [

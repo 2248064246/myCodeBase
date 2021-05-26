@@ -120,9 +120,9 @@ module.exports = {
 module.exports = {
   output: {
     filename: 'bundle.js', 
-    path: './dist' // 可以不写path, 默认是 ./dist 路径
     // 如果 `webpack.config.js` 文件不是在最外层目录, 而是在里面的目录, 需要用到 `path` 模块进行处理
-    // path: path.resolve(__dirname, './dist')
+    path: path.resolve(__dirname, './dist')
+    // 这里 path 需要是绝对路径
   }
 }
 
