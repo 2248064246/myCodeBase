@@ -22,6 +22,11 @@ function getUrlParam(urlSearch, name) {
   return null;
 }
 
+// 获取 window.location.search 键值(key value)
+function loadPageVar (sVar) {
+  return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+}
+
 ```
 
 ## 判断是否是 `url`
