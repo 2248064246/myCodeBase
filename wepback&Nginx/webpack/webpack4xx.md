@@ -78,30 +78,22 @@ module.exports = {
 
 ## 支持 `css`
 
-需要用到 `style-loader` `css-loader` `mini-css-extract-plugin` `postcss-loader@4` `cssnano`
+需要用到 `style-loader@2` `css-loader@5` `mini-css-extract-plugin` `postcss-loader@4` `css-minimizer-webpack-plugin@1` 
 
 css-loader 用于处理 `@import` `url` 这种语法
 
 ```javaScript
 let MiniCssExtractPlugin = require('mini-css-extract-plugin')
-let OptimizeCss = require('optimize-css-assets-webpack-plugin')
+let CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
 
   // 优化css
   optimization: {
+    minimize: true,
     minimizer: [ // 优化项目
-      new OptimizeCss({ // css优化
-        assetNameRegExp: /\.css$/g,
-        cssProcessor: require('cssnano'),
-        cssProcessorOptions: {
-          safe: true,
-          discardComments: {
-            removeAll: true
-          }
-        },
-        canPrint: true
-      }) // 在生产环境下, 会把css压缩为1行
+
+      new CssMinimizerPlugin() // 压缩css, 并且清除注释
     ]
   },
 
@@ -188,9 +180,197 @@ module: {
 }
 ```
 
-## 
+## 使用 babel 处理 js
 
++ 方案一:  需要 
 
+  `babel-loader@8`
 
+  `@babel/preset-env@7` 
 
+  `@babel/plugin-transform-runtime@7`
 
+  `@babel/plugin-syntax-dynamic-import@7`
+
+  `@babel/polyfill@7`
+
+  `@babel/core@7`
+
+  ```javaScript
+  module.exports = {
+    entry: {
+      // 需要在入口配置 @babel/polyfill
+      polyfill: '@babel/polyfill',
+      main: './src/main.js'
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/, // 排除node_modules 库文件
+          use: [{
+            loader: 'babel-loader'
+          }]
+        }
+      ]
+    }
+  }
+  ```
+
+  配置 `.babelrc.js` 文件
+
+  ```javaScript
+  module.exports = {
+    presets: [
+      '@babel/preset-env'
+    ],
+    plugins: [
+      // 这个用于处理 class 的装饰器 @log (实际上这个JS功能还处于实验室阶段)
+      ["@babel/plugin-proposal-decorators", {
+        "legacy": true // 这里使用这个模式, 下面 必须使用 loose: true
+        // https://babel.docschina.org/docs/en/next/babel-plugin-proposal-decorators/
+      }],
+      // 这个用于处理class语法
+      ["@babel/plugin-proposal-class-properties", {
+        "loose": true // 宽松模式
+      }],
+      "@babel/plugin-transform-runtime",
+      "@babel/plugin-syntax-dynamic-import", // 动态语法导入插件
+    ]
+  }
+  ```
+
++ 方案2: 使用 `core-js@3`
+
+  修改 `.babelrc.js`
+  ```javaScript
+    module.exports = {
+      presets: [
+        ['@babel/preset-env', {
+          useBuiltIns: "entry", // or "usage"
+          corejs: 3,
+        }]
+      ],
+      plugins: [
+        // 这个用于处理 class 的装饰器 @log (实际上这个JS功能还处于实验室阶段)
+        ["@babel/plugin-proposal-decorators", {
+          "legacy": true // 这里使用这个模式, 下面 必须使用 loose: true
+          // https://babel.docschina.org/docs/en/next/babel-plugin-proposal-decorators/
+        }],
+        // 这个用于处理class语法
+        ["@babel/plugin-proposal-class-properties", {
+          "loose": true // 宽松模式
+        }],
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-syntax-dynamic-import", // 动态语法导入插件
+      ]
+    }
+  ```
+
+  `webpack.config.js` 中不需要引入 `@babel/polyfill`
+
+  需要 `main.js` 中引入
+  ```javaScript
+    import './style/common.less'
+    import './style/body.css'
+  ```
+## 处理字体文件
+
+需要 `file-loader`
+
+```javaScript
+
+{
+  test: /\.(woff|woff2|eot|ttf|otf)$/i, // 这里需要忽略大小写
+  use: {
+    loader: "file-loader",
+    options: {
+      outputPath: 'fonts/',
+       name(file) {
+        if (process.env.NODE_ENV === 'development') {
+          return '[name].[ext]'
+        }
+
+        return '[name].[hash:7].[ext]' // 截取 8 为 hash
+      },
+    }
+  }, // url-loader 也可以用来解析字体
+},
+
+```
+
+## 处理图片
+
+1. 使用 `file-loader` 处理
+
+  ```javaScript
+  {
+    test: /\.(png|jpe?g|gif|webp|svg)/,
+    loader: 'file-loader', // 会将对应的文件处理下(改变文件名, 并将文件复制放入指定目录下)
+    options: {
+      // name: '[path][name].[ext]'
+      // name: 文件名
+      // ext: 文件扩展名
+      // path: 出口路径
+      // hash: 文件的hash
+      // name 可以是一个函数
+      name(file) {
+        if (process.env.NODE_ENV === 'development') {
+          return '[name].[ext]'
+        }
+        return '[name].[hash:7].[ext]' // 截取 8 为 hash
+      },
+      outputPath: 'images/', // 会将图片放到出口目录下的 images 文件下
+      esModule:false, // 此项是为了不和 `html-withimg-loader` 冲突
+    }
+  },
+  ```
+
+2. 使用 `url-loader` 处理
+   ```javaScript
+    {
+      test: /\.(png|jpe?g|gif|webp|svg)/,
+      loader: 'url-loader', // 会将对应的文件处理下(改变文件名, 并将文件复制放入指定目录下)
+      options: {
+        esModule: false,
+        limit: 10000,
+        name(file) {
+          if (process.env.NODE_ENV === 'development') {
+            return '[name].[ext]'
+          }
+          return 'images/[name].[hash:7].[ext]' // 截取 8 为 hash
+        },
+      }
+    },
+   ```
+  
+## 处理音频视频文件
+
+  ```javaScript
+    {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      loader: 'file-loader',
+      options: {
+         name(file) {
+          if (process.env.NODE_ENV === 'development') {
+            return '[name].[ext]'
+          }
+          return '[name].[hash:7].[ext]' // 截取 8 为 hash
+        },
+        outputPath: 'media/'
+      }
+    },
+  ```
+
+## 处理 html 模板中的 img 标签
+
+需要 `html-withimg-loader` 
+
+```javaScript
+
+  {
+      test: /\.(htm|html)$/i,
+      loader: 'html-withimg-loader'
+  }
+
+```
