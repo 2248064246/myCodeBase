@@ -1,0 +1,126 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-05-28 14:28:30
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-28 16:06:53
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 滚动基于 swiper -->
+  <link rel="stylesheet" href="../../../../node_modules/swiper/swiper.min.css">
+  <!-- 基于 tailwindcss -->
+  <link rel="stylesheet" href="../../../../UI&CSS库/tailwindcss/tailwind.css">
+  <style>
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      height: 100vh;
+    }
+
+    .swiper-container {
+      width: 800px;
+      height: 400px;
+      padding: 25px;
+      border-radius: 25px;
+      /* transition: all 0.3s; */
+    }
+
+    .swiper-slide {}
+
+    .blog-slider__content>* {
+      display: block;
+      opacity: 0;
+      transform: translateY(25px);
+      transition: all 0.4s;
+    }
+
+    .swiper-slide-active .blog-slider__content>* {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+
+    .swiper-pagination-bullet {
+      width: 11px;
+      height: 11px;
+      display: block;
+      border-radius: 10px;
+      background: #062744;
+      opacity: 0.2;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+
+    .swiper-pagination-bullet-active {
+      opacity: 1;
+      background: #fd3838;
+      height: 30px;
+      box-shadow: 0px 0px 20px rgba(252, 56, 56, 0.3);
+    }
+
+    .swiper-pagination {
+      height: 84px;
+    }
+  </style>
+</head>
+
+<body class="flex justify-center items-center ">
+  <div class="swiper-container box-border bg-white shadow relative">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide bg-white">
+        <div class="blog-slider__content">
+          <span class="blog-slider__code">24 December 2019</span>
+          <div class="blog-slider__title">Lorem Ipsum Dolor</div>
+          <div class="blog-slider__text">Lorem ipsum dolor nimi? </div>
+          <a href="#" class="blog-slider__button">READ MORE</a>
+        </div>
+      </div>
+      <div class="swiper-slide bg-white">
+        <div class="blog-slider__content">
+          <span class="blog-slider__code">25 December 2019</span>
+          <div class="blog-slider__title">Lorem Ipsum Dolor</div>
+          <div class="blog-slider__text">Lorem ipsum doloectetur, adipisicing elit. Recusandae voluptate
+            repellendus magni illo ea animi? </div>
+          <a href="#" class="blog-slider__button">READ MORE</a>
+        </div>
+      </div>
+      <div class="swiper-slide bg-white">
+        <div class="blog-slider__content">
+          <span class="blog-slider__code">26 December 2019</span>
+          <div class="blog-slider__title">Lorem Ipsum Dolor</div>
+          <div class="blog-slider__text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae voluptate
+            repelle? </div>
+          <a href="#" class="blog-slider__button">READ MORE</a>
+        </div>
+      </div>
+    </div>
+    <div class="swiper-pagination absolute inset-y-0 right-0 m-auto"></div>
+  </div>
+
+  <script src="../../../../node_modules/swiper/swiper-bundle.js"></script>
+
+  <script>
+    let mySwiper = new Swiper('.swiper-container', {
+      direction: 'vertical',
+      spaceBetween: 30,
+      effect: 'fade',
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    })
+  </script>
+
+
+</body>
+
+</html>
