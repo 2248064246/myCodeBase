@@ -1,0 +1,69 @@
+/* 手写板容器 */
+#handwritingBar {
+  /* margin: 100px auto; */
+  position: absolute;
+  width: 900px;
+  height: 550px;
+  border-radius: 15px;
+  background: rgba(67, 117, 233, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+  display: flex;
+  /* 手写键盘不能设置 translate 属性, 不然在canvas上绘图会出现问题 */
+  /* transform: translate(-50%, -50%); */
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none
+}
+
+/* 手写板画布 */
+#handwritingBar canvas {
+  margin-top: 100px;
+}
+
+/* 手写板备选 面板 */
+#maySelect {
+  height: 100px;
+  min-width: 800px;
+  position: absolute;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 15px 15px 0 0;
+}
+
+
+#maySelect li {
+  float: left;
+}
+
+/* 备选字词 */
+#maySelect p {
+  line-height: 25px;
+  margin: 0 5px;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 150%;
+}
+
+/* 手写板操作按钮容器 */
+#handwritingControl {
+  width: 100px;
+  height: 100%;
+  margin: 0;
+  border-radius: 0 15px 15px 0;
+  overflow: hidden;
+}
+
+/* 手写板操作按钮 */
+#handwritingControl button {
+  width: 100px;
+  height: 110px;
+  background: rgba(67, 117, 233, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+  outline: none;
+}

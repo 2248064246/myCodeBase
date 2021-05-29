@@ -1,0 +1,290 @@
+/* 大大大盒子  里面的内容是 中文输入外区域  +  按键 */
+/* .virtualkeyboard {
+  font-family: microsoft yahei, hiragino sans gb, tahoma, arial;
+  position: absolute;
+  width: 760px;
+  height: auto;
+  border: 1px solid #999;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none
+} */
+.virtualkeyboard {
+  position: absolute;
+  width: 864px;
+  background: rgba(67, 117, 233, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+  border-radius: 10px;
+  height: auto;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none
+}
+
+.virtualkeyboard .letterWrap>.inputCut {
+  font-size: 16px;
+  position: relative
+}
+
+.virtualkeyboard .letterWrap>.backspace {
+  width: 55px
+}
+
+.virtualkeyboard .letter-a {
+  margin-left: 40px
+}
+
+/* 字符布局样式  按键的样式*/
+/* .letterWrap>li {
+  float: left;
+  font-size: 30px;
+  width: 55px;
+  border-radius: 10px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  border: 1px solid #ccc;
+  margin: 5px;
+  background: #fff;
+  cursor: pointer
+} */
+.letterWrap>li {
+  float: left;
+  margin: 5px;
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Microsoft YaHei';
+  font-weight: bold;
+  color: rgba(255, 255, 255, 1);
+  line-height: 70px;
+  /* border: none; */
+  outline: none;
+  width: 65px;
+  height: 70px;
+  background: rgba(54, 90, 233, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 5px;
+}
+
+/* 输入框盒子 */
+/* .inputZone {
+  background: #dbdbdb;
+  height: calc(100% - 50px);
+  overflow: hidden
+} */
+.inputZone {
+  background: rgba(67, 117, 233, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.letterWrap {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0px
+}
+
+/* 案件点击时颜色 */
+/* .letterWrap>li:active {
+  background: #eee
+} */
+
+.virtualkeyboard li {
+  list-style: none
+}
+
+/* .virtualkeyboard .toUpper {
+  font-size: 22px;
+  color: #fd7f0a
+}
+
+*/
+.upperCase {
+  color: #fd910a
+}
+
+.keyboardOp {
+  /* background: #fff; */
+  height: 30px;
+  line-height: 30px;
+  font-size: 20px;
+  cursor: move
+}
+
+.keyboardOp>span {
+  cursor: pointer;
+  padding: 0 20px
+}
+
+/* .keyboardOp>.slideDown {
+  float: right;
+  color: #69759b;
+  font-size: 20px
+} */
+
+.keyboardOp>.select {
+  color: #fd910a
+}
+
+.outputZone {
+  display: none;
+  position: absolute;
+  border-radius: 5px;
+  width: 800px;
+  z-index: 100;
+  background: rgba(67, 117, 233, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+  height: 102px;
+  left: -1px;
+  top: -60px;
+  margin: 71px 0 0 12px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  font-size: 18px
+}
+
+.outputZone>ul {
+  height: 25px
+}
+
+.output-letter {
+  border-bottom: 1px solid #ccc
+}
+
+.outputZoneOp {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  width: 60px;
+  height: 30px;
+  line-height: 30px
+}
+
+.outputZoneOp>span {
+  display: inline-block;
+  height: 100%;
+  width: 50%;
+  text-align: center;
+  float: left;
+  font-size: 25px;
+  cursor: pointer
+}
+
+.outputZoneOp>span:active {
+  color: red
+}
+
+.output-ZH {
+  color: #fff;
+  font-size: 28px;
+  margin: -10px 0 0 -15px;
+}
+
+.output-ZH>li {
+  padding: 0 10px;
+  cursor: pointer;
+  float: left
+}
+
+.output-ZH>li:active {
+  color: red
+}
+
+.key {
+  font-size: 25px;
+  color: #fff;
+  line-height: 25px;
+}
+
+.virtualkeyboard .backspace {
+  font-family: iconfont;
+
+  font-size: 16px
+}
+
+/* .virtualkeyboard .inputCut {color: #fd910a font-size: 22px;
+} */
+
+.virtualkeyboard .unclick {
+  color: #fff;
+  cursor: not-allowed
+}
+
+.virtualkeyboard .hide {
+  display: none
+}
+
+.outputZone .page {
+  position: absolute;
+  color: #fff;
+  right: 10px;
+  bottom: 0;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px
+}
+
+/* 字符按键 */
+/* .character {
+  font-size: 16px !important;
+  color: #fd7f0a
+} */
+
+.is {
+  display: inline-block;
+  font-size: 30px;
+  position: absolute;
+  left: 330px;
+  z-index: 0;
+  top: 242px
+}
+
+/* 最底下一栏 */
+/* .lettera {
+  margin: 5px 2px !important
+} */
+.lettera {
+  margin: 5px 0px 0 5px !important
+}
+
+/* 空格宽度 */
+.Space-Key {
+  width: 125px !important
+}
+
+/* .character-b {
+  font-size: 15px !important
+} */
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: .6
+}
+
+.outputZoneDown {
+  color: #fff;
+}
+
+.zhWord {
+  font-size: 24px !important;
+  font-weight: bold;
+}

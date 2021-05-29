@@ -1,0 +1,39 @@
+<!--
+ * @Author: ggbone
+ * @Date: 2020-06-05 13:31:48
+ * @LastEditors: ggbone
+ * @LastEditTime: 2020-06-09 00:21:31
+ * @Description: 
+ * @Email: 2248064246@qq.com
+ * @Company: 3xData
+ * @youWant: add you want
+--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/fullKeyboard.css">
+    <link rel="stylesheet" href="./css/handWriting.css">
+    <link rel="stylesheet" href="./css/waves.min.css">
+    <link rel="stylesheet" href="./css/randomNumBar.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <input type="text" id="input">
+    <input type="text" id="input2">
+
+    <script src="./js/waves.js"></script>
+    <script src="./js/virtualkeyboard.js"></script>
+    <script src="./js/createNumBar.js"></script>
+    <script src="./js/handWriting.js"></script>
+
+    <script>
+        Waves.init()
+        $("#input").virtualkeyboard()
+        createNumBar('input2')
+
+    </script>
+</body>
+</html>

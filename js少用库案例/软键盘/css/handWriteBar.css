@@ -1,0 +1,58 @@
+/* 手写板容器 */
+#handwritingBar {
+    margin: 100px auto;
+    width: 300px;
+    height: 400px;
+    border-radius: 15px;
+    background: rgba(67, 117, 233, 1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+/* 手写板画布 */
+#handwritingBar canvas {
+    margin-top: 50px;
+}
+
+/* 手写板备选 面板 */
+#maySelect {
+    width: 300px;
+    height: 50px;
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 15px 15px 0 0;
+
+}
+
+#maySelect li {
+    float: left;
+}
+
+/* 备选字词 */
+#maySelect p {
+    line-height: 25px;
+    margin: 0 5px;
+    color: #fff;
+}
+
+/* 手写板操作按钮容器 */
+#handwritingControl {
+    height: 50px;
+    width: 300px;
+    margin: 0;
+    display: flex;
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+}
+
+/* 手写板操作按钮 */
+#handwritingControl button {
+    width: 150px;
+    height: 50px;
+}

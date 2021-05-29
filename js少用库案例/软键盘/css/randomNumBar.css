@@ -1,0 +1,100 @@
+.numContainer {
+    position: absolute;
+    width: 506px;
+    height: 358px;
+    background: rgba(67, 117, 233, 1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+    border-radius: 10px;
+    /* 禁止选中*/
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+
+    -webkit-user-select: none;
+    /* Chrome/Safari/Opera */
+
+    -khtml-user-select: none;
+    /* Konqueror */
+
+    -moz-user-select: none;
+    /* Firefox */
+
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+
+    user-select: none;
+    cursor: move;
+    /* Non-prefixed version, currently
+not supported by any browser */
+}
+
+
+
+.numContainer .close {
+    position: absolute;
+    height: 72px;
+    width: 158px;
+    margin: -78px 0 0 7px;
+}
+
+.numContainer .del {
+    position: absolute;
+    height: 72px;
+    width: 158px;
+    margin: -78px 0 0 342px;
+}
+
+.numContainer ul {
+    margin: 0;
+    padding: 0;
+    width: 505px;
+    height: 328px;
+    display: block;
+    margin-top: 30px;
+    background: rgba(67, 117, 233, 1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    box-shadow: 0px 4px 16px 0px rgba(8, 56, 169, 1);
+    border-radius: 5px;
+}
+
+.numContainer li,
+.numContainer button {
+    width: 156px;
+    height: 70px;
+    background: rgba(54, 90, 233, 1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+    line-height: 70px;
+    /* border: none; */
+    outline: none;
+}
+
+.numContainer li {
+    font-size: 2rem;
+    margin: 5px;
+    float: left;
+    list-style: none;
+    font-weight: 600;
+}
+
+.numContainer li:last-child {
+    margin-left: 172px;
+}
+
+.numContainer span {
+    width: 50px;
+    height: 50px;
+    color: #3f3f3f;
+    background-color: #fff;
+    position: absolute;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 50px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
