@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-30 17:16:50
- * @LastEditTime: 2021-05-30 17:49:05
+ * @LastEditTime: 2021-05-30 17:54:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-code-base\JS\JS-API\数据类型\String-API.md
@@ -40,6 +40,12 @@
 + `toLowerCase`
 + `startWidth`
 + `endWidth`
++ `repeat(num)`
+  + num 重复次数
+  + 返回 重复后的字符串
++ `search(regexp)`
+  + regexp 正则对象
+  + 返回 匹配字符的 index 位置
 
 
 ## String 原型属性
