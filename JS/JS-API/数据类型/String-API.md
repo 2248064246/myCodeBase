@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-30 17:16:50
- * @LastEditTime: 2021-05-30 19:17:01
+ * @LastEditTime: 2021-05-30 19:26:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-code-base\JS\JS-API\数据类型\String-API.md
@@ -50,7 +50,6 @@
   + 通过对应分隔符裁剪字符串, 返回数组
 + `replaceAll`
 + `charAt`
-+ 
 + `charCodeAt`
 + `fromCharCode`
 + `toUpperCase`
@@ -64,8 +63,8 @@
 + `search(regexp)`
   + regexp 正则对象
   + 返回 匹配字符的 index 位置
-
-
++ `localCompare(otherStr)`
+  + 可以比较本地字符(例如 可以比较中文, 按照拼音比较)
 ## String 原型属性
 
 + length 
