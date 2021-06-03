@@ -14,20 +14,20 @@
 ## 静态方法
 
 ### ES6~ES8
-+ isNaN
++ `isNaN`
   + 需要 `Number` 类型, 且为 `NaN` 才会返回 true
-+ isFinite
++ `isFinite`
   > 判断一个数是否是有限的
   + 同 isNaN 一样, 需要是 Number 类型, 且不是 `NaN` 才会返回 true  
-+ isInteger
++ `isInteger`
   > 判断一个数是否为整数
   + 同样会先判断是否为 `Number` 类型
 
 > 以上三个同全局的类似方法的共同区别就是, 全局的不会判断类型是否是 `Number`
 
-+ parseInt(val, base) 
++ `parseInt(val, base)` 
   > base: 表示val是什么进制的数字. 会统一转为10进制 
-+ parseFloat(val)
++ `parseFloat(val)`
   
 > 以上两个同 全局的类似方法是一致的
 
@@ -36,10 +36,10 @@
 
 ### ES5
 
-+ toFixed
-+ toString(base)
++ `toFixed`
++ `toString(base)`
   > 可以指定进制, 将值转为指定进制数 
-+ toPrecision(precision)
++ `toPrecision(precision)`
   > 将数字转为指定精度, 存在四舍五入情况
   ```javaScript
   let num = 1.2536
@@ -53,7 +53,7 @@
 
 ### ES6 ~ ES9
 
-+ toLocalString([local[, options]])
++ `toLocalString([local[, options]])`
   > 将数字转为指定地区的数字
   + 数字按照千分隔
   ```javaScript
