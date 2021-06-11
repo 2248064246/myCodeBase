@@ -19,6 +19,9 @@ v-model的实现
 ## .sync
 > .sync 用于非form组件的数据双向绑定
 
-```html
+```HTML
+ <xx :value.sync="title"></xx>
 
+ this.$emit('update:value', newValue) // 需要在组件内部显示触发事件才能更新值
 ```
+
