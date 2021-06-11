@@ -15,3 +15,10 @@ v-model的实现
   <input type="radio" >
 
 ```
+
+## .sync
+> .sync 用于非form组件的数据双向绑定
+
+```html
+
+```
