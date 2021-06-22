@@ -18,11 +18,15 @@
 
 - TypeScript 可处理已有的 JavaScript 代码，并只对其中的 TypeScript 代码进行编译。
 
-  
 
 
+### 特点
 
-### 	 2-2  ts的安装
+1.**兼容性** TS 可以编译出纯净, 简介的JS代码, 并可以运行在浏览器, Node.js和任何支持ECMAScript 的JavaScript引擎中
+2. **强大的类型系统**, 允许开发编译器进行静态类型检测
+3. **先进的JavaScript**
+
+### 	 2-2  ts的安装 
 
 ​		
 

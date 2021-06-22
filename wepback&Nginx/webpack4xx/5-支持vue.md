@@ -1,5 +1,4 @@
 
-
 # 支持 vue 开发
 
 ## vue-loader
@@ -24,6 +23,5 @@ module.exports = {
     // 请确保引入这个插件！
     new VueLoaderPlugin()
   ]
-
 
 ```
