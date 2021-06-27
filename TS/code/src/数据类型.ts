@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-06-12 18:20:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-12 23:52:47
+ * @LastEditTime: 2021-06-27 18:25:17
  * @Description:
  */
 
@@ -61,3 +61,7 @@ let other: string = '1'
 other = null
 other = undefined
 
+
+function errors(msg: string):never {
+  throw new Error(msg)
+}
