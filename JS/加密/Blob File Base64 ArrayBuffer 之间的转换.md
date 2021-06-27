@@ -90,6 +90,23 @@ reader.onload = (e) => {
   + Blob 
     + 前端的一个专门用于支持文件操作的二进制对象
     + 文件下载 (通过 a 标签)
+      + 已知文件 `url` 地址
+        ```javaScript
+        // 创建a标签
+        let a = document.createElement('a')
+        // 定义下载名称
+        a.download = '文件名称'
+        // 隐藏标签
+        a.style.display = 'none'
+        // 设置文件路径
+        a.href = 'https://.../158ac1e6917445a4aa384a2a7209445a.xlsx'
+        // 将创建的标签插入dom
+        document.body.appendChild(a)
+        // 点击标签，执行下载
+        a.click()
+        // 将标签从dom移除
+        document.body.removeChild(a)
+        ``` 
       + 通过 `window.URL.createObjectURL()` 将Blob对象转为一个 `URL`, 然后将这个 `url` 赋值给 `a` 标签的 `href`属性, 同和配合`a.download` 属性写上文件名
         ```html
           <!-- html部分 -->
