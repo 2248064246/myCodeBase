@@ -91,6 +91,10 @@ function parseUrl(url, parseSearch = true) {
 
 > 使用 JS URL API (详细见 加密/前端涉及文件操作API)
 
+### 单独获取 host 
+```js
+const getHost = /https?:\/\/([^/]+):/i
+```
 
 ## 将对象转为 URL 查询参数
 
