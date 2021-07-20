@@ -29,3 +29,10 @@ Symbol.keyFor(s) // => test 通过这个方法可以获取Symbol的值
 
 ```
 
+## 特殊方法
+
+Symbol 里面有很多特殊方法, 这些被应用于ES6的一些增强语法或者新方法中
+
+Symbol.split 用于实现字符串数组
+Symbol.match
+

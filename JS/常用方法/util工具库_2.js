@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-06-25 14:04:50
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-26 13:02:04
+ * @LastEditTime: 2021-07-06 23:46:49
  * @Description:
  */
 
@@ -27,4 +27,4 @@ function getfilesize(size) {
   if (size < Math.pow(num, 4))
     return (size / Math.pow(num, 3)).toFixed(2) + 'G'; //G
   return (size / Math.pow(num, 4)).toFixed(2) + 'T'; //T
-},
+}

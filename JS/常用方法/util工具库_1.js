@@ -50,7 +50,9 @@ function isNull() {}
 
 function isBuffer() {}
 
-function isArrayBuffer() {}
+function isArrayBuffer() {
+
+}
 
 function isArrayBufferView() {}
 
