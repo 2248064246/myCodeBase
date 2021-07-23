@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-07-07 22:58:39
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-07 23:38:28
+ * @LastEditTime: 2021-07-09 17:05:00
  * @Description: 
  */
 
@@ -35,8 +35,30 @@ class LinkList {
     }
   }
 
+  removeAt(position) {
+    let index = LinkList.__checkPosition(position)
+    if (index <= this.size()) {
+      let curNode = this.getAt(index)
+      let preNode = this.getAt(index - 1)
+      preNode.next = curNode.next
+      // curNode.next = null
+    }
+  }
+
   push(element) {
     this.insertAt(element, this.size())
+  }
+
+  pop() {
+    this.removeAt(this.size() - 1)
+  }
+
+  shift() {
+    this.removeAt(0)
+  }
+
+  unshift(element) {
+    this.insertAt(element, 0)
   }
 
   getAt(position) {
@@ -59,6 +81,21 @@ class LinkList {
     }
     return length
   }
+
+  isEmpty() {
+    return this.size() === 0
+  }
+
+  toString() {
+    let str = ''
+    let node = this.head
+    let length = 0
+    while (node && node.next) {
+      node = node.next
+      str += ++length >= this.size() ? node.value : node.value + ','
+    }
+    return str
+  }
 }
 
 
@@ -68,4 +105,6 @@ ary.forEach(item => {
   list.push(item)
 })
 
-console.log(list.size(), list.getAt(0), list.insertAt('xxx',3))
+console.log(list.size(), list.getAt(0), list.insertAt('xxx', 3))
+console.log(list.pop(), list.removeAt(1), list.toString())
+console.log(list.unshift(5), list.toString())
