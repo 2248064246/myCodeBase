@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-07-22 13:53:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-22 15:58:39
+ * @LastEditTime: 2021-07-23 10:14:43
  * @Description: 
  */
 
@@ -19,8 +19,8 @@ let header = JSON.stringify({
 })
 
 let payload = JSON.stringify({
-  "uuid": "1626923269385",
-  "timestamp": 1626923269385,
+  "uuid": "1627004758982",
+  "timestamp": 1627004758982,
   "work_id": "20208156",
   "user_name": "丁仁鑫",
   "hospital_id": "HID0101",
@@ -33,10 +33,7 @@ let baseP = base64UrlEncode(payload)
 let encodeMsg = baseH + '.' + baseP
 let sig = CryptoJS.HmacSHA512(encodeMsg, key.toString())
 
-
-let sign = sig.toString(CryptoJS.enc.Base64)
+var reg = new RegExp('/', 'g');
+let sign = sig.toString(CryptoJS.enc.Base64).replace(/=+$/, '').replace(/\+/g, '-').replace(reg, '_');
 
 console.log(baseH + '.' + baseP + '.' + sign)
-
-
-// 此方法对应 jwt.io 中的方法
