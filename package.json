@@ -17,5 +17,8 @@
     "swiper": "^6.6.2",
     "tailwindcss": "^2.1.2",
     "tailwindcss-cli": "^0.1.2"
+  },
+  "dependencies": {
+    "scrollreveal": "^4.0.9"
   }
 }
