@@ -1,0 +1,97 @@
+<!--
+ * @Author: ys4225/黄迎李
+ * @Date: 2021-07-28 14:15:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-29 14:07:24
+ * @Description: 
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <iframe src="http://192.168.100.75:8080/" frameborder="0"></iframe>
+
+  <script>
+    function upperCaseStream() {
+      // 返回的是要一个新的流回去
+      return new TransformStream({
+        transform(chunk, controller) {
+          controller.enqueue(chunk.toUpperCase());
+        },
+      });
+    }
+
+    function appendToDOMStream(el) {
+      return new WritableStream({
+        write(chunk) {
+          el.append(chunk);
+        }
+      });
+    }
+
+
+    const chunkProgress = (total) => { // 下载进度
+      let loaded = 0
+      return new TransformStream({
+        transform(chunk, controller) {
+          loaded += chunk.length
+          console.log(`Downloaded ${loaded} of ${total} (${(loaded / total * 100).toFixed(2)}%)`);
+          controller.enqueue(chunk)
+        }
+      })
+    }
+
+    // 使用流来处理超大文本, 使其能渐进显示完整内容, 如不是必须等待接口所有数据完全返回
+    fetch('./log_info.log').then(response => {
+      // 使用管道, 可以很方便的控制流
+      response.body
+        .pipeThrough(chunkProgress(response.headers.get('content-length')))
+        .pipeThrough(new TextDecoderStream())
+        .pipeThrough(upperCaseStream())
+        .pipeTo(appendToDOMStream(document.body))
+    })
+
+    fetch('http://poetry.apiopen.top/getTime').then(res => {
+      // fetch response.json() 放回一个反序列化的数据
+      return res.json()
+    }).then(data => {
+      console.log(data)
+    })
+
+    // XHR('./log_info.log')
+    // XHR('http://poetry.apiopen.top/getTime')
+
+    function XHR(url) {
+      var xhr = new XMLHttpRequest()
+      xhr.open('get', url)
+      xhr.onreadystatechange = function (res) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr)
+        }
+      }
+      // xhr 可以通过 onprogress 来判断文件下载了多少
+      xhr.onprogress = function (res) {
+        console.log(res)
+        console.log(res.loaded / res.total * 100 + '%')
+        // 在这里并不能通过这种方式将数据写入DOM
+        // 并且此时 responseText 不清楚是从头到loaded 的数据还是分块的数据
+
+        // document.body.innerHTML = ''
+        // document.body.append(xhr.responseText)
+      }
+      xhr.send()
+    }
+  </script>
+</body>
+
+</html>
