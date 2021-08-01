@@ -1,46 +1,28 @@
 /*
  * @Author: ys4225/黄迎李
- * @Date: 2021-07-30 16:19:36
+ * @Date: 2021-08-01 08:36:06
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-30 18:33:52
+ * @LastEditTime: 2021-08-01 09:16:00
  * @Description: 
  */
 
-let interval, i = 0
+// 要自己创建流并且能够读取, 需要用到 TransformStream
 
-let writeStream = new WritableStream({
-  start(controller) {
-
-  },
-  write(chunk, controller) {
-    console.log(chunk)
+let {
+  writable,
+  readable
+} = new TransformStream({
+  transform(chunk, controller) {
+    // 这里对 readable 写入的 chunk 做处理
+    controller.enqueue(new TextEncoder().encode(chunk))
   }
 })
 
-let writer = writeStream.getWriter()
+let writer = writable.getWriter()
+let reader = readable.pipeThrough(new TextDecoderStream()).getReader()
 
+writer.write('你好')
 
-
-interval = setInterval(() => {
-  console.log('i', i)
-  if (++i > 3) {
-    clearInterval(interval)
-    writer.close()
-    writer.releaseLock()
-  } else {
-    writer.write(Math.floor(Math.random() * 10))
-  }
-}, 1000)
-
-
-let readStream = new ReadableStream(
-)
-
-
-let reader = readStream.getReader()
-
-let read = reader.read()
-
-read.then(data => {
+reader.read().then(data => { // 每次读取都需要调用 read() 方法
   console.log(data)
 })
