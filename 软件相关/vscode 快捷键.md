@@ -30,6 +30,11 @@
 | 本行代码复制             | shift + alt + 上下方向键                             |
 | 选中当前行               | ctrl + L                                             |
 | 选中所有匹配项           | ctrl + shift + L(效果同 ctrl + F2, 很容易被插件覆盖) |
+| 递归折叠                 | ctrl + K [                                           |
+| 递归展开                 | ctrl + K ]                                           |
+| 折叠                     | ctrl + shift + [                                     |
+| 展开                     | ctrl + shift + ]                                     |
+
 
 
 
