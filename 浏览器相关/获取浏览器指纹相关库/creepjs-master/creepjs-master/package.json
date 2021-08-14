@@ -1,0 +1,36 @@
+{
+  "name": "creepjs",
+  "version": "1.0.0",
+  "description": "creepy device and browser fingerprinting",
+  "main": "creep.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "autoprefixer": "postcss style.css -u autoprefixer -o style.prefix.css",
+    "cleancss": "cleancss -o docs/style.min.css style.prefix.css",
+    "rollup": "rollup creep.js --file docs/creep.js --no-treeshake --format iife",
+    "build:css": "npm run autoprefixer && npm run cleancss",
+    "build": "npm run rollup & npm run build:css",
+    "postbuild": "echo 'build complete 🔥'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abrahamjuliot/CreepJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abrahamjuliot/CreepJS/issues"
+  },
+  "homepage": "https://github.com/abrahamjuliot/CreepJS#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "rollup": "^2.52.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.2.6",
+    "clean-css-cli": "^4.3.0",
+    "postcss": "^8.3.5",
+    "postcss-cli": "^8.3.1"
+  }
+}

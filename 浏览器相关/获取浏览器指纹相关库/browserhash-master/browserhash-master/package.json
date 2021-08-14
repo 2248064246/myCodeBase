@@ -1,0 +1,27 @@
+{
+  "name": "browserhash.js",
+  "description": "Browser fingerprint",
+  "version": "0.0.1",
+  "repository": {},
+  "main": "src/build.js",
+  "scripts": {
+    "build": "./node_modules/.bin/gulp default",
+    "test": "",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.2",
+    "browserify-shim": "^3.8.14",
+    "del": "^3.0.0",
+    "gulp": "^4.0.2",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^5.7.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "gulp-watch": "^5.0.1"
+  }
+}

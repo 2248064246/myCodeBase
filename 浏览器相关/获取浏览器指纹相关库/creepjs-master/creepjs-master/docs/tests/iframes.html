@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="../favicon.ico">
+	<link rel="stylesheet" href="../style.min.css">
+	<title>&lt;iframe&gt; | CreepJS</title>
+</head>
+<body>
+	<style>
+		#fingerprint-data, visitor {
+			max-width: 950px;
+		}
+		.pass {
+			color: #2da568;
+    		background: #2da5681a;
+		}
+		.fail {
+			color: #ca656e;
+    		background: #ca656e0d;
+		}
+		.pass, .fail {
+			padding: 2px 6px;
+		}
+		.test-output {
+			min-height: 100px;
+		}
+		table {
+			border-collapse: collapse;
+			margin:0;
+			padding:0;
+			width: 100%;
+			table-layout: fixed;
+		}
+		table tr {
+			border-bottom: 1px solid #eeeeee;
+		}
+		table tr:last-child {
+			border-bottom: none;
+		}
+		table th, table td {
+			font-size: 13px;
+			padding: 2px;
+			text-align: center;
+			max-width: 10000px;
+			word-wrap: break-word;
+		}
+		table th {
+			font-size: 14px;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+		}
+		table td:first-child {
+			font-weight: bold;
+			text-align: left;
+		}
+		.undefined {
+			background: #bbbbbb1f;
+			color: #ccc;
+		}
+		@media (max-width: 650px) {
+			table {
+				border: 0;
+			}
+			.hide-on-phone {
+				display: none;
+			}
+			table thead {
+				display: none;
+			}
+			table tr {
+				display: block;
+				margin-bottom: 10px;
+			}
+			table td {
+				border-bottom: none;
+				display: block;
+				font-size: 13px;
+				text-align: right;
+			}
+			table td:first-child {
+				text-align: right;
+			}
+			table td:last-child {
+				border-bottom: 0;
+			}
+			table td:before {
+				content: attr(data-label);
+				float: left;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+		}
+		@media (prefers-color-scheme: dark) {
+			table tr {
+				border-bottom: 1px solid #eeeeee87;
+			}
+		}
+	</style>
+	<div id="fingerprint-data" class="hide-on-phone">
+		<div class="visitor-info">
+			<span class="aside-note">0ms</span>
+			<strong>&lt;iframe&gt;</strong>
+		</div>
+		<div>
+			<table>
+				<thead>
+					<tr>
+					<th>context</th>
+					<th>reported ua</th>
+					<th>reported ver</th>
+					<th>restored ua</th>
+					<th>restored ver</th>
+					<th>features</th>
+					<th>platform</th>
+					<th>canvas</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td data-label="context">window</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+					<tr>
+						<td data-label="context">contentWindow</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+					<tr>
+						<td data-label="context">nested</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+					<tr>
+						<td data-label="context">window[n]</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+					<tr>
+						<td data-label="context">dead</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+					<tr>
+						<td data-label="context">rejected url</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+					<tr>
+						<td data-label="context">fragment</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+					<tr>
+						<td data-label="context">same origin</td>
+						<td data-label="reported ua"></td>
+						<td data-label="reported ver"></td>
+						<td data-label="restored ua"></td>
+						<td data-label="restored ver"></td>
+						<td data-label="features"></td>
+						<td data-label="platform"></td>
+						<td data-label="canvas"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="test-output">
+			<div>Computing...</div>
+		</div>
+	</div>
+	<script src="iframes.js"></script>
+</body>
+</html>

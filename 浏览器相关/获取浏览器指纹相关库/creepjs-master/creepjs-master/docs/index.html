@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" href="style.min.css">
+	<title>CreepJS</title>
+</head>
+<body>
+	<div id="fp-app">
+		<fingerprint>
+			<div id="fingerprint-data">
+				<div class="fingerprint-header-container">
+					<div class="fingerprint-header">
+						<strong>Your ID:</strong><span class="trusted-fingerprint ellipsis main-hash">Computing...</span>
+						<div><span class="time">0 ms</span></div>
+					</div>
+				</div>
+				<div id="creep-browser" class="visitor-info hidden">
+					<div class="flex-grid">
+						<div class="col-six">
+							<strong id="loader">Computing...</strong>
+							<div>trust score:</div>
+							<div>visits:</div>
+							<div>first:</div>
+							<div>last:</div>
+							<div>persistence:</div>
+						</div>
+						<div class="col-six">
+							<div>has trash:</div>
+							<div>has lied:</div>
+							<div>has errors:</div>
+							<div>loose fingerprint:</div>
+							<div>loose count:</div>
+							<div>bot:</div>
+						</div>
+					</div>
+					<div id="signature">
+					</div>
+					<div class="flex-grid">
+						<div class="col-four">
+							<strong>Session ID</strong>
+							<div>0</div>
+						</div>
+						<div class="col-four">
+							<strong>Session Loads</strong>
+							<div>0</div>
+						</div>
+						<div class="col-four">
+							<strong>Session Switched</strong>
+							<div>none</div>
+						</div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-four">
+						<strong>Trash</strong>
+						<div>gathered (0):</div>
+					</div>
+					<div class="col-four">
+						<strong>Lies</strong>
+						<div>unmasked (0):</div>
+					</div>
+					<div class="col-four">
+						<strong>Errors</strong>
+						<div>captured (0):</div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-four">
+						<strong>WebRTC</strong>
+						<div class="block-text"></div>
+						<div>type:</div>
+						<div>foundation:</div>
+						<div>protocol:</div>
+						<div>codecs:</div>
+						<div>codecs sdp:</div>
+					</div>
+					<div class="col-four">
+						<strong>Timezone</strong>
+						<div class="block-text"></div>
+					</div>
+					<div class="col-four">
+						<strong>Intl</strong>
+						<div class="block-text"></div>
+					</div>
+				</div>
+				<div id="browser-detection" class="flex-grid hidden">
+					<div class="col-eight">
+						<strong>Computing...</strong>
+						<div>client user agent:</div>
+						<div>window object:</div>
+						<div>system styles:</div>
+						<div>computed styles:</div>
+						<div>html element:</div>
+						<div>js runtime (math):</div>
+						<div>js engine (error):</div>
+						<div>emojis:</div>
+						<div>audio:</div>
+					</div>
+					<div class="col-four icon-container">
+					</div>
+				</div>
+				<div id="headless-resistance-detection" class="flex-grid hidden">
+					<div class="col-six">
+						<strong>Headless</strong>
+						<div>chromium:</div>
+						<div>0% like headless:</div>
+						<div>0% headless:</div>
+						<div>0% stealth:</div>
+					</div>
+					<div class="col-six">
+						<strong>Resistance</strong>
+						<div>privacy:</div>
+						<div>security:</div>
+						<div>mode:</div>
+						<div>extension:</div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-six">
+						<strong>Worker</strong>
+						<div>canvas 2d:</div>
+						<div>textMetrics:</div>
+						<div>fontFaceSet (0):</div>
+						<div>keys (0):</div>
+						<div>permissions (0):</div>
+						<div>codecs (0):</div>
+						<div>timezone:</div>
+						<div>lang:</div>
+						<div>webgl:</div>
+						<div class="block-text"></div>
+					</div>
+					<div class="col-six">
+						<div>device:</div>
+						<div class="block-text"></div>
+						<div>userAgent:</div>
+						<div class="block-text"></div>
+						<div>userAgentData:</div>
+						<div class="block-text"></div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-four">
+						<strong>WebGL</strong>
+						<div>images:</div>
+						<div>pixels:</div>
+						<div>params (0):</div>
+						<div>exts (0):</div>
+					</div>
+					<div class="col-four">
+						<div>unmasked renderer:</div>
+						<div class="block-text"></div>
+					</div>
+					<div class="col-four"><image /></div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-six">
+						<strong>Canvas 2d</strong>
+						<div>data:</div>
+						<div>textMetrics:</div>
+						<div>pixel trap:</div>
+						<div class="icon-container pixels"></div>
+					</div>
+					<div class="col-six">
+						<strong>Fonts</strong>
+						<div>origin (0):</div>
+						<div>load (0):</div>
+						<div class="block-text"></div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-four">
+						<strong>Audio</strong>
+						<div>sum:</div>
+						<div>gain:</div>
+						<div>freq:</div>
+						<div>time:</div>
+						<div>buffer noise:</div>
+						<div>unique:</div>
+						<div>data:</div>
+						<div>copy:</div>
+						<div>values:</div>
+					</div>
+					<div class="col-four">
+						<strong>Speech</strong>
+						<div>voices (0):</div>
+						<div>default:</div>
+					</div>
+					<div class="col-four">
+						<strong>Media</strong>
+						<div>devices (0):</div>
+						<div>constraints:</div>
+						<div>mimes (0):</div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-six">
+						<strong>DOMRect</strong>
+						<div>elems client:</div>
+						<div>range client:</div>
+						<div>elems bounding:</div>
+						<div>range bounding:</div>
+						<div>emojis v13.0:</div>
+						<div>emoji set:</div>
+						<div class="block-text"></div>
+					</div>
+					<div class="col-six">
+						<strong>SVG</strong>
+						<div>bBox:</div>
+						<div>pointAt:</div>
+						<div>total:</div>
+						<div>extentOfChar:</div>
+						<div>subString:</div>
+						<div>computedText:</div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-six">
+						<strong>Screen</strong>
+						<div>device:</div>
+						<div>width:</div>
+						<div>outerWidth:</div>
+						<div>availWidth:</div>
+						<div>height:</div>
+						<div>outerHeight:</div>
+						<div>availHeight:</div>
+						<div>colorDepth:</div>
+						<div>pixelDepth:</div>
+					</div>
+					<div class="col-six screen-container">
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-four">
+						<div>Features:</div>
+					</div>
+					<div class="col-four">
+						<div>CSS:</div>
+					</div>
+					<div class="col-four">
+						<div>Window:</div>
+					</div>
+				</div>
+				<div class="flex-grid hidden">
+					<div class="col-six">
+						<strong>CSS Media Queries</strong>
+						<div>@media:</div>
+						<div>@import:</div>
+						<div>matchMedia:</div>
+						<div>touch device:</div>
+						<div>screen query:</div>
+					</div>
+					<div class="col-six">
+						<strong>Computed Style</strong>
+						<div>keys (0):</div>
+						<div>system styles:</div>
+						<div>0% of samples</div>
+						<div>0% of class</div>
+						<div>engine:</div>
+						<div class="gradient"></div>
+					</div>
+				</div>
+				<div class="hidden">
+					<div class="flex-grid">
+						<div class="col-six">
+							<strong>Math</strong>
+							<div>0% of samples</div>
+							<div>0% of class</div>
+							<div>engine:</div>
+							<div>results:</div>
+						</div>
+						<div class="col-six">
+							<strong>Error</strong>
+							<div>results:</div>
+						</div>
+					</div>
+					<div class="flex-grid">
+						<div class="col-six">
+							<strong>Window</strong>
+							<div>keys (0):</div>
+							<div>0% of samples</div>
+							<div>0% of class</div>
+							<div>version:</div>
+						</div>
+						<div class="col-six">
+							<strong>HTMLElement</strong>
+							<div>keys (0):</div>
+							<div>0% of samples</div>
+							<div>0% of class</div>
+							<div>engine:</div>
+						</div>
+					</div>
+				</div>
+				<div class="flex-grid" style="visibility:hidden">
+					<div class="col-six">
+						<strong>Navigator</strong>
+						<div>properties (0):</div>
+						<div>bluetooth:</div>
+						<div>codecs (0):</div>
+						<div>dnt:</div>
+						<div>gpc:</div>
+						<div>keyboard:</div>
+						<div>lang:</div>
+						<div>mimeTypes (0):</div>
+						<div>permissions (0):</div>
+						<div>plugins (0):</div>
+						<div>vendor:</div>
+						<div>userAgentData:</div>
+						<div class="block-text"></div>
+					</div>
+					<div class="col-six">
+						<div>device:</div>
+						<div class="block-text"></div>
+						<div>ua parsed:</div>
+						<div>userAgent:</div>
+						<div class="block-text"></div>
+						<div>appVersion:</div>
+						<div class="block-text"></div>
+					</div>
+				</div>
+				<div class="hidden">
+					<strong>Tests</strong>
+					<div>
+						<a class="tests" href="./tests/workers.html">Workers</a>
+						<br><a class="tests" href="./tests/iframes.html">Iframes</a>
+						<br><a class="tests" href="./tests/fonts.html">Fonts</a>
+						<br><a class="tests" href="./tests/timezone.html">Timezone</a>
+						<br><a class="tests" href="./tests/window.html">Window Version</a>
+						<br><a class="tests" href="./tests/screen.html">Screen</a>
+						<br><a class="tests" href="./tests/prototype.html">Prototype</a>
+						<br><a class="tests" href="./tests/domrect.html">DOMRect</a>
+						<br><a class="tests" href="./tests/emojis.html">Emojis</a>
+						<br><a class="tests" href="./tests/math.html">Math</a>
+						<br><a class="tests" href="./tests/machine.html">Machine</a>
+					</div>
+				</div>
+			</div>
+		</fingerprint>
+	</div>
+	<script src="creep.js"></script>
+</body>
+</html>
