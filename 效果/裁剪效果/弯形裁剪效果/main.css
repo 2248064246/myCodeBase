@@ -1,0 +1,50 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  height: 200vh;
+  background-color: tomato;
+}
+
+figure {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  position: absolute;
+  bottom: 50px;
+  color: white;
+  font-size: 30px;
+  width: 100%;
+}
+
+.caption h1 {
+  font-weight: 300;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  height: 800px;
+  width: 100%;
+}
+
+.overlay svg {
+  position: absolute;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
