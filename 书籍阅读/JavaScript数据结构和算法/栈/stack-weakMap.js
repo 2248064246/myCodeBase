@@ -2,13 +2,12 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-06-27 23:07:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-27 23:51:42
+ * @LastEditTime: 2021-08-16 10:18:00
  * @Description: 
  */
 
 
-const __item = new WeakMap()
-
+const __item = new WeakMap() // 使用weakMap 封装私有属性
 class Stack {
   constructor() {
     __item.set(this, []) // 将 this 映射为 [], 防止暴露数据
