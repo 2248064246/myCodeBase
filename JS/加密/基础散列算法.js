@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-16 12:00:15
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-17 15:07:05
+ * @LastEditTime: 2021-08-17 19:53:00
  * @Description: 
  */
 
@@ -53,7 +53,7 @@ String.prototype.hashCode = function () {
       h1 = Math.imul(h1 ^ ch, 2654435761);
       h2 = Math.imul(h2 ^ ch, 1597334677);
     }
-    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909); // Math.imul 不支持IE
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
     h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
     return 4294967296 * (2097151 & h2) + (h1 >>> 0);
   };
@@ -127,6 +127,24 @@ String.prototype.hashCode = function () {
     while (i)
       hash = (hash * 33) ^ this.charCodeAt(--i)
     return hash >>> 0;
+  }
+}
+
+{
+  /**
+   * 这个方法类似字符串的hash方法, 且都是正值
+   * @param {String} str 
+   * @returns {Function}
+   */
+  function xmur3(str) {
+    for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
+      h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+      h = h << 13 | h >>> 19;
+    return function () {
+      h = Math.imul(h ^ h >>> 16, 2246822507);
+      h = Math.imul(h ^ h >>> 13, 3266489909);
+      return (h ^= h >>> 16) >>> 0;
+    }
   }
 }
 
