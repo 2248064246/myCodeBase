@@ -2,10 +2,9 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-18 14:21:53
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-18 16:26:37
+ * @LastEditTime: 2021-08-19 11:00:58
  * @Description: 
  */
-
 
 {
 
@@ -83,4 +82,51 @@
     if (n <= 2) return 1
     return recurveFibonacci(n - 1) + recurveFibonacci(n - 2)
   }
+}
+
+{
+  // 汉诺塔问题
+  /**
+   * 相传在古印度圣庙中，有一种被称为汉诺塔(Hanoi)的游戏。
+   * 该游戏是在一块铜板装置上，有三根杆(编号A、B、C)，在A杆自下而上、由大到小按顺序放置64个金盘(如图1)。
+   * 游戏的目标：把A杆上的金盘全部移到C杆上，并仍保持原有顺序叠好。
+   * 操作规则：
+   *    每次只能移动一个盘子，并且在移动过程中三根杆上都始终保持大盘在下，小盘在上，
+   *    操作过程中盘子可以置于A、B、C任一杆上。
+   */
+
+  /**
+   * 汉诺塔问题
+   * @param {Number} n 要移动的盘子个数
+   * @param {Array} a a柱子
+   * @param {Array} b b柱子
+   * @param {Array} c c柱子
+   * @returns 
+   */
+  function hanoiTower(n, a = [], b = [], c = []) {
+    if (n == 1) {
+      // 如果a柱子只有一个盘子, 则直接移动到c盘
+      move(a, c)
+      return
+    }
+    // 如果a柱子有多个盘子, 先将其余盘子移动到b柱子
+    hanoiTower(n - 1, a, c, b)
+    // 然后将a柱子最后一个自动到c柱子
+    move(a, c)
+    // 最后将b柱子的虽有盘子移动到c
+    hanoiTower(n - 1, b, a, c)
+  }
+
+  function move(start, end) {
+    // 计算move调用次数就能得到移动次数
+    end.push(start.pop())
+  }
+
+  let a = [],
+    b = [],
+    c = [];
+  a = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+
+  hanoiTower(a.length, a, b, c)
+  console.log(a, b, c)
 }
