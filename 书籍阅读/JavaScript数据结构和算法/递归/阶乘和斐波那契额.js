@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-18 14:21:53
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-19 11:00:58
+ * @LastEditTime: 2021-08-20 17:36:56
  * @Description: 
  */
 
@@ -31,11 +31,11 @@
   }
 
   // 3. 递归阶乘--尾递归优化 (然而大部分浏览器并没有实现这种优化)
-  function tailRecurveFactorial(x, t = 1) {
-    if (x === 1 || x === 0) {
+  function tailRecurveFactorial(x, t = 1n) {
+    if (x === 1n || x === 0n) {
       return t
     }
-    return tailRecurveFactorial(x - 1, x * t)
+    return tailRecurveFactorial(x - 1n, x * t)
   }
 
   // 上面这种写法可能会让让迷惑, 为什么计算阶乘还要传入 1
@@ -103,6 +103,7 @@
    * @param {Array} c c柱子
    * @returns 
    */
+
   function hanoiTower(n, a = [], b = [], c = []) {
     if (n == 1) {
       // 如果a柱子只有一个盘子, 则直接移动到c盘
@@ -113,12 +114,15 @@
     hanoiTower(n - 1, a, c, b)
     // 然后将a柱子最后一个自动到c柱子
     move(a, c)
-    // 最后将b柱子的虽有盘子移动到c
+    // 最后将b柱子的所有盘子移动到c
     hanoiTower(n - 1, b, a, c)
   }
 
+  let count = 0
+
   function move(start, end) {
     // 计算move调用次数就能得到移动次数
+    count++
     end.push(start.pop())
   }
 
@@ -128,5 +132,6 @@
   a = [9, 8, 7, 6, 5, 4, 3, 2, 1]
 
   hanoiTower(a.length, a, b, c)
+  console.log('count', count)
   console.log(a, b, c)
 }
