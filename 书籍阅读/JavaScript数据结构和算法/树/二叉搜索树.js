@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-20 13:49:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-20 17:14:11
+ * @LastEditTime: 2021-08-23 15:21:48
  * @Description: 
  */
 
@@ -81,42 +81,46 @@ class BinarySearchTree {
   }
 
   min() {
-    return this.minNode(this.root)
+    let minNode = this.minNode(this.root)
+    return minNode ? minNode.value : undefined
   }
 
   minNode(node) {
     while (node !== null && node.left !== null) {
       node = node.left
     }
-    return node.value || undefined
+    return node
   }
 
   max() {
-    return this.maxNode(this.root)
+    let maxNode = this.maxNode(this.root)
+    return maxNode ? maxNode.value : undefined
   }
 
   maxNode(node) {
     while (node !== null && node.right !== null) {
       node = node.right
     }
-    return node.value || undefined
+    return node
   }
   /**
    * 从树中移除一个值
    * @param {*} value 
    */
   remove(value) {
-    this.removeNode(this.root, value)
+    this.root = this.removeNode(this.root, value)
   }
 
   removeNode(node, value) {
     if (node === null) {
-      return null
+      return node
     }
     if (node.value > value) {
-      this.removeNode(node.left, value)
+      node.left = this.removeNode(node.left, value)
+      return node // 这边需要一直向上返回, 以更新树中数据
     } else if (node.value < value) {
-      this.removeNode(node.right, value)
+      node.right = this.removeNode(node.right, value)
+      return node
     } else {
       // 第一种情况: 移除没有子节点的节点(叶节点)
       if (node.left === null && node.right === null) {
@@ -125,17 +129,19 @@ class BinarySearchTree {
         return node
       }
       // 第二种情况: 移除有一个子节点的节点
-      else if (node.left || node.right) {
+      if (node.left === null) {
         // 交换子节点和单前节点
-        node = node.left ? node.left : node.right
+        node = node.right
         return node
-      } else {
-        // 第三种情况: 移除有两个子节点的节点
-        const aux = this.minNode(node.right)
-        node.value = aux
-        node.right = this.removeNode(node.right, aux)
+      } else if (node.right === null) {
+        node = node.left
         return node
       }
+      // 第三种情况: 移除有两个子节点的节点
+      const aux = this.minNode(node.right)
+      node.value = aux.value
+      node.right = this.removeNode(node.right, aux.value)
+      return node
     }
   }
 
@@ -183,6 +189,26 @@ class BinarySearchTree {
       cb(node.value)
     }
   }
+  height() {
+    return this.getNodeHeight(this.root)
+  }
+  getNodeHeight(node) {
+    let hl = 0,
+      hr = 0;
+    if (node === null) return 0
+    else {
+      if (node.left !== null) {
+        hl = this.getNodeHeight(node.left)
+      }
+      if (node.right !== null) {
+        hr = this.getNodeHeight(node.right)
+      }
+      return (hl > hr ? hl : hr) + 1;
+    }
+
+    // if (node === null) return -1
+    // return Math.max(this.getNodeHeight(node.left), this.getNodeHeight(node.right)) + 1
+  }
 }
 
 
@@ -192,6 +218,7 @@ tree.insert(11)
 tree.insert(7)
 tree.insert(5)
 tree.insert(3)
+tree.insert(6)
 tree.insert(9)
 tree.insert(8)
 tree.insert(10)
@@ -218,3 +245,11 @@ console.groupEnd('后续遍历')
 console.log('min', tree.min())
 console.log('max', tree.max())
 console.log('search', tree.search(7))
+
+console.log('remove', tree.remove(3))
+
+
+export default {
+  BinarySearchTree,
+  Node
+}
