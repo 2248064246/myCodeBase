@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-23 10:58:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-23 15:21:57
+ * @LastEditTime: 2021-08-26 15:24:41
  * @Description: 自平衡二叉树
  */
 
@@ -70,15 +70,7 @@ class AVL extends BinarySearchTree {
   }
 
   insertNode(node, value) {
-    if (node == null) {
-      return new Node(value)
-    } else if (value < node.value) {
-      node.left = this.insertNode(node.left, value)
-    } else if (value > node.value) {
-      node.right = this.insertNode(node.right, value)
-    } else {
-      return node
-    }
+    node = super.insertNode(node, value)
 
     // 如果需要, 进行平衡操作
     const balanceFactor = this.getBalanceFactor(node);

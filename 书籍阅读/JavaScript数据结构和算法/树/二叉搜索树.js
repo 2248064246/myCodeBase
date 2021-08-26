@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-20 13:49:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-23 15:21:48
+ * @LastEditTime: 2021-08-26 15:23:41
  * @Description: 
  */
 
@@ -29,11 +29,7 @@ class BinarySearchTree {
    * @param {*} value 
    */
   insert(value) {
-    if (this.root === null) {
-      this.root = new Node(value)
-    } else {
-      this.insertNode(this.root, value)
-    }
+    this.root = this.insertNode(this.root, value)
   }
 
   /**
@@ -42,21 +38,16 @@ class BinarySearchTree {
    * @param {*} value 
    */
   insertNode(node, value) {
-    // 需要判断要插入的值是否小于点前节点
-    if (value <= node.value) {
-      if (node.left == null) {
-        node.left = new Node(value)
-      } else {
-        this.insertNode(node.left, value)
-      }
+    if (node == null) {
+      return new Node(value)
+    } else if (value < node.value) {
+      node.left = this.insertNode(node.left, value)
+    } else if (value > node.value) {
+      node.right = this.insertNode(node.right, value)
     } else {
-      // 比单前节点大, 放入右边
-      if (node.right == null) {
-        node.right = new Node(value)
-      } else {
-        this.insertNode(node.right, value)
-      }
+      return node
     }
+    return node
   }
 
   /**
