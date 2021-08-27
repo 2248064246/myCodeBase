@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-26 16:56:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-27 11:49:29
+ * @LastEditTime: 2021-08-27 14:33:46
  * @Description: 
  */
 
@@ -12,6 +12,12 @@ class MinHeap {
 
   }
 
+  /**
+   * 比较方法, a > b 为最小堆, a<b 为最大堆
+   * @param {*} a 
+   * @param {*} b 
+   * @returns 
+   */
   compareFn(a, b) {
     return a > b
   }
@@ -59,6 +65,10 @@ class MinHeap {
     return this.size() === 0
   }
 
+  /**
+   * 取得堆顶的值
+   * @returns 
+   */
   findMinimum() {
     return this.isEmpty() ? undefined : this.heap[0]
   }
@@ -77,11 +87,15 @@ class MinHeap {
     if (this.size() === 1) {
       return this.heap[0]
     }
-    const removedValue = this.heap.shift()
-    this.heap[0] = this.heap.pop()
-    this.siftDown(0)
+    const removedValue = this.heap[0]
+    this.heap[0] = this.heap.pop() // 将堆最后面的值移动到前面
+    this.siftDown(0) // 堆下移, 重新构建堆
     return removedValue
   }
+  /**
+   * 堆下移(数据堆化)
+   * @param {*} index 
+   */
   siftDown(index) {
     let element = index
     const left = this.getLeftIndex(index)
@@ -99,3 +113,19 @@ class MinHeap {
     }
   }
 }
+
+
+const heap = new MinHeap()
+
+for (let i = 1; i < 10; i++) {
+  heap.insert(i)
+}
+
+console.log('heap size', heap.size())
+
+console.log('heap min value', heap.findMinimum())
+
+console.log('heap', heap.heap)
+
+console.log('extract', heap.extract())
+console.log('heap', heap.heap)
