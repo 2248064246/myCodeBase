@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-17 14:28:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-17 15:32:05
+ * @LastEditTime: 2021-08-27 15:56:26
  * @Description: 
  */
 
@@ -35,7 +35,7 @@ class HashTable {
   get(key) {
     let hashCode = this.hashCode(key)
     let positionAry = this.table[hashCode]
-    if(!positionAry) return undefined
+    if (!positionAry) return undefined
     if (positionAry.length > 1) {
       return positionAry.find(item => item.key === key)
     } else {
@@ -88,8 +88,5 @@ class HashTable {
   }
 }
 
-let t = new HashTable()
-t.set('1', 1)
-console.log(t.get('1'))
-console.log(t.remove('1'))
-console.log(t.get('1'))
+
+export default HashTable
