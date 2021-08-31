@@ -2,13 +2,17 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-27 15:54:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-27 17:30:27
+ * @LastEditTime: 2021-08-31 16:48:49
  * @Description: 
  */
 
 import HashTable from "../字典和散列/散列-分离链接.js";
-import breadthFirstSearch from "./广度优先搜索.js";
+import BFSJS from "./广度优先搜索.js";
 
+const {
+  breadthFirstSearch,
+  BFS
+} = BFSJS
 class Graph {
   constructor(isDirected = false) {
     this.isDirected = isDirected // 表示是否是有向图
@@ -91,3 +95,5 @@ graph.addEdge('E', 'I')
 console.log(graph.toString())
 
 breadthFirstSearch(graph, myVertices[0], value => console.log('Visited Vertex:', value))
+
+console.log(BFS(graph, myVertices[0]))
