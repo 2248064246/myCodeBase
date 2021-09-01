@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-27 16:59:21
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-31 17:54:28
+ * @LastEditTime: 2021-09-01 11:28:13
  * @Description: 
  */
 
@@ -67,8 +67,8 @@ const BFS = (graph, startVertex) => {
   const adjList = graph.getAdjList()
   const color = initializeColor(vertices)
   const queue = new Queue()
-  const distance = []
-  const predecessors = []
+  const distance = {}
+  const predecessors = {}
   queue.addBack(startVertex)
 
   for (const value of vertices) {
@@ -100,6 +100,12 @@ const BFS = (graph, startVertex) => {
   }
 }
 
+/**
+ * 根据前溯点找到 开始点到其余点的最短路径
+ * @param {*} vertices 
+ * @param {*} startVertex 
+ * @param {*} predecessors 
+ */
 function computedPath(vertices, startVertex, predecessors) {
   for (const value of vertices) {
     if (value == startVertex) continue;

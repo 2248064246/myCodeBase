@@ -2,17 +2,24 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-27 15:54:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-31 16:48:49
+ * @LastEditTime: 2021-09-01 14:38:55
  * @Description: 
  */
 
 import HashTable from "../字典和散列/散列-分离链接.js";
 import BFSJS from "./广度优先搜索.js";
 
+import depth from './深度优先搜索.js'
+
 const {
   breadthFirstSearch,
   BFS
 } = BFSJS
+
+const {
+  depthFirstSearch,
+  DFS
+} = depth
 class Graph {
   constructor(isDirected = false) {
     this.isDirected = isDirected // 表示是否是有向图
@@ -97,3 +104,10 @@ console.log(graph.toString())
 breadthFirstSearch(graph, myVertices[0], value => console.log('Visited Vertex:', value))
 
 console.log(BFS(graph, myVertices[0]))
+
+
+depthFirstSearch(graph, value => console.log('Depth Visited Vertex', value))
+
+console.log(DFS(graph))
+
+export default Graph
