@@ -1,12 +1,10 @@
 /*
  * @Author: ys4225/黄迎李
- * @Date: 2021-09-01 16:46:04
+ * @Date: 2021-09-02 10:48:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-02 10:30:04
+ * @LastEditTime: 2021-09-02 16:51:31
  * @Description: 
  */
-
-
 // 需要先声明一个图的邻接矩阵
 
 class Graph {
@@ -64,9 +62,11 @@ class Graph {
 }
 
 
-const graph = new Graph(true)
+const graph = new Graph()
 
-graph.addVertices(['A', 'B', 'C', 'D', 'E', 'F'])
+let vertices = ['A', 'B', 'C', 'D', 'E', 'F']
+
+graph.addVertices(vertices)
 
 graph.addEdge('A', 'B', 2)
 graph.addEdge('A', 'C', 4)
@@ -80,34 +80,47 @@ graph.addEdge('D', 'F', 2)
 
 console.log(graph.toString())
 
-console.log(dijkstra(graph.graph, 0))
+let path = prim(graph.graph)
 
-function dijkstra(graph, src) {
+function formatePath(path, vertices, graph) {
+  let result = []
+  for (const i in path) {
+    let item = path[i]
+    if (item == -1) continue
+    result.push({
+      Edge: `${vertices[item]} - ${vertices[i]}`,
+      Weight: graph[item][i]
+    })
+  }
+  return result
+}
+console.table(formatePath(path, vertices, graph.graph))
+
+function prim(graph) {
   const INF = Infinity
-
+  const parent = []
   const {
     length
   } = graph
-  const dist = new Array(length).fill(INF) // 初始化记录路径的数组
+  const key = new Array(length).fill(INF) // 初始化记录路径的数组
   const visited = new Array(length).fill(false) // 初始化已访问数组
 
-  dist[src] = 0 // 自己到自己设置为0
+  key[0] = 0
+  parent[0] = -1
   for (let i = 0; i < length; i++) {
-    const u = minDistance(dist, visited) // 找到dist中未访问中的最小的值的下标
-    visited[u] = true // 该顶点被访问
-    for (let v = 0; v < length; v++) { // 
-      if (!visited[v] && // 未访问
-        graph[u][v] !== 0 && // u, v 两点可以访问
-        dist[u] !== INF && // 到u点存在路径
-        dist[u] + graph[u][v] < dist[v]) { // 到u点的距离 + u到v点的距离 小于 直接到 v点的距离
-        dist[v] = dist[u] + graph[u][v] // 更新到 v 点的距离
+    const u = minKey(key, visited)
+    visited[u] = true
+    for (let v = 0; v < length; v++) {
+      if (graph[u][v] && !visited[v] && graph[u][v] < key[v]) {
+        parent[v] = u;
+        key[v] = graph[u][v]
       }
     }
   }
-  return dist
+  return parent
 }
 
-function minDistance(dist, visited) {
+function minKey(dist, visited) {
   let min = Infinity
   let minIndex = -1
   for (const index in dist) {

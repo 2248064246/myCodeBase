@@ -1,11 +1,10 @@
 /*
  * @Author: ys4225/黄迎李
- * @Date: 2021-09-01 16:46:04
+ * @Date: 2021-09-02 09:40:37
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-02 10:30:04
+ * @LastEditTime: 2021-09-02 09:48:06
  * @Description: 
  */
-
 
 // 需要先声明一个图的邻接矩阵
 
@@ -80,41 +79,33 @@ graph.addEdge('D', 'F', 2)
 
 console.log(graph.toString())
 
-console.log(dijkstra(graph.graph, 0))
+console.table(floydWarshall(graph.graph))
 
-function dijkstra(graph, src) {
-  const INF = Infinity
-
+function floydWarshall(graph) {
+  const dist = []
   const {
     length
   } = graph
-  const dist = new Array(length).fill(INF) // 初始化记录路径的数组
-  const visited = new Array(length).fill(false) // 初始化已访问数组
-
-  dist[src] = 0 // 自己到自己设置为0
   for (let i = 0; i < length; i++) {
-    const u = minDistance(dist, visited) // 找到dist中未访问中的最小的值的下标
-    visited[u] = true // 该顶点被访问
-    for (let v = 0; v < length; v++) { // 
-      if (!visited[v] && // 未访问
-        graph[u][v] !== 0 && // u, v 两点可以访问
-        dist[u] !== INF && // 到u点存在路径
-        dist[u] + graph[u][v] < dist[v]) { // 到u点的距离 + u到v点的距离 小于 直接到 v点的距离
-        dist[v] = dist[u] + graph[u][v] // 更新到 v 点的距离
+    dist[i] = []
+    for (let j = 0; j < length; j++) {
+      if (i === j) {
+        dist[i][j] = 0
+      } else if (graph[i][j] === 0) {
+        dist[i][j] = Infinity
+      } else {
+        dist[i][j] = graph[i][j]
+      }
+    }
+  }
+  for (let k = 0; k < length; k++) {
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < length; j++) {
+        if (dist[i][k] + dist[k][j] < dist[i][j]) {
+          dist[i][j] = dist[i][k] + dist[k][j]
+        }
       }
     }
   }
   return dist
-}
-
-function minDistance(dist, visited) {
-  let min = Infinity
-  let minIndex = -1
-  for (const index in dist) {
-    if (visited[index] === false && dist[index] <= min) {
-      min = dist[index]
-      minIndex = index
-    }
-  }
-  return minIndex
 }
