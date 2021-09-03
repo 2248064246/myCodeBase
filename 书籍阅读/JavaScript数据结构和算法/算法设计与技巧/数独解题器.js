@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-03 14:58:37
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-03 16:56:40
+ * @LastEditTime: 2021-09-03 17:19:42
  * @Description: 
  */
 
@@ -90,7 +90,9 @@ function sudokuSolver(matrix) {
 // console.table(sudokuGrid)
 
 // console.table(sudokuSolver(sudokuGrid))
-
+function randomNumber(n = 0, m = 100) {
+  return Math.floor(Math.random() * (m - n + 1) + n)
+}
 
 class Sudoku {
 
@@ -176,10 +178,7 @@ let sudoku = new Sudoku()
 while (!sudoku.makeDigits());
 console.timeEnd('生成数独')
 console.table(sudoku.digits)
-sudoku.digits[0][8] = 0
-sudoku.digits[0][2] = 0
-sudoku.digits[4][3] = 0
-sudoku.digits[0][1] = 0
-
-
-console.table(sudokuSolver(sudoku.digits))
+// sudoku.digits[0][8] = 0
+// sudoku.digits[0][2] = 0
+// sudoku.digits[4][3] = 0
+// sudoku.digits[0][1] = 0
