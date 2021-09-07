@@ -3,7 +3,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:28:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:44:00
+ * @LastEditTime: 2021-09-07 16:51:25
  * @Description:
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -43,12 +43,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prefetch = exports.getCompletionBaseURL = exports.getCompletionURL = exports.fetchResource = exports.getAppListStatus = void 0;
+exports.prefetch = exports.getCompletionBaseURL = exports.getCompletionURL = exports.getAppListStatus = void 0;
 var path_to_regexp_1 = require("path-to-regexp"); // 用于匹配路由的库
 var appList_1 = require("./appList");
 var enum_1 = require("./enum");
 var import_html_entry_1 = require("import-html-entry"); // 用于抽离css, js
-var cache_1 = require("./cache");
 var getAppListStatus = function () {
     var actives = [];
     var unmounts = [];
@@ -71,22 +70,12 @@ var getAppListStatus = function () {
     return { actives: actives, unmounts: unmounts };
 };
 exports.getAppListStatus = getAppListStatus;
-var fetchResource = function (url, appName) { return __awaiter(void 0, void 0, void 0, function () {
-    var data;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (cache_1.getCache(appName, url))
-                    return [2 /*return*/, cache_1.getCache(appName, url)];
-                return [4 /*yield*/, fetch(url).then(function (res) { return res.text(); })];
-            case 1:
-                data = _a.sent();
-                cache_1.setCache(appName, url, data);
-                return [2 /*return*/, data];
-        }
-    });
-}); };
-exports.fetchResource = fetchResource;
+// export const fetchResource = async (url: string, appName: string) => {
+//   if (getCache(appName, url)) return getCache(appName, url);
+//   const data = await fetch(url).then((res) => res.text());
+//   setCache(appName, url, data);
+//   return data;
+// };
 function getCompletionURL(src, baseURI) {
     if (!src)
         return src;
@@ -109,6 +98,7 @@ var prefetch = function (app) { return __awaiter(void 0, void 0, void 0, functio
                     case 0: return [4 /*yield*/, import_html_entry_1.importEntry(app.entry)];
                     case 1:
                         _a = _b.sent(), getExternalScripts = _a.getExternalScripts, getExternalStyleSheets = _a.getExternalStyleSheets;
+                        console.log('请求资源', app);
                         requestIdleCallback(getExternalStyleSheets); // 请求样式表
                         requestIdleCallback(getExternalScripts); // 请求js
                         return [2 /*return*/];

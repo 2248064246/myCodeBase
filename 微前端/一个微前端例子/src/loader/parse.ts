@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:22:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:54:47
+ * @LastEditTime: 2021-09-07 16:36:07
  * @Description:
  */
 import { getCompletionURL } from '../utils';
@@ -27,7 +27,7 @@ export const parseHTML = (parent: HTMLElement, app: IInternalAppInfo) => {
     } else if (/^(img)$/i.test(dom.tagName) && dom.hasAttribute('src')) {
       dom.setAttribute(
         'src',
-        getCompletionURL(dom.getAttribute('src')!, app.entry)!
+        getCompletionURL(dom.getAttribute('src') || '', app.entry)
       );
     }
   }
@@ -49,7 +49,10 @@ const parseScript = (
   }
   // @ts-ignore
   comment && parent.replaceChild(comment, script);
-  return { url: getCompletionURL(src, app.entry), text: script.innerHTML };
+  return {
+    url: getCompletionURL(src || '', app.entry),
+    text: script.innerHTML,
+  };
 };
 
 const parseLink = (

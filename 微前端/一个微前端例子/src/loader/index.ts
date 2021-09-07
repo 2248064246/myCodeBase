@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:22:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:52:24
+ * @LastEditTime: 2021-09-07 16:41:43
  * @Description:
  */
 import { IInternalAppInfo } from '../types';
@@ -19,8 +19,7 @@ export const loadHTML = async (app: IInternalAppInfo) => {
   if (!dom) {
     throw new Error('容器不存在');
   }
-
-  dom.innerHTML = template;
+  dom.innerHTML = template; // 此时的 template 是一个完整的html结构, 为什么到页面上 <!DOCTYPE html> <html> 这些结构没有了...
 
   await getExternalStyleSheets();
   const jsCode = await getExternalScripts();

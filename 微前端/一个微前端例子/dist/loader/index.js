@@ -52,7 +52,7 @@ var loadHTML = function (app) { return __awaiter(void 0, void 0, void 0, functio
                 if (!dom) {
                     throw new Error('容器不存在');
                 }
-                dom.innerHTML = template;
+                dom.innerHTML = template; // 此时的 template 是一个完整的html结构, 为什么到页面上 <!DOCTYPE html> <html> 这些结构没有了...
                 return [4 /*yield*/, getExternalStyleSheets()];
             case 2:
                 _b.sent();

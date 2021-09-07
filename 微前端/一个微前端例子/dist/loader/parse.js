@@ -5,7 +5,7 @@ exports.parseHTML = void 0;
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:22:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:54:47
+ * @LastEditTime: 2021-09-07 16:36:07
  * @Description:
  */
 var utils_1 = require("../utils");
@@ -27,7 +27,7 @@ var parseHTML = function (parent, app) {
             data.url && scripts.push(data.url);
         }
         else if (/^(img)$/i.test(dom.tagName) && dom.hasAttribute('src')) {
-            dom.setAttribute('src', utils_1.getCompletionURL(dom.getAttribute('src'), app.entry));
+            dom.setAttribute('src', utils_1.getCompletionURL(dom.getAttribute('src') || '', app.entry));
         }
     }
     return { scripts: scripts, links: links, inlineScript: inlineScript };
@@ -44,7 +44,10 @@ var parseScript = function (script, parent, app) {
     }
     // @ts-ignore
     comment && parent.replaceChild(comment, script);
-    return { url: utils_1.getCompletionURL(src, app.entry), text: script.innerHTML };
+    return {
+        url: utils_1.getCompletionURL(src || '', app.entry),
+        text: script.innerHTML,
+    };
 };
 var parseLink = function (link, parent, app) {
     var rel = link.getAttribute('rel');

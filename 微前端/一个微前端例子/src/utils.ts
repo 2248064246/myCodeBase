@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:28:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:44:00
+ * @LastEditTime: 2021-09-07 16:51:25
  * @Description:
  */
 
@@ -38,17 +38,16 @@ export const getAppListStatus = () => {
   return { actives, unmounts };
 };
 
-export const fetchResource = async (url: string, appName: string) => {
-  if (getCache(appName, url)) return getCache(appName, url);
-  const data = await fetch(url).then((res) => res.text());
-  setCache(appName, url, data);
-  return data;
-};
+// export const fetchResource = async (url: string, appName: string) => {
+//   if (getCache(appName, url)) return getCache(appName, url);
+//   const data = await fetch(url).then((res) => res.text());
+//   setCache(appName, url, data);
+//   return data;
+// };
 
-export function getCompletionURL(src: string | null, baseURI: string) {
+export function getCompletionURL(src: string, baseURI: string) {
   if (!src) return src;
   if (/^(https|http)/.test(src)) return src;
-
   return new URL(src, getCompletionBaseURL(baseURI)).toString();
 }
 
@@ -58,11 +57,12 @@ export function getCompletionBaseURL(url: string) {
 
 export const prefetch = async (app: IInternalAppInfo) => {
   // 使用了这个, 上面的手写的请求就不需要了
-  requestIdleCallback(async () => {
+  requestIdleCallback(async () => { // 这个会在浏览器空闲的时候请求资源
     // 这里需要 @types/requestidlecallback 库
     const { getExternalScripts, getExternalStyleSheets } = await importEntry(
       app.entry
     );
+    console.log('请求资源', app);
     requestIdleCallback(getExternalStyleSheets); // 请求样式表
     requestIdleCallback(getExternalScripts); // 请求js
   });
