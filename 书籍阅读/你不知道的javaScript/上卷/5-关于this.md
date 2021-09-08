@@ -1,5 +1,6 @@
  # 关于this
 
+> 函数中的this是在函数运行时确定的, 和函数在哪里定义无关
  ## 判断this
 
  1. 函数是否在 `new` 中调用, 是的话 `this` 就是新创建的对象 `var bar = new XXX() // this 是bar`
