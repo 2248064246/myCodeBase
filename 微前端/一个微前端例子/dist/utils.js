@@ -3,7 +3,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:28:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 16:51:25
+ * @LastEditTime: 2021-09-08 10:41:09
  * @Description:
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -53,6 +53,7 @@ var getAppListStatus = function () {
     var unmounts = [];
     var list = appList_1.getAppList();
     list.forEach(function (app) {
+        // 判断单前路由是否匹配app路径
         var isActive = path_to_regexp_1.match(app.activeRule, { end: false })(location.pathname);
         switch (app.status) {
             case enum_1.AppStatus.NOT_LOADED:
@@ -60,10 +61,10 @@ var getAppListStatus = function () {
             case enum_1.AppStatus.LOADED:
             case enum_1.AppStatus.BOOTSTRAPPING:
             case enum_1.AppStatus.NOT_MOUNTED:
-                isActive && actives.push(app);
+                isActive && actives.push(app); // 这个应该是找出待挂载的app
                 break;
             case enum_1.AppStatus.MOUNTED:
-                !isActive && unmounts.push(app);
+                !isActive && unmounts.push(app); // 找出待卸载的app
                 break;
         }
     });

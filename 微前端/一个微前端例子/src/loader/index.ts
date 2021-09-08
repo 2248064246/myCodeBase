@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:22:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 16:41:43
+ * @LastEditTime: 2021-09-08 11:21:15
  * @Description:
  */
 import { IInternalAppInfo } from '../types';
@@ -25,7 +25,7 @@ export const loadHTML = async (app: IInternalAppInfo) => {
   const jsCode = await getExternalScripts();
 
   jsCode.forEach((script) => {
-    const lifeCycle = runJS(script, app);
+    const lifeCycle = runJS(script, app); // 这里通过运行js, 找出导出的 unmount 方法
     if (lifeCycle) {
       app.bootstrap = lifeCycle.bootstrap;
       app.mount = lifeCycle.mount;

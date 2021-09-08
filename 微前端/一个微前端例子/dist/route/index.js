@@ -51,15 +51,16 @@ var originalReplace = window.history.replaceState;
 var historyEvent = null;
 var lastUrl = null;
 var reroute = function (url) {
+    console.log(url, lastUrl);
     if (url !== lastUrl) {
-        var _a = utils_1.getAppListStatus(), actives = _a.actives, unmounts = _a.unmounts;
+        var _a = utils_1.getAppListStatus(), actives = _a.actives, unmounts = _a.unmounts; // 找出待激活和待挂载的app
         Promise.all(unmounts
             .map(function (app) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, lifeCycle_1.runUnmounted(app)];
                     case 1:
-                        _a.sent();
+                        _a.sent(); // 执行卸载操作
                         return [2 /*return*/];
                 }
             });
@@ -69,18 +70,18 @@ var reroute = function (url) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, lifeCycle_1.runBeforeLoad(app)];
                     case 1:
-                        _a.sent();
+                        _a.sent(); // 待激活app运行 beforeLoad, 此时加载 HTML, css, JS
                         return [4 /*yield*/, lifeCycle_1.runBoostrap(app)];
                     case 2:
                         _a.sent();
                         return [4 /*yield*/, lifeCycle_1.runMounted(app)];
                     case 3:
-                        _a.sent();
+                        _a.sent(); // 执行挂载操作
                         return [2 /*return*/];
                 }
             });
         }); }))).then(function () {
-            callCapturedListeners();
+            // callCapturedListeners(); // 这里是为什么??? (这个的作用是什么)
         });
     }
     lastUrl = url || location.href;
@@ -95,9 +96,11 @@ var hijackRoute = function () {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        originalPush.apply(window.history, args);
-        historyEvent = new PopStateEvent('popstate');
-        args[2] && exports.reroute(args[2]);
+        // 这里重置浏览器的pushSate方法
+        // args 参数 state, title, [, url]
+        originalPush.apply(window.history, args); // 使用原有浏览器pushState 方法
+        historyEvent = new PopStateEvent('popstate'); // 自定义一个 popstate 方法, 用于监听路由变化
+        args[2] && exports.reroute(args[2]); // 调用自己的路由方法
     };
     window.history.replaceState = function () {
         var args = [];
@@ -108,8 +111,10 @@ var hijackRoute = function () {
         historyEvent = new PopStateEvent('popstate');
         args[2] && exports.reroute(args[2]);
     };
-    window.addEventListener('hashchange', handleUrlChange);
-    window.addEventListener('popstate', handleUrlChange);
+    // 以上两个是浏览器前进后退时会调用
+    window.addEventListener('hashchange', handleUrlChange); // # 路由监听
+    window.addEventListener('popstate', handleUrlChange); // 普通路由监听
+    // 而且为什么是在下面重写
     window.addEventListener = hijackEventListener(window.addEventListener);
     window.removeEventListener = hijackEventListener(window.removeEventListener);
 };
@@ -119,12 +124,15 @@ var hasListeners = function (name, fn) {
 };
 var hijackEventListener = function (func) {
     return function (name, fn) {
+        // 如果是以下事件，保存回调函数 (这里报错回调干嘛??)
         if (name === 'hashchange' || name === 'popstate') {
             if (!hasListeners(name, fn)) {
+                //
                 capturedListeners[name].push(fn);
                 return;
             }
             else {
+                // 如果存在, 会去除这个回调函数???
                 capturedListeners[name] = capturedListeners[name].filter(function (listener) { return listener !== fn; });
             }
         }
@@ -133,6 +141,7 @@ var hijackEventListener = function (func) {
 };
 function callCapturedListeners() {
     var _this = this;
+    // 后续渲染子应用后使用，用于执行之前保存的回调函数 (为什么???)
     if (historyEvent) {
         Object.keys(capturedListeners).forEach(function (eventName) {
             var listeners = capturedListeners[eventName];

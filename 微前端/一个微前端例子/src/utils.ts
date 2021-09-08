@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:28:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 16:51:25
+ * @LastEditTime: 2021-09-08 10:41:09
  * @Description:
  */
 
@@ -20,6 +20,7 @@ export const getAppListStatus = () => {
   const list = getAppList() as IInternalAppInfo[];
 
   list.forEach((app) => {
+    // 判断单前路由是否匹配app路径
     const isActive = match(app.activeRule, { end: false })(location.pathname);
     switch (app.status) {
       case AppStatus.NOT_LOADED:
@@ -27,10 +28,10 @@ export const getAppListStatus = () => {
       case AppStatus.LOADED:
       case AppStatus.BOOTSTRAPPING:
       case AppStatus.NOT_MOUNTED:
-        isActive && actives.push(app);
+        isActive && actives.push(app); // 这个应该是找出待挂载的app
         break;
       case AppStatus.MOUNTED:
-        !isActive && unmounts.push(app);
+        !isActive && unmounts.push(app); // 找出待卸载的app
         break;
     }
   });

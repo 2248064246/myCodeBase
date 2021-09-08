@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:21:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:55:27
+ * @LastEditTime: 2021-09-08 11:13:55
  * @Description:
  */
 
@@ -46,17 +46,18 @@ export const runMounted = async (app: IInternalAppInfo) => {
 
 export const runUnmounted = async (app: IInternalAppInfo) => {
   app.status = AppStatus.UNMOUNTING;
-  app.proxy.inactive();
-  await app.unmount?.(app);
+  console.log('取消挂载', app)
+  app.proxy.inactive(); // 将此app沙箱设置为失活
+  await app.unmount?.(app); // 等待app自身的 unmount 方法卸载app
   app.status = AppStatus.NOT_MOUNTED;
-  await runLifeCycle('unmounted', app);
+  await runLifeCycle('unmounted', app); // 运行声明周期
 };
 
 const runLifeCycle = async (name: keyof ILifeCycle, app: IAppInfo) => {
-  const fn = lifeCycle[name];
+  const fn = lifeCycle[name]; // 这里调用声明中期方法
   if (fn instanceof Array) {
     await Promise.all(fn.map((item) => item(app)));
   } else {
-    await fn?.(app);
+    await fn?.(app); // 函数也可以这么用啊...
   }
 };

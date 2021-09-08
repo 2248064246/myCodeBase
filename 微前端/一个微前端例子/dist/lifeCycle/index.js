@@ -3,7 +3,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:21:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:55:27
+ * @LastEditTime: 2021-09-08 11:13:55
  * @Description:
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -114,14 +114,15 @@ var runUnmounted = function (app) { return __awaiter(void 0, void 0, void 0, fun
         switch (_b.label) {
             case 0:
                 app.status = enum_1.AppStatus.UNMOUNTING;
-                app.proxy.inactive();
+                console.log('取消挂载', app);
+                app.proxy.inactive(); // 将此app沙箱设置为失活
                 return [4 /*yield*/, ((_a = app.unmount) === null || _a === void 0 ? void 0 : _a.call(app, app))];
             case 1:
-                _b.sent();
+                _b.sent(); // 等待app自身的 unmount 方法卸载app
                 app.status = enum_1.AppStatus.NOT_MOUNTED;
                 return [4 /*yield*/, runLifeCycle('unmounted', app)];
             case 2:
-                _b.sent();
+                _b.sent(); // 运行声明周期
                 return [2 /*return*/];
         }
     });
@@ -140,7 +141,7 @@ var runLifeCycle = function (name, app) { return __awaiter(void 0, void 0, void 
                 return [3 /*break*/, 4];
             case 2: return [4 /*yield*/, (fn === null || fn === void 0 ? void 0 : fn(app))];
             case 3:
-                _a.sent();
+                _a.sent(); // 函数也可以这么用啊...
                 _a.label = 4;
             case 4: return [2 /*return*/];
         }

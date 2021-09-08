@@ -60,7 +60,7 @@ var loadHTML = function (app) { return __awaiter(void 0, void 0, void 0, functio
             case 3:
                 jsCode = _b.sent();
                 jsCode.forEach(function (script) {
-                    var lifeCycle = runJS(script, app);
+                    var lifeCycle = runJS(script, app); // 这里通过运行js, 找出导出的 unmount 方法
                     if (lifeCycle) {
                         app.bootstrap = lifeCycle.bootstrap;
                         app.mount = lifeCycle.mount;

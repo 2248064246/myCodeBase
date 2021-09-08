@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 14:56:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 16:32:43
+ * @LastEditTime: 2021-09-08 11:16:02
  * @Description:
  */
 import React from 'react';
@@ -26,7 +26,7 @@ const appList = [
     activeRule: '/vue',
     container: '#micro-container',
     entry: 'http://localhost:8080',
-  }
+  },
 ];
 
 // If you want to start measuring performance in your app, pass a function

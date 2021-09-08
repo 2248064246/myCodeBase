@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-07 15:03:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-07 15:13:44
+ * @LastEditTime: 2021-09-08 10:03:48
  * @Description:
  */
 
@@ -16,7 +16,7 @@ export interface IAppInfo {
   activeRule: string;
 }
 
-export interface IInternalAppInfo extends IAppInfo {
+export interface IInternalAppInfo extends IAppInfo { // 定义应用状态, 卸载方法, 加载方法
   status: AppStatus;
   bootstrap?: LifCycle;
   mount?: LifCycle;
@@ -29,7 +29,7 @@ export type LifCycle = (app: IAppInfo) => Promise<any>;
 export type EventType = 'hashchange' | 'popstate';
 
 export interface ILifeCycle {
-  beforeLoad?: LifCycle | LifCycle[];
+  beforeLoad?: LifCycle | LifCycle[]; 
   mounted?: LifCycle | LifCycle[];
   unmounted?: LifCycle | LifCycle[];
 }
