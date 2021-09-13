@@ -39,3 +39,23 @@ shadowRootInit: Object
     + 一个布尔值, 当设置为 true 时, 指定减轻自定义元素的聚焦性能问题行为.当shadow DOM中不可聚焦的部分被点击时, 让第一个可聚焦的部分成为焦点, 并且shadow host（影子主机）将提供所有可用的 :focus 样式.
   + 
 
+### ShadowRoot
+
+通过此API可以通过JS获取 shadow DOM, 继而获取里面的DOM元素
+
+记住shadow DOM 也是一个DOM(继承自 Document), 可以执行DOM操作
+
+```js
+Element.shadowRoot
+```
+
+相关属性
++ host 返回shadowRoot 附加的宿主DOM
+```js
+shadowRoot.host
+```
++ innerHTML 内部DOM数
++ mode 返回shadowRoot模式, open: 可获取, closed: 不可获取
++ styleSheets 返回 CSSStyleSheet 的 StyleSheetList 对象，用于代表通过链接加载到文档中或内嵌的样式表。
+
+
