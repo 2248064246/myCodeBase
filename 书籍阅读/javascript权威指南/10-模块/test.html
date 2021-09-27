@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="box1"></div>
+  <script>
+    console.log('默认 script', document.getElementById('box1'), document.getElementById('box2'))
+  </script>
+  <div id="box2"></div>
+  <script type="module">
+    console.log('module script', document.getElementById('box2'), document.getElementById('box3'))
+  </script>
+  <div id="box3"></div>
+</body>
+
+</html>
