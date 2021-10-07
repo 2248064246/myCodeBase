@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-08 12:48:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-08 13:28:53
+ * @LastEditTime: 2021-10-07 21:03:03
  * @Description: 
  */
 let rsAstralRange = '\\ud800-\\udfff',
@@ -45,4 +45,10 @@ function unicodeToArray(val) {
 function asciiToArray(val) {
   return val.split('');
 }
+
+let c = '❤️😂' 
+
+toArray(c) // => ['❤️', '😂']
+
+
 
