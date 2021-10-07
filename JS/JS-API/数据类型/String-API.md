@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-30 17:16:50
- * @LastEditTime: 2021-05-30 19:26:17
+ * @LastEditTime: 2021-10-01 22:35:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-code-base\JS\JS-API\数据类型\String-API.md
@@ -11,8 +11,52 @@
 
 ## String 静态方法
 
-+ `fromCharCode` 通过字符串 `utf-16 code` 还原字符串 | `IE 9`
-+ `fromCodePoint` 通过一串 Unicode 编码位置返回对应字符串 | `不支持IE`
++ `fromCharCode` 返回由指定的 UTF-16 代码单元序列创建的字符串 | `IE 9`
+  ```js
+    /* 可以输入十进制数值, 也可以是16进制 */
+    String.fromCharCode(65, 66, 67);   // 返回 "ABC" 
+    String.fromCharCode(0x2014);       // 返回 "—"
+  ```
+  **关于补充字符**
+
+  在 UTF-16 中，绝大部分常用的字符可以用一个 16 位的值表示（即一个代码单元）。然而，有一类字符叫 Base Multilingual Plane (BMP)，是所有可寻址的 Unicode 码点的 1/17th。剩下的码点，从范围 65536 (0x010000) 到 1114111 (0x10FFFF) 被称之为补充字符。在 UTF-16 中，补充字符也叫代理（surrogates），用两个 16 位代码单元表示，它是有目的被保留下来的。两个代理（surrogates）形成一个有效组合，也叫代理对，可以用来表示一个补充字符。
+
+  类似于表情图标, 基本上都是2个UTF-16单元
+  ```js
+  // 返回码点 U+1F303 "
+  String.fromCharCode(0xD83C, 0xDF03) // => '🌃'
+
+  // 可以通过 fromCodePoint() 更加方便获取这个码点对应的字符
+  String.fromCodePoint(0x1F303) // => '🌃'
+  ```
++ `fromCodePoint` 返回使用指定的代码点序列创建的字符串 | `不支持IE`
+  ```js
+
+  ``` 
++ `raw` 是用来获取一个模板字符串的原始字符串的(即会执行模板字符串, 然后返回正常的字符串, 注意: 不会进行任何转义)
+  ```js
+  String.raw`Hi\n${2+3}!`;
+  // 'Hi\n5!'，Hi 后面的字符不是换行符，\ 和 n 是两个不同的字符
+
+  String.raw `Hi\u000A!`;
+  // "Hi\u000A!"，同上，这里得到的会是 \、u、0、0、0、A 6个字符，
+  // 任何类型的转义形式都会失效，保留原样输出，不信你试试.length
+
+  let name = "Bob";
+  String.raw `Hi\n${name}!`;
+  // "Hi\nBob!"，内插表达式还可以正常运行
+
+  String.raw({raw: ['Hi\n', '']}, name) // 上面的等同于这个这个调用
+
+  // 正常情况下，你也许不需要将 String.raw() 当作函数调用。
+  // 但是为了模拟 `t${0}e${1}s${2}t` 你可以这样做:
+  String.raw({ raw: 'test' }, 0, 1, 2); // 't0e1s2t'
+  // 注意这个测试, 传入一个 string, 和一个类似数组的对象
+  // 下面这个函数和 `foo${2 + 3}bar${'Java' + 'Script'}baz` 是相等的.
+  String.raw({
+    raw: ['foo', 'bar', 'baz']
+  }, 2 + 3, 'Java' + 'Script'); // 'foo5barJavaScriptbaz'
+  ```
 
 ## String 静态属性
 
