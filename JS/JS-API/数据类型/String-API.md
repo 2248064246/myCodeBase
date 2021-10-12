@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-30 17:16:50
- * @LastEditTime: 2021-10-09 15:38:10
+ * @LastEditTime: 2021-10-12 21:40:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \my-code-base\JS\JS-API\数据类型\String-API.md
@@ -106,16 +106,16 @@
 + `codePointAt(index)` 返回 一个 Unicode 编码点值的非负整数(和 charCodeAt 非常相似)
 + `toUpperCase`
 + `toLowerCase`
-+ `startWidth(str[, position])`
++ `startsWith(str[, position])`
   + 判断字符串是否以某个字符开头, 返回 Boolean
-+ `endWidth(str[, position])`
++ `endsWith(str[, position])`
 + `repeat(num)`
   + num 重复次数
   + 返回 重复后的字符串
 + `search(regexp)`
   + regexp 正则对象
   + 返回 匹配字符的 index 位置
-+ `localCompare(otherStr)`
++ `localeCompare(otherStr)`
   + 可以比较本地字符(例如 可以比较中文, 按照拼音比较)
 ## String 原型属性
 
