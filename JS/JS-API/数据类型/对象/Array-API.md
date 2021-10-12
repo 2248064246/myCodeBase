@@ -8,8 +8,8 @@
 + `of(element[, ...])`
   > 从可变数量参数创建数组
 
-+ `form`
-  > 从可迭代对象中穿件数组
++ `from`
+  > 从类数组或可迭代对象中穿件数组
 
 
 ## 数组原型方法
@@ -128,7 +128,9 @@
 + `every`
   > 判断数组的元素是否全部符合要求, 返回 Boolean
 
-+ `reduce(func, startValue)`
++ `reduce(func(accumulator, currentValue, currentIndex, array), startValue)`
+  > 回调函数第一次执行时，accumulator 和currentValue的取值有两种情况：如果调用reduce()时提供了initialValue，accumulator取值为initialValue，currentValue取数组中的第一个值；如果没有提供 initialValue，那么accumulator取数组中的第一个值，currentValue取数组中的第二个值。
+
   > 汇总数组元素的方法, 返回回调函数中的值 (只会循环 array.length -1 次)
 
   > startValue 是对 func 累计器的初始化值, 没有的话startValue会是数组的第一项
@@ -201,6 +203,17 @@
 
 + `flat([depth])`
   > 数组展平方法,  depth 默认 1
+
++ `flatMap(fun)`
+  > 等同 `map().flat()`
+
+## ES2021
+
++ `at(index)`
+  > 返回指定位置的数据, index可以为负值
+
+ 
+
 
 
 
