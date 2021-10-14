@@ -89,3 +89,31 @@
 
 `values(obj)`
   + 返回给定对象自生可枚举值的数组(不包括 Symbol)
+
+## 原型属性
+
+`constructor`
+
+`__proto__`
+
+
+## 原型方法
+
+`hasOwnProperty(prop)`
+  + 返回一个Boolean, 表示对象自身上是否包含指定的属性(支持 Symbol)
+
+`isPrototypeOf(object)` 
+  + 检查一个对象是否存在于另一个对象的原型上
+
+`propertyIsEnumerable(prop)`
+  + 检测一个属性是否可枚举
+
+`toLocalString(参数同 lang 属性)` 
+  + 将对象转为本地字符串
+
+`toString()`
+  + 返回一个表示该对象的字符串:  `[object type]`
+
+`valueOf()`
+  + 将对象转换为原始值。
+  + 当遇到要预期的原始值的对象时，JavaScript会自动调用它。例如: 大小判断, 四则运算
