@@ -64,3 +64,24 @@ HTML外部资源链接元素 `(<link>)` 规定了当前文档与外部资源的�
 + use-credentials
 [更多详情参阅MDN link](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link)
 
+## 属性
+
+`rel`
+  + 此属性命名链接文档与当前文档的关系
+  + 该属性必须是[链接类型值](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Link_types)
+  + 常见的就是 `stylesheet` 和 `icon`
+
+`href`
+
+`type`
+  + type 表示的是文件的 MIME 类型
+  + 现在基本上不需要这个属性了, 浏览器会更久文件后缀自动识别文件类型
+
+`media`
+  + 这个属性规定了外部资源适用的媒体类型
+  + 它的值必须是[媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Media_Queries/Using_media_queries)
+  + 这个属性使得用户代理能选择最适合设备运行的媒体类型。
+
+
+
+
