@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+    const customerData = [{
+        ssn: "444-44-4444",
+        name: "Bill",
+        age: 35,
+        email: "bill@company.com"
+      },
+      {
+        ssn: "444-44-5555",
+        name: "Bill",
+        age: 39,
+        email: "bill2@company.com"
+      },
+      {
+        ssn: "555-55-5555",
+        name: "Donna",
+        age: 32,
+        email: "donna@home.org",
+        friend: new Set([1, 2, 3])
+      }
+    ];
+
+    const dbName = 'test_name'
+
+    let request = indexedDB.open(dbName, 8)
+
+    request.onerror = function (event) {
+      console.log('request error', event)
+    }
+
+    request.onsuccess = function (event) {
+      console.log('request success', event)
+
+      let db = request.result
+
+      let objectStore = db.transaction('customers', 'readwrite').objectStore('customers')
+
+      let elements = objectStore.get('555-55-5555')
+      console.log(elements)
+      elements.onsuccess = function (result) {
+        console.log('获取数据结果', elements.result)
+
+        var data = elements.result
+
+        data.age = 123
+
+        // 把更新过的对象放回数据库
+        var requestUpdate = objectStore.put(data);
+        requestUpdate.onerror = function (event) {
+          // 错误处理
+        };
+        requestUpdate.onsuccess = function (event) {
+          // 完成，数据已更新！
+          console.log('完成，数据已更新！')
+        };
+
+      }
+
+      let elementIndex = objectStore.index('name')
+      console.log(elementIndex)
+      console.log(elementIndex.getAll('Bill'))
+
+      console.log('db', db)
+
+      objectStore.openCursor().onsuccess = function (event) {
+        var cursor = event.target.result
+
+        if (cursor) {
+          console.log(cursor)
+          cursor.continue();
+        } else {
+        }
+      }
+
+
+    }
+
+    request.onupgradeneeded = function (event) {
+      console.log('request upgradeneeded', event)
+
+      /* 获取 IDBDatabase 对象 */
+      let db = request.result
+
+      /* 创建一个对象仓库 */
+      let objectStore = db.createObjectStore('customers', {
+        keyPath: 'ssn',
+      })
+
+
+      // 建立一个索引来通过姓名来搜索客户。名字可能会重复，所以我们不能使用 unique 索引
+      objectStore.createIndex('name', 'name', {
+        unique: false
+      })
+      // 使用邮箱建立索引，我们向确保客户的邮箱不会重复，所以我们使用 unique 索引
+      objectStore.createIndex('email', 'email', {
+        unique: true
+      })
+
+      // 使用事务的 oncomplete 事件确保在插入数据前对象仓库已经创建完毕
+      objectStore.transaction.oncomplete = function (event) {
+        // 将数据保存到新创建的对象仓库
+        var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
+        customerData.forEach(function (customer) {
+          let re = customerObjectStore.add(customer);
+        });
+      };
+    }
+
+    request.onblocked = function (event) {
+      console.log('request blocked', event)
+    }
+  </script>
+
+</body>
+
+</html>
