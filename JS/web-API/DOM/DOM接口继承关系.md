@@ -6,5 +6,5 @@
                       | CharacterData     
 EventTarget -> Node ->| Element  -> HTMLElement -> | HTMLHeadElement
                       | Attr                       | HTMLTitleElement
-                      | HTMLBodyElement     
+                                                   | HTMLBodyElement     
 ```
