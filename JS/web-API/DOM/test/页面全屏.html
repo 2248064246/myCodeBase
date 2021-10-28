@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>hello world</h1>
+  <script>
+    function fullscreen() {
+      let html = document.documentElement
+      return html.requestFullscreen()
+    }
+
+    window.onload = function () {
+      /* 这里在控制台是能够全屏的, 但是在代码中不可以 */
+      /* 这说明控制台的权限 和 文档中的代码权限是不同的 */
+      fullscreen().then(res => {
+        console.log('全屏成功', res)
+      }).catch(err => {
+        console.log('全屏失败', err)
+      })
+    }
+
+    /**
+     * 实际上想要在代码中控制页面全屏是不可能了(以前或许还有可能, 现在浏览器都不允许这么操作)
+     * 先来说几个思路: 
+     *  1. 使用 requestFullscreen API
+     *  2. 使用自定义事件, 发送对应全屏事件 (不行)
+     *  3. 使用自定义事件, 发送对应 f11 事件  (不行)
+     *      自定义事件并不能触发DOM行为, 只是能够触发对应的监听
+     */
+
+    function fullscreenByF11() {
+      let event = document.createEvent('KeyboardEvent')
+      event.initKeyboardEvent('keypress', true, true, window, 'f11', 87, false, false, false, false)
+      
+      
+      document.dispatchEvent(event)
+
+      document.createEvent('UIEvent')
+    }
+    document.addEventListener('keypress', (event) => {console.log(event)}) /* 这里有一个问题, f1-f12 这些按键监听不到(包括那些功能按键 home, end等) */
+    fullscreenByF11()
+
+  </script>
+</body>
+
+</html>

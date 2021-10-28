@@ -3,6 +3,8 @@
 
 此接口可以通过 `window.HTMLDocument` 获取
 
+此接口某种程度上是对 `Document` 的扩展
+
 
 ## 属性
 

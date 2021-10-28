@@ -7,6 +7,10 @@
 
  HTML 文档还实现了 HTMLDocument 即接口
 
+ ## 构造函数
+
+ `Document()`
+
 ## 属性
 
 + `anchors`

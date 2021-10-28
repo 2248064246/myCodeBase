@@ -11,6 +11,8 @@ EventTarget 是一个 DOM 接口，由可以接收事件、并且可以创建侦
 
 ## 构造函数
 
+> 可以通过 new 关键字, 创建实例
+
 `EventTarget`
 
 
