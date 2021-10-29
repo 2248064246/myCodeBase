@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+
+    function test1() {
+      console.log('123')
+      for(let i = 0; i< 100000000; i++) {
+
+      }
+      console.log('test 1')
+    }
+
+    function test2(args) {
+      console.log('test2', args)
+      console.log(args.timeRemaining())
+    }
+
+    test1()
+    setTimeout(() => {
+      console.log('setTimeout') 
+    })
+    setTimeout(() => {
+      console.log('setTimeout2') 
+    }, 2000)
+    let id=  window.requestIdleCallback(test2)
+    console.log(id)
+    
+    // console.log(IdleDeadline)
+  </script>
+
+</body>
+</html>

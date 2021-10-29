@@ -44,7 +44,9 @@
 
       document.createEvent('UIEvent')
     }
-    document.addEventListener('keypress', (event) => {console.log(event)}) /* 这里有一个问题, f1-f12 这些按键监听不到(包括那些功能按键 home, end等) */
+    document.addEventListener('keypress', (event) => {
+      fullscreen()
+    }) /* 这里有一个问题, f1-f12 这些按键监听不到(包括那些功能按键 home, end等) */
     fullscreenByF11()
 
   </script>
