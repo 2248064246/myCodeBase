@@ -31,7 +31,7 @@ Web蓝牙API提供了与蓝牙低能耗外设连接和交互的能力
  可以实现同 源 下浏览器不同窗口，Tab页，frame或者 iframe 下的 浏览器上下文 (通常是同一个网站下不同的页面)之间的简单通讯。
 
 
-`CSS Counter API` | `chrome 91+`
+`CSS Counter Styles` | `chrome 91+`
 CSS Counter Styles模块允许定义自定义计数器样式，可以用于CSS列表标记和生成内容计数器(不明所以)
 
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .test1 {
+      list-style: test;
+    }
+
+    .test2 {
+      list-style: test2;
+    }
+
+    @counter-style test {
+      system: symbolic;
+      symbols: ❶ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ;
+      suffix: "-";
+      prefix: '!'
+    }
+
+    @counter-style test2 {
+      system: symbolic;
+      symbols: "\25A0""\25A1";
+      range: 2 10;
+      /* fallback: circle */
+    }
+  </style>
+</head>
+
+<body>
+  <ul class="test1">
+    <li>JavaScript</li>
+    <li>CSS</li>
+    <li>HTML</li>
+  </ul>
+
+  <ul class="test2">
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+    <li>Four</li>
+    <li>Five</li>
+    <li>Six</li>
+    <li>Seven</li>
+    <li>Eight</li>
+    <li>Nine</li>
+    <li>Ten</li>
+  </ul>
+
+  <script>
+    let ul = document.styleSheets
+  </script>
+</body>
+
+</html>
