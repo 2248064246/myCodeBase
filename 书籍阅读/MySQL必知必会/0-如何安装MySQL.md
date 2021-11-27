@@ -59,10 +59,12 @@
 + 变量值: 解压目录
   
 给Path添加新值
-+ `%MY_SQL%\bin`
++ `%MYSQL_HOME%\bin`
 
 ### 安装 SQL
 **运行管理权限cmd,** 执行 mysqld -install
+
+如果要删除 MySQL 服务 `mysqld -remove`
 
 ### 启动服务
 运行管理员权限cmd, 执行 `net start mysql`
@@ -77,3 +79,10 @@
 use mysql;
 update user set authentication_string=password('12345') where user='root'; 
 ```
+
+
+## 错误情况
+
+如果这种安装方式报 3534 错误, 且无法解决(我在笔记本可以安装, 到台式机怎么都成功不了, 而且都是一样的系统)
+
+这是可以尝试去官网安装 msi 的版本, 简单方便 `https://dev.mysql.com/downloads/windows/installer/8.0.html`
