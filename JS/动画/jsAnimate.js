@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-04-13 17:05:37
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-04-13 23:47:13
+ * @LastEditTime: 2021-11-28 11:24:22
  * @Description: 
  */
 
@@ -328,7 +328,7 @@ class SimpleAnime {
   }
 
   play() {
-
+    this.setRequestFrame()
   }
 
   static getStyle(element, styles) {
