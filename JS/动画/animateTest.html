@@ -2,7 +2,7 @@
  * @Author: ys4225/黄迎李
  * @Date: 2021-04-13 22:40:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-04-13 23:22:45
+ * @LastEditTime: 2021-11-28 11:24:54
  * @Description: 
 -->
 
@@ -39,12 +39,13 @@
     var anime = new SimpleAnime({
       el: box,
       styles: {
-        left: 150
+        left: 250
       },
       duration: 1000,
       delay: 0,
-      timingFunc: new AnimTimingFunc().Quad.easeInOut
+      timingFunc: new AnimTimingFunc().Cubic.easeOut
     })
+    anime.play()
   </script>
 </body>
 
