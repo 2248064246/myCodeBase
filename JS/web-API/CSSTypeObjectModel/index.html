@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button>按钮</button>
+  <script>
+    // get the button element
+    const buttonEl = document.querySelector('button');
+
+    // set padding-top on button style attribute
+    buttonEl.attributeStyleMap.set('padding-top', CSS.px(10));
+    buttonEl.attributeStyleMap.set('width', CSS.px(80))
+
+    // 很不错, 很不错, 比 style 好用多了
+    // 只不过目前需要很新的浏览器才能兼容
+    //mdn Object;
+  </script>
+</body>
+
+</html>
