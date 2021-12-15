@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h2>hell world</h2>
+  <button>点击复制</button>
+
+  <div>复制结果将展示在下面</div>
+  <div class="editor"></div>
+  <script>
+    let buttonDom = document.querySelector('button')
+
+    let div = document.querySelector('.editor')
+
+    buttonDom.onclick = function () {
+      let copy = document.querySelector('h2')
+      navigator.clipboard.writeText(copy.textContent).then(() => {
+        // 设置成功
+        div.innerHTML = copy.textContent
+      }).catch(err => {
+        // 设置失败
+        console.log(err)
+      })
+    }
+
+    // 只能够监听页面的copy事件
+    // clipboard API 并不会触发 `copy`, `cut`,`paste`事件
+    window.addEventListener('copy', function (e) {
+      console.log('copy', e) // 这里拿不到复制的值
+      // 读取系统剪贴板里面的数据
+      navigator.clipboard.readText().then(text => {
+        div.innerHTML = text
+      })
+    })
+  </script>
+</body>
+
+</html>

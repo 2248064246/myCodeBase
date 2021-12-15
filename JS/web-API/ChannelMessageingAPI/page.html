@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  这是第一个iframe
+  <ul>
+
+  </ul>
+
+  <script>
+    var list = document.querySelector('ul');
+    // Listen for the intial port transfer message
+    window.addEventListener('message', initPort);
+
+    // Setup the transfered port
+    function initPort(e) {
+      console.log('xxx', e)
+      port2 = e.ports[0];
+      port2.onmessage = onMessage; // 通过port2监听消息
+    }
+
+    function onMessage(e) {
+      var listItem = document.createElement('li');
+      listItem.textContent = e.data;
+      list.appendChild(listItem);
+      port2.postMessage('消息收到了') // 向port1发送消息
+    }
+  </script>
+</body>
+
+</html>
