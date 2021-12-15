@@ -10,6 +10,26 @@
 
 <body>
 
+  <script>
+    let pwdCredential = new PasswordCredential({
+      id: 'example',
+      name: 'Tom',
+      password: 'HYL123lh'
+    })
+
+    // navigator.credentials.store(pwdCredential).then(creds => {
+    //   console.log(creds)
+    // }).catch(err => {
+    //   console.log(err)
+    // })
+
+    navigator.credentials.get({
+      password: true
+    }).then(creds => {
+      console.log(creds)
+      // navigator.credentials.preventSilentAccess()
+    })
+  </script>
 </body>
 
 </html>
