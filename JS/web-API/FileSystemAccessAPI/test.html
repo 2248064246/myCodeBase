@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button onclick="getFile()">获取文件</button>
+  <button onclick="getDir()">获取目录</button>
+
+  <div>文件内容</div>
+  <p></p>
+
+  <div>目录结构</div>
+  <ul>
+
+  </ul>
+  <script>
+    let fileHandle;
+    let dirHandle
+
+    async function getFile() {
+      // open file picker
+      [fileHandle] = await window.showOpenFilePicker({
+        // types: [{
+        //   description: 'Images',
+        //   accept: {
+        //     'image/x': ['.png', '.gif', '.jpeg', '.jpg']
+        //   }
+        // }, ],
+        // excludeAcceptAllOption: true,
+        multiple: true
+      });
+
+      console.log(fileHandle)
+      await fileHandle.getFile().then(file => {
+        console.log(file)
+        let reader = new FileReader()
+        reader.onload = function () {
+          console.log(reader.result)
+          document.querySelector('p').innerHTML = reader.result
+        }
+        reader.readAsText(file, 'utf-8')
+
+      })
+        
+      await writeFile(fileHandle, 'xxxxxx')
+
+    }
+
+    async function writeFile(fileHandle, contents) {
+      // Create a FileSystemWritableFileStream to write to.
+      const writable = await fileHandle.createWritable();
+
+      // Write the contents of the file to the stream.
+      await writable.write(contents);
+
+      // Close the file and write the contents to disk.
+      await writable.close();
+    }
+
+    async function getDir() {
+      dirHandle = await window.showDirectoryPicker()
+      for await (const file of dirHandle.values()) {
+        console.log('name:', file.name, '    type:', file.kind)
+      }
+    }
+  </script>
+</body>
+
+</html>
