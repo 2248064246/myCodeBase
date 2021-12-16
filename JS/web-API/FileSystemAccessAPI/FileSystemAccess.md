@@ -104,3 +104,17 @@ async function writeFile(fileHandle, contents) {
   await writable.close();
 }
 ```
+
+**FileSystemDirectoryHandle**
+
+方法
++ keys() 返回一个异步迭代器, 值是文件/文件夹名称
++ values() 返回一个异步迭代器, 值是一个对象, {name:文件名称, kind: 文件类型(directory, file)}
++ entries() 返回一个异步迭代器, 只是一个数组`[key, value]`
++ getFileHandle()
++ getDirectoryHandle()
++ resolve() 
+  + 返回一个包含从父句柄到指定子条目的目录名的数组，子条目的名称作为最后一个数组项。
+  + 不懂
++ removeEntry()
+  + 如果目录句柄包含称为指定名称的文件或目录，则尝试删除条目。

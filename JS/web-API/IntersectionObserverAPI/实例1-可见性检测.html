@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      height: 100vh;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #wrapper {
+      width: 300px;
+      height: 400px;
+      display: flex;
+      /* justify-content: center; */
+      align-items: center;
+      flex-direction: column;
+      overflow: auto;
+    }
+
+    .box {
+      flex-shrink: 0;
+      width: 200px;
+      height: 200px;
+      margin: 20px 0;
+      background-color: rgb(243, 230, 194);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid goldenrod;
+    }
+
+    .top,
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .num {
+      height: 20px;
+      width: 40px;
+      background-color: rgb(230, 253, 208);
+      font-size: 12px;
+      color: rgb(3, 145, 240);
+      text-align: center;
+      line-height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="box" id="box1">
+      <div class="top">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+      <div class="bottom">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+    </div>
+    <div class="box" id="box2">
+      <div class="top">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+      <div class="bottom">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+    </div>
+    <div class="box" id="box3">
+      <div class="top">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+      <div class="bottom">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+    </div>
+    <div class="box" id="box4">
+      <div class="top">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+      <div class="bottom">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+    </div>
+    <div class="box" id="box5">
+      <div class="top">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+      <div class="bottom">
+        <div class="num left"></div>
+        <div class="num rgiht"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let options = {
+      root: document.querySelector('#wrapper'),
+      rootMargin: '0px',
+      threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    };
+
+    function callback(entries, observer) {
+      entries.forEach(entry => {
+        let ele = entry.target
+        ele.querySelectorAll('.num').forEach(el => {
+          el.innerHTML = Number(entry.intersectionRatio * 100).toFixed(0) + '%'
+        })
+      })
+    }
+
+    let observer = new IntersectionObserver(callback, options);
+    document.querySelectorAll('.box').forEach(ele => {
+      observer.observe(ele)
+    })
+  </script>
+</body>
+
+</html>
