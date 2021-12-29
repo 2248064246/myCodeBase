@@ -16,6 +16,11 @@
     console.log('这是异步脚本')
   </script>
   <script src="./async.js" async></script>
+  <script type="module">
+    import m from './module.js'
+
+    console.log('name:', m.name, '   age:', m.age);
+  </script>
   <script>
     console.log('这是普通脚本')
     window.addEventListener('DOMContentLoaded', () => {
