@@ -76,3 +76,21 @@ web 子资源完整性检查 -- 检查网页中的资源是否是你自己的资
 
 具体查看 `浏览器相关/Web安全/子资源完整性检查`
 
+## nonce
+
+用于 `Content-Security-Policy(内容安全策略)`
+
+
+```
+// 响应头
+Content-Security-Policy: script-src 'nonce-2726c7f26c'
+
+
+// 
+<script nonce="2726c7f26c">
+  var inline = 1;
+</script>
+
+```
+
+详细示例查看 `浏览器相关/Web安全/内容安全策略`
