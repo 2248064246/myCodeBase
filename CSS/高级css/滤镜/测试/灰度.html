@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    img {
+      filter: saturate(50%);
+      /* filter: grayscale(50%); */
+      /* filter: url(#grayscale); */
+    }
+  </style>
+</head>
+
+<body>
+  <img src="./天使彦.jpg" alt="">
+
+  <svg color-interpolation-filters="sRGB">
+    <filter id="grayscale">
+      <!-- <feColorMatrix type="matrix" values="
+				  .299 .587 .114 0 0
+				  .299 .587 .114 0 0
+				  .299 .587 .114 0 0
+				   0  0  0 1 0 " /> -->
+      <feColorMatrix type="saturate" values="0.5" />
+    </filter>
+  </svg>
+</body>
+
+</html>

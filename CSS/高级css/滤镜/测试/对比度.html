@@ -6,28 +6,25 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
   <style>
     img {
-      /* filter: url(#brightness); */
-      filter: brightness(0%);
+      filter: url(#contrast);
+      /* filter: contrast(2); */
     }
   </style>
 </head>
 
 <body>
+  <img src="./天使彦.jpg" alt="" srcset="">
 
-  <img src="./天使彦.jpg" alt="">
-
-  <svg>
-    <filter id="brightness">
+  <svg color-interpolation-filters="sRGB">
+    <filter id="contrast">
       <feComponentTransfer>
-        <feFuncR type="linear" slope="0.5" />
-        <feFuncG type="linear" slope="0.5" />
-        <feFuncB type="linear" slope="1" />
+        <feFuncR type="linear" slope="2" intercept="-0.5" />
+        <feFuncG type="linear" slope="2" intercept="-0.5" />
+        <feFuncB type="linear" slope="2" intercept="-0.5" />
       </feComponentTransfer>
     </filter>
-
   </svg>
 </body>
 
