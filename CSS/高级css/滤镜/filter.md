@@ -151,4 +151,107 @@ css 中 grayscale 可以指定多种数值, svg 如何实现呢?
 </svg>
 ```
 
+### hue-rotate() 色相旋转
 
+角度没有最大值, 但是超过 360deg 相当于又绕了一圈. 默认是 0deg, 此时图像没有任何变化
+
+```css
+filter: hue-rotate(90deg);
+```
+
+```html
+<svg color-interpolation-filters="sRGB">
+  <filter id="svgHueRotate">
+    <feColorMatrix type="hueRotate" values="[angle]" />
+    <filter />
+  </filter>
+</svg>
+```
+
+### invert() 反色
+
+值在 0% ~ 100% 之间, 100%是完全反转. 默认 0
+
+```css
+filter: invert(100%);
+```
+
+svg 中 amount 使用的是 0~1 的数值, 在为 1 时完全和 invert(100%) 一致.
+
+但是在中间值会有点差异, 估计并不是直接 `-[amount]`, 而是有一个线性算法
+
+```html
+<svg color-interpolation-filters="sRGB">
+  <filter id="svgInvert">
+    <feColorMatrix
+      type="matrix"
+      values="-[amount] 0 0 0 1 
+              0 -[amount] 0 0 1 
+              0 0 -[amount] 0 1 
+              0 0  0 1 0 "
+    />
+  </filter>
+</svg>
+```
+
+### opacity() 透明度
+
+值在 0%~100%, 0%是完全透明
+
+```css
+filter: opacity(0%);
+```
+
+```html
+<!-- 通过控制 A 通道实现透明度变化 -->
+<svg color-interpolation-filters="sRGB">
+  <filter id="svgOpacity2">
+    <feComponentTransfer>
+      <feFuncA type="linear" slope="[amount]" />
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+<!-- 通过颜色矩阵控制A通道 -->
+<svg color-interpolation-filters="sRGB">
+  <filter id="svgOpacity">
+    <feColorMatrix
+      values="1 0 0 0   0 
+              0 1 0 0   0 
+              0 0 1 0   0 
+              0 0 0 amount 0 "
+    />
+  </filter>
+</svg>
+```
+
+### saturate() 饱和度
+
+0%是完全不饱和, 100%则是原图, 超过 100% 则是过饱和
+
+```css
+filter: saturate(200%);
+```
+
+```html
+<svg color-interpolation-filters="sRGB">
+  <filter id="saturate">
+    <feColorMatrix type="saturate" values="[amount]" />
+  </filter>
+</svg>
+```
+
+**为什么低饱和度和灰度会是一样的效果???**
+
+
+### sepia() 褐色
+
+将图像转为深褐色, 0%~100%, 100%为完全深褐色
+
+```css
+filter: sepia(100%);
+```
+
+```html
+
+```

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    img {
+      /* filter: hue-rotate(90deg); */
+      filter: url(#svgHueRotate);
+    }
+  </style>
+</head>
+
+<body>
+  <img src="./天使彦.jpg" alt="">
+
+  <svg color-interpolation-filters="sRGB">
+    <filter id="svgHueRotate">
+      <feColorMatrix type="hueRotate" values="20" />
+      <filter />
+    </filter>
+  </svg>
+</body>
+
+</html>
