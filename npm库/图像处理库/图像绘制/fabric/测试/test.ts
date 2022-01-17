@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-01-14 10:10:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-14 15:59:09
+ * @LastEditTime: 2022-01-17 13:59:22
  * @Description:
  */
 
@@ -18,6 +18,11 @@ var rect = new fabric.Rect({
   width: 60,
   height: 70,
   fill: 'red',
+  angle: 45,
 });
 
 canvas.add(rect);
+
+rect.set({height: 60})
+
+canvas.renderAll()
