@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <video src="https://mdn.github.io/dom-examples/picture-in-picture/assets/bigbuckbunny.mp4" width="300"
+    height="auto"></video>
+
+  <button onclick="togglePictureInPicture()" id="btn" disabled>画中画开关</button>
+
+  <script>
+    let btn = document.querySelector('#btn')
+    let video = document.querySelector('video')
+    if (document.pictureInPictureEnabled !== undefined) {
+      /* 浏览器支持画中画功能 */
+      if (document.pictureInPictureEnabled) {
+        /* 画中画功能开启 */
+        btn.removeAttribute('disabled')
+      } else {
+        btn.setAttribute('title', '画中画功能已被禁用')
+      }
+    } else {
+      /* 浏览器不支持画中画功能 */
+      btn.setAttribute('title', '浏览器不支持画中画功能')
+    }
+
+
+
+    function togglePictureInPicture() {
+      /* 退出画中画, 此接口在 Document 上 */
+      if (document.pictureInPictureElement) {
+        document.exitPictureInPicture();
+      } else {
+        /* 启用画中画, 此接口在 HTMLVideoElement 上 */
+        if (document.pictureInPictureEnabled) {
+          video.requestPictureInPicture().then(pictureInPictureWindow => {
+            pictureInPictureWindow.onresize = (evt) => {
+              console.log(evt.target.width)
+              console.log(evt.target.height)
+            };
+          });;
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
