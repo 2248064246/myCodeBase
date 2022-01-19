@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="presentBtn" style="display: none;">打开演示</button>
+
+  <script>
+    let a = '111'
+    var presentBtn = document.getElementById("presentBtn");
+    var presUrls = ["./presentation.html"];
+
+    var handleAvailabilityChange = function (available) {
+      presentBtn.style.display = available ? "inline" : "none";
+    };
+
+    /* 创建演示请求的对象 */
+    var request = new PresentationRequest(presUrls);
+      
+    /* 用于获取演示功能是否可用, 如果可用, promise会立即 resolve */
+    request.getAvailability().then(function (availability) {
+      console.log(availability)
+      handleAvailabilityChange(availability.value);
+      availability.onchange = function () {
+        handleAvailabilityChange(this.value);
+      };
+    }).catch(function () {
+      /* 如果该功能浏览器不支持, 可以在这里做更多的事情 */
+      handleAvailabilityChange(true);
+    });
+
+
+    presentBtn.onclick = function () {
+      /* 开始连接请求 */
+      request.start()
+        /* 连接情况将会传递给 setConnection 方法 */
+        .then(setConnection);
+    };
+  </script>
+
+  <button id="reconnectBtn" style="display: none;">Reconnect</button>
+  <script>
+    var reconnect = function () {
+      // read presId from localStorage if exists
+      var presId = localStorage["presId"];
+      // presId is mandatory when reconnecting to a presentation.
+      if (!!presId) {
+        request.reconnect(presId)
+          // The new connection to the presentation will be passed to
+          // setConnection on success.
+          .then(setConnection);
+        // No connection found for presUrl and presId, or an error occurred.
+      }
+    };
+    // On navigation of the controller, reconnect automatically.
+    document.addEventListener("DOMContentLoaded", reconnect);
+    // Or allow manual reconnection.
+    reconnectBtn.onclick = reconnect;
+  </script>
+
+  <!-- controller.html -->
+  <!-- Setting presentation.defaultRequest allows the page to specify the
+     PresentationRequest to use when the controlling UA initiates a
+     presentation. -->
+  <script>
+    /* 不理解这个是做什么的 */
+    // navigator.presentation.defaultRequest = new PresentationRequest(presUrls);
+    // navigator.presentation.defaultRequest.onconnectionavailable = function (evt) {
+    //   setConnection(evt.connection);
+    // };
+  </script>
+
+
+  <!-- controller.html -->
+  <button id="disconnectBtn" style="display: none;">Disconnect</button>
+  <button id="stopBtn" style="display: none;">Stop</button>
+  <script>
+    let connection;
+
+    // The Disconnect and Stop buttons are visible if there is a connected presentation
+    const stopBtn = document.querySelector("#stopBtn");
+    const reconnectBtn = document.querySelector("#reconnectBtn");
+    const disconnectBtn = document.querySelector("#disconnectBtn");
+
+    stopBtn.onclick = _ => {
+      connection && connection.terminate();
+    };
+
+    disconnectBtn.onclick = _ => {
+      connection && connection.close();
+    };
+
+    function setConnection(newConnection) {
+      // Disconnect from existing presentation, if not attempting to reconnect
+      if (connection && connection != newConnection && connection.state != 'closed') {
+        connection.onclosed = undefined;
+        connection.close();
+      }
+
+      // Set the new connection and save the presentation ID
+      connection = newConnection;
+      localStorage["presId"] = connection.id;
+
+      function showConnectedUI() {
+        // Allow the user to disconnect from or terminate the presentation
+        stopBtn.style.display = "inline";
+        disconnectBtn.style.display = "inline";
+        reconnectBtn.style.display = "none";
+      }
+
+      function showDisconnectedUI() {
+        disconnectBtn.style.display = "none";
+        stopBtn.style.display = "none";
+        reconnectBtn.style.display = localStorage["presId"] ? "inline" : "none";
+      }
+
+      // Monitor the connection state
+      connection.onconnect = _ => {
+        console.log('已连接', connection)
+        showConnectedUI();
+
+        // Register message handler
+        connection.onmessage = message => {
+          console.log(`Received message: ${message.data}`);
+        };
+
+        // Send initial message to presentation page
+        connection.send("Say hello");
+      };
+
+      connection.onclose = _ => {
+        connection = null;
+        showDisconnectedUI();
+      };
+
+      connection.onterminate = _ => {
+        // Remove presId from localStorage if exists
+        delete localStorage["presId"];
+        connection = null;
+        showDisconnectedUI();
+      };
+    };
+  </script>
+
+  <script>
+    // connection.send("{string: '你好，世界!', lang: 'zh-CN'}");
+    // connection.send("{string: 'こんにちは、世界!', lang: 'ja'}");
+    // connection.send("{string: '안녕하세요, 세계!', lang: 'ko'}");
+    // connection.send("{string: 'Hello, world!', lang: 'en-US'}");
+  </script>
+ 
+  
+</body>
+
+</html>

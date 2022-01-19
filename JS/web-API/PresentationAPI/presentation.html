@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>演示</h1>
+  <h2 id="footer"></h2>
+  <h3>传输内容:</h3>
+  <h3 id="msg"></h3>
+  <!-- presentation.html -->
+  <script>
+    var addConnection = function (connection) {
+      connection.onmessage = function (message) {
+        document.querySelector('#msg').innerHTML = message.data
+        connection.send("hello");
+      };
+    };
+
+
+    /* 接收端获取连接器, 接收端receiver返回的是 PresentationReceiver */
+    /* 控制端的 receiver 是null */
+    /* 通常通过 navigation.presentation 来获取 Presentation 对象 */
+    /* 即 Presentation.receiver == navigator.presentation.receiver */
+    navigator.presentation.receiver.connectionList.then(function (list) {
+      list.connections.map(function (connection) {
+        addConnection(connection);
+      });
+      list.onconnectionavailable = function (evt) {
+        addConnection(evt.connection);
+      };
+    });
+  </script>
+</body>
+
+</html>
