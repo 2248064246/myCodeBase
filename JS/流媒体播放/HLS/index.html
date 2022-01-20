@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./hls.js"></script>
+</head>
+
+<body>
+  <video id="video" controls></video>
+
+  <script>
+    if (Hls.isSupported()) {
+      var video = document.getElementById('video');
+      var hls = new Hls();
+      // bind them together
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+        /* m3u8 视频 */
+        // hls.loadSource(
+        //   'http://cdn.theoplayer.com/video/star_wars_episode_vii-the_force_awakens_official_comic-con_2015_reel_(2015)/index.m3u8'
+        //   );
+        /* bilibili 英雄联盟的直播流 */
+        hls.loadSource(
+          'https://d1--cn-gotcha204.bilivideo.com/live-bvc/763493/live_7734200_bs_1348183_1500/index.m3u8?expires=1642685490&len=0&oi=2061598863&pt=web&qn=0&trid=1007488ef852362e489491a7540e256d7827&sigparams=cdn,expires,len,oi,pt,qn,trid&cdn=cn-gotcha04&sign=06feb4015ffbbaebca4e6da583bfce50&sk=c9c6154426932efa80d25af02e87a3bd&p2p_type=1&src=141&sl=10&free_type=0&flowtype=1&machinezone=ylf&pp=rtmp&slot=7&level=1806&source=onetier&order=1&site=492ec7a7e8e84cea5c008afb5efc5ce2'
+          );
+        hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+          console.log(
+            'manifest loaded, found ' + data.levels.length + ' quality level'
+          );
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

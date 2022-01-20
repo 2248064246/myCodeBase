@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <video controls></video>
+
+  <script>
+    var video = document.querySelector('video');
+    var assetURL = './官方示例/frag_bunny.mp4';
+    // Need to be specific for Blink regarding codecs
+    // ./mp4info frag_bunny.mp4 | grep Codec
+    var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
+
+    if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
+      var mediaSource = new MediaSource;
+      //console.log(mediaSource.readyState); // closed
+      video.src = URL.createObjectURL(mediaSource);
+      mediaSource.addEventListener('sourceopen', sourceOpen);
+    } else {
+      console.error('Unsupported MIME type or codec: ', mimeCodec);
+    }
+
+    function sourceOpen(_) {
+      console.log(this.readyState); // open
+      var mediaSource = this;
+      var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
+      var processed = false
+      var isEnd = false
+      fetchAB(assetURL).then(stream => {
+        sourceBuffer.addEventListener('updateend', function (_) {
+          // mediaSource.endOfStream();
+          console.log('推入数据', sourceBuffer)
+          // video.play();
+          if (loaded == total && !isEnd) {
+            isEnd = true
+            if(hasAppend < total) {
+              sourceBuffer.appendBuffer(unit8.slice(hasAppend, total))
+            }
+            mediaSource.endOfStream();
+          } else {
+            processed = false
+          }
+          //console.log(mediaSource.readyState); // ended
+        });
+        var time = 1;
+        unit8 = new Uint8Array(new ArrayBuffer(total))
+        var len = 0;
+        var hasAppend = 0;
+        stream.pipeThrough(new TransformStream({
+          transform(chunk, controller) {
+            len += chunk.length
+            unit8.set(chunk, loaded - chunk.length)
+            // controller.enqueue(chunk)
+            console.log(len)
+            if (!processed) {
+              processed = true
+              controller.enqueue(unit8.slice(loaded - len, loaded))
+              len = 0
+            }
+          }
+        })).pipeTo(new WritableStream({
+          write(chunk) {
+            // sourceBuffer.appendBuffer(chunk.buffer);
+            console.log(chunk)
+            hasAppend += chunk.length
+            sourceBuffer.appendBuffer(chunk.buffer)
+          }
+        }))
+
+
+      })
+    };
+
+    var loaded = 0,
+      total = 0,
+      unit8;
+
+    function fetchAB(url) {
+      // return fetch(url).then(res => res.arrayBuffer())
+      return fetch(url).then(res => res.body.pipeThrough(chunkProgress(res.headers.get('content-length'))))
+    };
+
+    const chunkProgress = (t) => { // 下载进度
+      total = t
+      return new TransformStream({
+        transform(chunk, controller) {
+          loaded += chunk.length
+          console.log(`Downloaded ${loaded} of ${total} (${(loaded / total * 100).toFixed(2)}%)`);
+          controller.enqueue(chunk)
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>
