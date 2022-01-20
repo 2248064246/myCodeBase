@@ -24,20 +24,22 @@
 
     let channel = new MessageChannel();
 
-    iframe.addEventListener('load', function() {
-      iframe.contentWindow.postMessage('init', '*', [channel.port2]); // 这里向iframe向自身发送消息, 将 channel 的 port2 发送个iframe
+    iframe.addEventListener('load', function () {
+      /* 这里的关键点不在 `init` 数据, 而是 [channel.port2], 将port2的所有权转移给iframe */
+      iframe.contentWindow.postMessage('init', '*', [channel
+      .port2]); // 这里向iframe向自身发送消息, 将 channel 的 port2 发送个iframe
       // 这样, 在iframe 中就能使用port2监听和发送消息给当前页面
     })
 
     submitDom.addEventListener('click', function () {
       let value = inputDom.value
-      
+
       channel.port1.postMessage(value)
 
       inputDom.value = ''
     })
 
-    channel.port1.onmessage= function(data) {
+    channel.port1.onmessage = function (data) {
       console.log('port1', data.data)
     }
   </script>

@@ -17,11 +17,11 @@
       password: 'HYL123lh'
     })
 
-    // navigator.credentials.store(pwdCredential).then(creds => {
-    //   console.log(creds)
-    // }).catch(err => {
-    //   console.log(err)
-    // })
+    navigator.credentials.store(pwdCredential).then(creds => {
+      console.log(creds)
+    }).catch(err => {
+      console.log(err)
+    })
 
     navigator.credentials.get({
       password: true
