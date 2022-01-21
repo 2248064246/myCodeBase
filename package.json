@@ -23,6 +23,7 @@
   "dependencies": {
     "fabric": "^4.6.0",
     "mime": "^3.0.0",
+    "node-media-server": "^2.3.8",
     "pica": "^9.0.1",
     "requirejs": "^2.3.6",
     "scrollreveal": "^4.0.9"
