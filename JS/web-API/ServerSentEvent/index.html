@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    let source = new EventSource('http://localhost:8900/', {
+      withCredentials: true
+    })
+
+    source.addEventListener('open', (ev) => {
+      console.log('open', ev)
+    })
+
+    source.addEventListener('error', (ev) => {
+      console.warn('error', ev)
+      source.close()
+    })
+
+    source.addEventListener('message', (ev) => {
+      console.log('message', ev)
+    })
+  </script>
+</body>
+
+</html>

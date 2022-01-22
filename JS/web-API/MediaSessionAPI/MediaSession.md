@@ -2,7 +2,9 @@
 
 媒体会话 API 提供了一种自定义媒体通知的方法。它通过提供元数据来执行此操作，以便用户代理为 Web 应用正在播放的媒体显示。
 
-一个类似的可能应用是(快捷键增加声音会显示当前是什么在播放)
+一个类似的可能应用是(如果网页在播放音乐或者视频, 系统锁屏了, 那么会在锁屏界面显示一个类似音乐播放的小组件)
+
+![示例](./1642838131266.jpg)
 
 ```js
 if ('mediaSession' in navigator) {
@@ -44,4 +46,38 @@ if ('mediaSession' in navigator) {
     ],
   });
 }
+```
+
+## 事件
+
+```js
+navigator.mediaSession.setActionHandler('play', function () {
+  /* Code excerpted. */
+});
+navigator.mediaSession.setActionHandler('pause', function () {
+  /* Code excerpted. */
+});
+navigator.mediaSession.setActionHandler('stop', function () {
+  /* Code excerpted. */
+});
+navigator.mediaSession.setActionHandler('seekbackward', function () {
+  /* Code excerpted. */
+});
+navigator.mediaSession.setActionHandler('seekforward', function () {
+  /* Code excerpted. */
+});
+navigator.mediaSession.setActionHandler('seekto', function () {
+  /* Code excerpted. */
+});
+navigator.mediaSession.setActionHandler('previoustrack', function () {
+  /* Code excerpted. */
+});
+navigator.mediaSession.setActionHandler('nexttrack', function () {
+  /* Code excerpted. */
+});
+
+/* 这个事件目前在任何浏览器中都无效 */
+navigator.mediaSession.setActionHandler('skipad', function () {
+  /* Code excerpted. */
+});
 ```
