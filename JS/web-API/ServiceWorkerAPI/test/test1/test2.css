@@ -1,0 +1,9 @@
+h2 {
+  color: cyan;
+}
+
+img {
+  border: 2px solid #ccc;
+  height: 400px;
+  width: 400px;
+}
