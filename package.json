@@ -27,6 +27,11 @@
     "node-media-server": "^2.3.8",
     "pica": "^9.0.1",
     "requirejs": "^2.3.6",
-    "scrollreveal": "^4.0.9"
+    "scrollreveal": "^4.0.9",
+    "ssh2": "^1.5.0",
+    "utf8": "^3.0.0",
+    "ws": "^8.4.2",
+    "xterm": "^4.16.0",
+    "xterm-addon-fit": "^0.5.0"
   }
 }
