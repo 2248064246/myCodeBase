@@ -21,6 +21,7 @@
     "tailwindcss-cli": "^0.1.2"
   },
   "dependencies": {
+    "crypto-js": "^4.1.1",
     "express": "^4.17.2",
     "fabric": "^4.6.0",
     "mime": "^3.0.0",
