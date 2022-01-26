@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-01-26 17:22:39
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-26 17:27:14
+ * @LastEditTime: 2022-01-26 23:52:29
  * @Description:
  */
 'use strict';
@@ -112,7 +112,6 @@ function UTF8ArrToStr(aBytes) {
   var sView = '';
 
   for (var nPart, nLen = aBytes.length, nIdx = 0; nIdx < nLen; nIdx++) {
-    nPart = aBytes[nIdx];
     sView += String.fromCharCode(
       nPart > 251 && nPart < 254 && nIdx + 5 < nLen /* six bytes */
         ? /* (nPart - 252 << 30) may be not so safe in ECMAScript! So...: */
@@ -227,6 +226,11 @@ function base64Encode(str) {
 function base64Decode(base64) {
   return UTF8ArrToStr(base64DecToArr(base64));
 }
+console.log(
+  '第2种方法: ',
+  base64Encode('hello world'),
+  base64Decode(base64Encode('hello world'))
+);
 
 console.log(
   '第2种方法: ',

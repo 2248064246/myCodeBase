@@ -23,7 +23,7 @@ Base64 编码普遍应用于需要通过被设计为处理文本数据的媒介�
 
 1. 将 JavaScript 的原生 UTF-16 字符串直接编码为 base64
 2. 将 JavaScript 的原生 UTF-16 字符串转为 UTF-8, 然后后者编码为 base64
-3. 通过二进制字符串将 JavaScript 的原生字符串直接编码为 base64(这是最好的方法)
+3. 通过二进制字符串将 JavaScript 的原生字符串直接编码为 base64
 4. 转义整个字符串(encodeURIComponent), 然后对其进行编码
 
 **第一种方法**
@@ -375,3 +375,73 @@ function base64Decode(base64) {
   return UTF8ArrToStr(base64DecToArr(base64));
 }
 ```
+
+**方法三 javaScript 的 UTF-16 => 二进制字符串 => base64**
+
+```js
+'use strict';
+
+/*\
+|*|
+|*|  Base64 / binary data / UTF-8 strings utilities (#3)
+|*|
+|*|  https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
+|*|
+|*|  Author: madmurphy
+|*|
+\*/
+
+function base64Encode(sString) {
+  var aUTF16CodeUnits = new Uint16Array(sString.length);
+  Array.prototype.forEach.call(aUTF16CodeUnits, function (el, idx, arr) {
+    arr[idx] = sString.charCodeAt(idx);
+  });
+  return window.btoa(
+    String.fromCharCode.apply(null, new Uint8Array(aUTF16CodeUnits.buffer))
+  );
+}
+
+function base64Decode(sBase64) {
+  var sBinaryString = atob(sBase64),
+    aBinaryView = new Uint8Array(sBinaryString.length);
+  Array.prototype.forEach.call(aBinaryView, function (el, idx, arr) {
+    arr[idx] = sBinaryString.charCodeAt(idx);
+  });
+  return String.fromCharCode.apply(null, new Uint16Array(aBinaryView.buffer));
+}
+```
+
+**方法 4 在编码字符串之前对其进行转义**
+
+```js
+function b64EncodeUnicode(str) {
+  // first we use encodeURIComponent to get percent-encoded UTF-8,
+  // then we convert the percent encodings into raw bytes which
+  // can be fed into btoa.
+  return window.btoa(
+    encodeURIComponent(str).replace(
+      /%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }
+    )
+  );
+}
+
+function b64DecodeUnicode(str) {
+  // Going backwards: from bytestream, to percent-encoding, to original string.
+  return decodeURIComponent(
+    window
+      .atob(str)
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join('')
+  );
+}
+```
+
+## 总结
+
+上述方法中只有 `第二种` `第四种`的结果和标准库吻合(因为都是由 utf-8 转为 base64), `第一种`, `第3种`不符合(由 utf-16 直接转为 base64)

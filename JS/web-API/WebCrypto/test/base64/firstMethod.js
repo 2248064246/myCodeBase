@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-01-26 16:55:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-26 17:07:50
+ * @LastEditTime: 2022-01-26 22:59:14
  * @Description:
  */
 
@@ -123,6 +123,11 @@ function base64Decode(base64) {
   );
 }
 
+console.log(
+  '第一种方法: ',
+  base64Encode('hello world'),
+  base64Decode(base64Encode('hello world'))
+);
 console.log(
   '第一种方法: ',
   base64Encode('☸☹☺☻☼☾☿'),
