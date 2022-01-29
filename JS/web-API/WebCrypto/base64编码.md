@@ -445,3 +445,31 @@ function b64DecodeUnicode(str) {
 ## 总结
 
 上述方法中只有 `第二种` `第四种`的结果和标准库吻合(因为都是由 utf-8 转为 base64), `第一种`, `第3种`不符合(由 utf-16 直接转为 base64)
+
+## 简易, 快速, 通用的方法
+
+> 借助 TextEncode 和 TextDecode 实现 字符串 到 UTF-8 Ary 的转换以及 UTF-8 Ary 到字符串的转换
+
+```js
+function strToUTF8Arr(str, encodeType = 'utf-8') {
+  return new TextEncoder(encodeType).encode(str);
+}
+
+function bufferToStr(buffer, decodeType = 'utf-8') {
+  return new TextDecoder(decodeType).decode(buffer);
+}
+
+function base64Encode(str) {
+  let unit8Ary = strToUTF8Arr(str);
+  return window.btoa(String.fromCharCode.apply(null, unit8Ary));
+}
+
+function base64Decode(base64) {
+  let str = window.atob(base64);
+  let unit8Ary = new Uint8Array(str.length);
+  Array.prototype.forEach.call(unit8Ary, function (el, idx, arr) {
+    arr[idx] = str.charCodeAt(idx);
+  });
+  return bufferToStr(unit8Ary.buffer);
+}
+```
