@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-01-29 13:48:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-02-01 22:57:26
+ * @LastEditTime: 2022-02-01 23:01:56
  * @Description:
  */
 
@@ -12,7 +12,7 @@ async function getKey(originKey) {
   iv = new Uint8Array(16).map(
     (el, idx, arr) => (arr[idx] = originBuffer[idx] || 48)
   );
-  return crypto.subtle.importKey('raw', iv, 'AES-CBC', true, [
+  return crypto.subtle.importKey('raw', iv, 'AES-GCM', true, [
     'encrypt',
     'decrypt',
   ]);
@@ -35,9 +35,10 @@ async function encrypt(str) {
 
   return await crypto.subtle.encrypt(
     {
-      name: 'AES-CBC',
+      name: 'AES-GCM',
       /* 16字节随机数 */
-      iv: iv,
+      // iv: iv.slice(0, 96),
+      iv: iv
     },
     key,
     new TextEncoder().encode(str)
@@ -56,7 +57,7 @@ async function decrypt(deBase64) {
   const key = await crypto.subtle.importKey(
     'raw',
     base64ToBuffer(pubKey).buffer,
-    'AES-CBC',
+    'AES-GCM',
     true,
     ['decrypt']
   );
@@ -65,8 +66,9 @@ async function decrypt(deBase64) {
 
   return crypto.subtle.decrypt(
     {
-      name: 'AES-CBC',
-      iv: iv,
+      name: 'AES-GCM',
+      // iv: iv.slice(0, 96),
+      iv: iv
     },
     key,
     base64ToBuffer(deBase64).buffer
@@ -76,7 +78,7 @@ async function decrypt(deBase64) {
 encrypt('hello worldxxxxx').then((hashBuffer) => {
   console.log('加密buffer', hashBuffer);
   let str2 = String.fromCharCode.apply(null, new Uint8Array(hashBuffer));
-  console.log('AES-CBC: ', window.btoa(str2));
+  console.log('AES-GCM: ', window.btoa(str2));
   decrypt(window.btoa(str2), 'hello world').then((isReal) => {
     console.log('解密结果: ', isReal, new TextDecoder().decode(isReal));
   });

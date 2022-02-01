@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-01-29 13:48:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-29 14:51:46
+ * @LastEditTime: 2022-02-01 13:17:54
  * @Description:
  */
 
@@ -10,7 +10,7 @@ let iv ;
 async function getKey(originKey) {
   let originBuffer = new TextEncoder().encode(originKey);
   iv =  new Uint8Array(16).map(
-    (el, idx, arr) => (arr[idx] = originBuffer[idx] || 0)
+    (el, idx, arr) => (arr[idx] = originBuffer[idx] || 48)
   )
   return crypto.subtle.importKey(
     'raw',
@@ -25,7 +25,8 @@ async function getKey(originKey) {
   // ]);
 }
 
-let keyPromise = getKey('GGbone');
+let keyPromise = getKey('GGbone0000000000');
+// let keyPromise = getKey('GGbone');
 async function encrypt(str) {
   const key = await keyPromise;
   console.log(key);
@@ -82,7 +83,7 @@ async function decrypt(deBase64) {
 encrypt('hello worldxxxxx').then((hashBuffer) => {
   console.log('加密buffer', hashBuffer);
   let str2 = String.fromCharCode.apply(null, new Uint8Array(hashBuffer));
-  console.log('RSA-OAEP: ', window.btoa(str2));
+  console.log('AES-CTR: ', window.btoa(str2));
   decrypt(window.btoa(str2), 'hello world').then((isReal) => {
     console.log('解密结果: ', isReal, new TextDecoder().decode(isReal));
   });
