@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #results {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: left;
+      min-height: 150px;
+    }
+
+    .interim {
+      color: gray;
+    }
+
+    .final {
+      color: black;
+      padding-right: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button id="start">开始</button>
+  <button id="stop">停止</button>
+  <div id="div_language">
+    <select id="select_language"></select>
+    &nbsp;&nbsp;
+    <select id="select_dialect"></select>
+  </div>
+
+  <div id="results">
+    <span id="final_span" class="final"></span>
+    <span id="interim_span" class="interim"></span>
+    <p>
+  </div>
+  <script src="./index.js"></script>
+</body>
+
+</html>

@@ -106,6 +106,7 @@ mediaRecorder.onresume()
 var types = [
   'video/webm',
   'audio/webm',
+  'audio/mpeg',
   'video/webm;codecs=vp8',
   'video/webm;codecs=daala',
   'video/webm;codecs=h264',

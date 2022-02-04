@@ -40,10 +40,12 @@
           // video.play();
           if (loaded == total && !isEnd) {
             isEnd = true
-            if(hasAppend < total) {
+            if (hasAppend < total) {
               sourceBuffer.appendBuffer(unit8.slice(hasAppend, total))
+            } else {
+              mediaSource.endOfStream();
+              console.log('关闭流')
             }
-            mediaSource.endOfStream();
           } else {
             processed = false
           }
