@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../base64url-arraybuffer.js"></script>
+</head>
+
+<body>
+  <button id="register">注册</button>
+  <button id="login">登录</button>
+  <script>
+    var publicKeyCredentialToJSON = (pubKeyCred) => {
+      if (pubKeyCred instanceof Array) {
+        let arr = [];
+        for (let i of pubKeyCred) arr.push(publicKeyCredentialToJSON(i));
+
+        return arr;
+      }
+
+      if (pubKeyCred instanceof ArrayBuffer) {
+        return base64url.encode(pubKeyCred);
+      }
+
+      if (pubKeyCred instanceof Object) {
+        let obj = {};
+
+        for (let key in pubKeyCred) {
+          obj[key] = publicKeyCredentialToJSON(pubKeyCred[key]);
+        }
+
+        return obj;
+      }
+
+      return pubKeyCred;
+    };
+  </script>
+  <script>
+    let register = document.querySelector('#register')
+    let login = document.querySelector('#login')
+
+    let response;
+    register.addEventListener('click', () => {
+      fetch('http://localhost:8088/getRegisterAuth?name=GGbone').then(res => res.json()).then(publicKey => {
+        console.log('publicKey', publicKey)
+        publicKey.challenge = base64url.decode(publicKey.challenge);
+        publicKey.user.id = base64url.decode(publicKey.user.id);
+        navigator.credentials.create({
+          publicKey,
+        }).then(credential => {
+          let credentialObj = publicKeyCredentialToJSON(credential);
+          console.log(credentialObj);
+
+          fetch('http://localhost:8088/register?name=GGbone', {
+            method: 'post',
+            body: JSON.stringify(credentialObj)
+          }).then(res => res.text()).then(result => {
+            response = result
+            console.log(result)
+          })
+        })
+      })
+
+    })
+
+    login.addEventListener('click', () => {
+      fetch('http://localhost:8088/getLoginAuth?name=GGbone').then(res => res.json()).then(publicKey => {
+        console.log(publicKey)
+        const publicKeyCredentialRequestOptions = {
+          challenge: base64url.decode(publicKey.challenge),
+          allowCredentials: [{
+            id: base64url.decode(publicKey.id),
+            type: 'public-key',
+          }, ],
+          timeout: 60000,
+          rpId: 'localhost',
+          userVerification: 'discouraged',
+          authenticatorAttachment: 'platform',
+        };
+        navigator.credentials
+          .get({
+            publicKey: publicKeyCredentialRequestOptions,
+          })
+          .then((assertion) => {
+            console.log('登录信息', assertion);
+            let assertionObj = publicKeyCredentialToJSON(assertion);
+            console.log(assertionObj);
+            fetch('http://localhost:8088/login?name=GGbone', {
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(assertionObj)
+            }).then(res => res.json()).then(data => {
+
+            })
+          });
+      })
+    })
+  </script>
+</body>
+
+</html>

@@ -15,12 +15,14 @@
   "devDependencies": {
     "@types/fabric": "^4.5.6",
     "animejs": "^3.2.1",
+    "fido2-lib": "^2.8.0",
     "gsap": "^3.7.1",
     "swiper": "^6.8.4",
     "tailwindcss": "^2.1.2",
     "tailwindcss-cli": "^0.1.2"
   },
   "dependencies": {
+    "base64url": "^3.0.1",
     "crypto-js": "^4.1.1",
     "express": "^4.17.2",
     "fabric": "^4.6.0",
