@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 先获取通知权限 */
+    Notification.requestPermission()
+
+    let path = '/JS/web-API/WebNotificationsAPI/在serviceworker中推送消息/'
+
+    let publicKey = base64ToBuffer(
+      'BHOTmPQ2g07abRvtXhKDpfPizDOtSSnsHd4IaV8l3Pig5elrGCqYEcroxs7NR7Ib8hcMFt8omYRDWXEywXt196k'
+    )
+    navigator.serviceWorker.register(`${path}sw.js`, {
+      scope: path
+    }).then(reg => {
+      if (reg.installing) {
+        console.log('安装中');
+      } else if (reg.waiting) {
+        console.log('已安装');
+      } else if (reg.active) {
+        console.log('已激活');
+      }
+      /* 向service worker 添加一条订阅 */
+      reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        /* 这个是服务器生成的公钥 */
+        applicationServerKey: publicKey
+      }).then(subscription => {
+        /*这个是订阅详情, 需要返回给服务器 */
+        console.log(subscription.toJSON())
+        /**
+         * endpoint 
+         * keys
+         *    auth
+         *    p256dh
+         * */
+
+         fetch('http://localhost:8900/sub', {
+           method: 'post',
+           headers: {
+            'Content-Type': 'application/json',
+           },
+           body: JSON.stringify(subscription.toJSON())
+         })
+      })
+    })
+
+    function base64ToBuffer(base64) {
+      let str = window.atob(base64);
+      let unit8Ary = new Uint8Array(str.length);
+      Array.prototype.forEach.call(unit8Ary, function (el, idx, arr) {
+        arr[idx] = str.charCodeAt(idx);
+      });
+      return unit8Ary
+    }
+  </script>
+</body>
+
+</html>
