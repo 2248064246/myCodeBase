@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2021-12-26 22:33:53
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-10 18:10:42
+ * @LastEditTime: 2022-02-10 22:36:36
  * @Description:
  */
 /**
@@ -77,38 +77,56 @@ function multiRequest(urls, maxNum) {
 
 // ============== 通过 async await 实现 =======s========
 
+/**
+ * 基于async/await的异步队列流
+ */
 class AsyncQueue {
   static EOS = Symbol('end-of-stream');
+  /**
+   *
+   * @param {Number} limit 限制流速
+   * @param {Function} operation 用于操作队列数据的函数, 必须返回一个Promise
+   */
   constructor(limit, operation) {
     this.limit = limit;
     this.operation = operation;
-
+    /* 执行队列 */
     this.resolveList = [];
+    /* 排队等待队列 */
     this.waitList = [];
+    /* 执行队列的promise队列 */
     this.promiseList = [];
     this.closed = false;
   }
 
+  /**
+   * 创建异步队列
+   */
   createPromise() {
-    let p = new Promise((resolve) => {
-      this.resolveList.push(resolve);
-    });
+    /* 通过resolve来控制Promise */
+    let p = new Promise((resolve) => this.resolveList.push(resolve));
+    /* 需要存储这个promise, 以便获取返回结果 */
     this.promiseList.push(p);
   }
 
+  /**
+   * 执行操作函数
+   * @param {*} data
+   */
   execOperation(data) {
-    this.operation(data).then((res) => {
-      let resolve = this.resolveList.shift();
-      console.log('触发事件', this.resolveList.length);
-      resolve(res);
-    });
+    /* 执行队列操作函数, 并推出并执行一个队列Promise的resolve控制器 */
+    /* 这里会导致一个Promise被触发 */
+    this.operation(data).then((res) => this.resolveList.shift()(res));
   }
-
+  /**
+   * 需要操作的数据入队
+   * @param {*} data
+   */
   enqueue(data) {
-    console.log('promise length', this.resolveList.length);
+    /* 限制执行队列入队数量, 超过数量需要等待已有数据出队才能再入队 */
     if (this.resolveList.length < this.limit) {
+      /* 生成一个队列Promise */
       this.createPromise();
-      console.log('promise create');
       this.execOperation(data);
     } else {
       this.waitList.push(data);
@@ -117,15 +135,16 @@ class AsyncQueue {
 
   dequeue() {
     if (this.waitList.length > 0) {
+      /* 如果有数据在排队, 则推入队首进入执行队列末尾 */
       let data = this.waitList.shift();
       this.enqueue(data);
     } else if (this.closed) {
       return Promise.resolve(AsyncQueue.EOS);
     } else if (this.resolveList.length === 0) {
+      /* 运行迭代器时, 会首先到达这里, 需要初始化执行队列 */
       this.createPromise();
     }
-    let p = this.promiseList.shift();
-    return p;
+    return this.promiseList.shift();
   }
 
   [Symbol.asyncIterator]() {
@@ -148,18 +167,18 @@ class AsyncQueue {
 }
 
 function request(data) {
-  console.log('创建请求', data);
+  // console.log('创建请求', data);
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(data);
-    }, 1000 * Math.floor(Math.random() * 5 + 1));
+    }, 1000 * Math.floor(Math.random() * 10 + 1));
   });
 }
 let asyncQueue = new AsyncQueue(5, request);
 
 let datas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-console.log('asyncQueue', asyncQueue);
+// console.log('asyncQueue', asyncQueue);
 
 async function test() {
   datas.forEach((i) => {
@@ -169,9 +188,9 @@ async function test() {
   let ary = [];
   for await (const value of asyncQueue) {
     i++;
-    // console.log(value);
+    console.log(value);
     ary.push(value);
-    console.log('请求结果', value);
+    // console.log('请求结果', value);
     if (i == datas.length) {
       asyncQueue.close();
     }
@@ -182,14 +201,14 @@ async function test() {
   );
 }
 
-// test();
+test();
 
 function eventStream(elt, type) {
   const q = new AsyncQueue(4, function (data) {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(data);
-      }, 300);
+      }, 1000);
     });
   });
   elt.addEventListener(type, (e) => q.enqueue(e));
@@ -203,4 +222,4 @@ async function handleKeys() {
   }
 }
 
-handleKeys();
+// handleKeys();
