@@ -1,3 +1,10 @@
+/*
+ * @Author: huangyingli
+ * @Date: 2021-12-26 22:33:53
+ * @LastEditors: huangyingli
+ * @LastEditTime: 2022-02-10 14:01:50
+ * @Description: 
+ */
 class Point {
   private _x: number;
   private _y: number;
@@ -13,7 +20,7 @@ class Point {
     return this._x;
   }
 
-  @configurable(false)
+  // @configurable(false)
   get y() {
     return this._y;
   }
