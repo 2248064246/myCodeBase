@@ -26,7 +26,7 @@
         // 实现最大堆
         // start: 父节点, end: 循环深度
         function maxHeap(ary, start, end) {
-            let parent = start, // 父节点
+            let parent = Math.floor(start), // 父节点
                 son = parent*2 + 1, // 左子节点
                 temp = null;
             // 规定循序最大深度

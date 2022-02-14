@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-14 17:21:35
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-14 18:31:56
+ * @LastEditTime: 2022-02-14 22:40:36
  * @Description:
  */
 
@@ -41,6 +41,7 @@ class Minheap {
   insert(value: number) {
     this.heap.push(value);
     this.siftUp(this.heap.length - 1);
+    // this.siftDown(0)
   }
 
   private compare(a: number, b: number): boolean {
@@ -109,24 +110,26 @@ class Minheap {
 
 let minH = new Minheap();
 
-// let ary = [3, 6, 1, 8, 5, 0, 2, 5, 8, 6, 7];
-let ary = new Array(10).fill(0);
+let ary = [7, 6, 8, 2, 9, 3, 4, 1, 5] as Array<number>;
+// let ary = new Array(10).fill(0);
 
-ary.forEach((i, idx) => {
-  ary[idx] = Math.floor(Math.random() * 1000);
-});
-
+// ary.forEach((i, idx) => {
+//   ary[idx] = Math.floor(Math.random() * 1000);
+// });
+console.time('minH sort');
 ary.forEach((i) => {
   minH.insert(i);
 });
 
-console.time('minH sort');
+console.log(minH.heap);
+
 ary.forEach(() => {
   console.log(minH.extract());
   // minH.extract();
 });
 
 console.timeEnd('minH sort');
+
 
 console.time('sort');
 ary.sort((a, b) => a - b);
