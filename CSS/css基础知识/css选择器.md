@@ -140,19 +140,26 @@
                     + link visited hover action(它们的优先级是一样的)
             + :focus
                 + 获取焦点
+            + :is()
+            + :where()
             + ::selection
                 + 为选中的元素设置样式
                 + 在火狐中需要设置这么写 -moz-selection
         + 伪元素
-            + :first-latter
+            + ::first-latter
                 + 第一个字母
-            + :first-line
+            + ::first-line
                 + 第一个行
-            + :before
+            + ::before
                 + 指定元素前
                 + 和content属性一起使用才有效(after 一样)                                       
-            + :after
+            + ::after
                 + 指定元素后
+            + ::backdrop | IE不支持
+                + 任何处于全屏模式的元素下的即刻渲染的盒子
+                + 所有处于全屏模式下的元素都被放在顶级渲染层中的一个后进先出（LIFO）栈里。在视区内容被绘制在屏幕上之前，这一特殊的渲染层总是最后被渲染（因此是最上层）。
+                + 简单来说就是能够覆盖全屏元素的其他属性
+            + 
         + 其他的
             + :first-child 
                 + 第一个(所有子元素)
