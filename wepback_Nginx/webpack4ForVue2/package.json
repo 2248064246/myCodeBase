@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack --config ./webpack/webpack.dev.conf.js"
+    "serve": "webpack serve --config webpack/webpack.dev.conf.js"
   },
   "author": "",
   "license": "ISC",
