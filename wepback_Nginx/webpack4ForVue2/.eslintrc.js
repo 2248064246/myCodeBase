@@ -2,11 +2,9 @@
  * @Author: huangyingli
  * @Date: 2022-02-19 16:15:39
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-19 17:16:49
+ * @LastEditTime: 2022-02-21 15:34:22
  * @Description:
  */
-
-let env = process.env.NODE_ENV;
 
 module.exports = {
   parserOptions: {
@@ -74,7 +72,7 @@ module.exports = {
   env: {
     es6: true,
     node: true,
-    "browser": true
+    browser: true,
   },
-  "parser": "@babel/eslint-parser"
+  parser: '@babel/eslint-parser',
 };

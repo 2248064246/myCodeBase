@@ -2,10 +2,10 @@
  * @Author: huangyingli
  * @Date: 2022-02-19 16:04:48
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-19 16:04:48
+ * @LastEditTime: 2022-02-21 15:33:29
  * @Description:
  */
-const isDev = process.env.NODE_ENV === 'production';
+const isDev = process.env.NODE_ENV === 'development';
 module.exports = {
   plugins: [
     // 兼容浏览器，添加前缀

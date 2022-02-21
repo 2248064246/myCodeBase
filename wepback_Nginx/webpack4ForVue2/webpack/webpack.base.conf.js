@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-19 14:56:43
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-19 17:32:48
+ * @LastEditTime: 2022-02-21 16:24:55
  * @Description:
  */
 
@@ -12,13 +12,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const ProvidePlugin = require('webpack').ProvidePlugin;
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-const notifier = require('node-notifier');
-
-// const isDev = process.env.NODE_ENV === 'development';
-const isDev = true;
-
+const WebpackBar = require('webpackbar');
+function isDev() {
+  return process.env.NODE_ENV === 'development';
+}
 module.exports = {
   /* 设置入口起点位置 */
   context: path.resolve(__dirname, '../'),
@@ -32,7 +29,10 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
   },
 
-  mode: isDev ? 'development' : 'production',
+  mode: isDev() ? 'development' : 'production',
+
+  /* 只显示警告错误的统计信息 */
+  stats: 'minimal',
 
   devtool: 'cheap-module-eval-source-map',
 
@@ -41,7 +41,7 @@ module.exports = {
       '@': path.join(__dirname, './src'),
     },
     // 在引入文件没有写扩展名的时候, 可以在这里匹配
-    extensions: ['.js', '.css', '.vue', '.html', 'less', 'ts'],
+    extensions: ['.js', '.css', '.vue', '.html', '.less', '.ts', '.tsx'],
   },
 
   plugins: [
@@ -54,35 +54,7 @@ module.exports = {
     new ProvidePlugin({
       $: 'jquery', // 会自动加载 `jquery`, 而不需要手动import
     }),
-    // new CopyWebpackPlugin([
-    //   {
-    //     from: path.resolve(__dirname, '../public'),
-    //     to: path.resolve(__dirname, '../dist'),
-    //   },
-    // ]),
-    // 友好的终端错误显示方式
-    // new FriendlyErrorsWebpackPlugin({
-    //   compilationSuccessInfo: {
-    //     messages: [`Your application is running here: http://localhost:8085`],
-    //   },
-    //   onErrors: function (severity, errors) {
-    //     // 可以收听插件转换和优先级的错误
-    //     // 严重性可以是'错误'或'警告'
-    //     if (severity !== 'error') {
-    //       return;
-    //     }
-    //     const error = errors[0];
-    //     notifier.notify({
-    //       title: 'Webpack error',
-    //       message: severity + ': ' + error.name,
-    //       subtitle: error.file || '',
-    //       // icon: ICON
-    //     });
-    //   },
-    //   //是否每次编译之间清除控制台
-    //   //默认为true
-    //   clearConsole: true,
-    // }),
+    new WebpackBar(),
   ],
 
   module: {
@@ -96,7 +68,7 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: isDev, // 开发模式下可以启用源码映射
+              sourceMap: isDev(), // 开发模式下可以启用源码映射
             },
           },
           {
@@ -113,8 +85,8 @@ module.exports = {
           loader: 'file-loader',
           options: {
             outputPath: 'fonts/',
-            name(file) {
-              if (isDev) {
+            name() {
+              if (isDev()) {
                 return '[name].[ext]';
               }
 
@@ -133,8 +105,8 @@ module.exports = {
           // path: 出口路径
           // hash: 文件的hash
           // name 可以是一个函数
-          name(file) {
-            if (isDev) {
+          name() {
+            if (isDev()) {
               return '[name].[ext]';
             }
             return '[name].[hash:7].[ext]'; // 截取 8 为 hash
@@ -147,14 +119,26 @@ module.exports = {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'file-loader',
         options: {
-          name(file) {
-            if (isDev) {
+          name() {
+            if (isDev()) {
               return '[name].[ext]';
             }
             return '[name].[hash:7].[ext]'; // 截取 8 为 hash
           },
           outputPath: 'media/',
         },
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'thread-loader',
+          },
+          {
+            loader: 'babel-loader',
+          },
+        ],
       },
     ],
   },
