@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-19 15:16:33
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-21 11:35:57
+ * @LastEditTime: 2022-02-21 22:45:50
  * @Description:
  */
 
@@ -10,7 +10,7 @@ const path = require('path');
 const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.base.conf');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -21,7 +21,7 @@ const webpackConfig = merge(baseConfig, {
     filename: 'js/[name].[hash].js',
     path: path.resolve(__dirname, '../dist'),
     /* 非入口文件的名称 */
-    chunkFilename: 'js/chunk/[id].[chunkhash].js',
+    chunkFilename: 'js/chunk/[name]_[id].[chunkhash].js',
   },
 
   optimization: {
@@ -37,32 +37,29 @@ const webpackConfig = merge(baseConfig, {
       }),
     ],
     splitChunks: {
+      chunks: 'all',
       // 分割代码块
       cacheGroups: {
-        // 缓存组
-        common: {
-          // 公共模块
-          // minSize: 3, // 代码大于这个就抽离
-          minChunks: 1, // 只要被 引用 一次以上就抽离
-          chunks: 'initial', //
-          name: 'name',
+        jquery: {
+          name: 'jquery',
+          test: /jquery/,
+          priority: 1,
         },
-        vendor: {
-          priority: 1, // 优先权, 有限处理这里的
-          test: /node_modules/,
-          minChunks: 1, // 只要被 引用 一次以上就抽离
-          chunks: 'initial', //
-          name: 'common',
+        vue: {
+          name: 'vue',
+          test: /vue/,
+          priority: 1,
+        },
+        element: {
+          name: 'element',
+          test: /element-ui/,
+          priority: 1,
         },
       },
     },
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].[hash:7].css',
-      chunkFilename: 'css/chunk/[id].css',
-    }),
 
     new CopyWebpackPlugin([
       {

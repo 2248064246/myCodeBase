@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-19 16:07:22
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-21 14:10:14
+ * @LastEditTime: 2022-02-21 23:54:07
  * @Description:
  */
 module.exports = {
@@ -13,7 +13,9 @@ module.exports = {
         useBuiltIns: 'usage',
         corejs: 3,
         /* 兼容目标, 详见 https://babeljs.io/docs/en/options#targets */
-        targets: "> 0.25%, not dead"
+        targets: {
+          browsers: ['> 1%', 'last 2 versions', 'not ie <= 8'],
+        },
       },
     ],
   ],

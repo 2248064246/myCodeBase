@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-19 16:36:29
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-21 15:53:00
+ * @LastEditTime: 2022-02-22 00:15:10
  * @Description:
  */
 const path = require('path');
@@ -20,7 +20,7 @@ const webpackConfig = merge(baseConfig, {
     // 将运行进度输出到控制台
     progress: false,
     contentBase: path.resolve(__dirname, '../devServer'),
-    compress: true, // 启动gzip 压缩文件
+    compress: false, // 启动gzip 压缩文件
     hot: true,
     // open: true,
     proxy: {},
@@ -32,10 +32,10 @@ const webpackConfig = merge(baseConfig, {
     hints: 'warning', // 枚举
     maxAssetSize: 30000000, // 整数类型（以字节为单位）
     maxEntrypointSize: 50000000, // 整数类型（以字节为单位）
-    assetFilter: function (assetFilename) {
-      // 提供资源文件名的断言函数
-      return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
-    },
+    // assetFilter: function (assetFilename) {
+    //   // 提供资源文件名的断言函数
+    //   return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+    // },
   },
   plugins: [
     new DefinePlugin({

@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-19 14:56:43
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-21 16:24:55
+ * @LastEditTime: 2022-02-22 00:02:09
  * @Description:
  */
 
@@ -11,8 +11,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const ProvidePlugin = require('webpack').ProvidePlugin;
+// const ProvidePlugin = require('webpack').ProvidePlugin;
 const WebpackBar = require('webpackbar');
+const { VueLoaderPlugin } = require('vue-loader');
 function isDev() {
   return process.env.NODE_ENV === 'development';
 }
@@ -50,21 +51,33 @@ module.exports = {
       template: 'public/index.html',
       filename: 'index.html',
     }),
-    new ESLintPlugin(),
-    new ProvidePlugin({
-      $: 'jquery', // 会自动加载 `jquery`, 而不需要手动import
+    new ESLintPlugin({
+      cache: true
     }),
+    // new ProvidePlugin({
+    //   // $: 'jquery', // 会自动加载 `jquery`, 而不需要手动import
+    // }),
     new WebpackBar(),
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[hash:7].css',
+      chunkFilename: 'css/chunk/[id].css',
+    }),
   ],
 
   module: {
     rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+      },
       {
         test: /\.(le|c)ss$/i,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
           },
+          // { loader: 'style-loader' },
           {
             loader: 'css-loader',
             options: {
@@ -81,19 +94,22 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i, // 这里需要忽略大小写
-        use: {
-          loader: 'file-loader',
-          options: {
-            outputPath: 'fonts/',
-            name() {
-              if (isDev()) {
-                return '[name].[ext]';
-              }
+        use: [
+          {
+            loader: 'file-loader',
 
-              return '[name].[hash:7].[ext]'; // 截取 8 为 hash
+            options: {
+              outputPath: 'fonts/',
+              name() {
+                if (isDev()) {
+                  return '[name].[ext]';
+                }
+
+                return '[name].[hash:7].[ext]'; // 截取 8 为 hash
+              },
             },
           },
-        },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|webp|svg)/,
@@ -132,11 +148,14 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: [
-          {
-            loader: 'thread-loader',
-          },
+          // {
+          //   loader: 'cache-loader',
+          // },
           {
             loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            },
           },
         ],
       },
