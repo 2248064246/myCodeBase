@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack serve --config webpack/webpack.dev.conf.js",
+    "serve": "webpack serve --config ./webpack/webpack.dev.conf.js",
     "build": "webpack --config webpack/webpack.prod.conf.js",
     "report": "webpack --config webpack/webpack.report.conf.js"
   },
@@ -18,9 +18,11 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
+    "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
     "cache-loader": "^4.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "compression-webpack-plugin": "^6.1.1",
     "copy-webpack-plugin": "^5.1.2",
     "core-js": "^3.21.1",
     "cross-env": "^7.0.3",
@@ -42,6 +44,7 @@
     "portfinder": "^1.0.28",
     "postcss-loader": "^4.3.0",
     "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^4.2.3",
     "thread-loader": "^3.0.4",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "vue": "^2.6.14",

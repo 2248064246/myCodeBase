@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-21 21:24:00
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-22 00:15:28
+ * @LastEditTime: 2022-02-22 14:37:35
  * @Description: 
 -->
 <template>
@@ -14,12 +14,25 @@
     <el-button type="warning">xxx</el-button>
 
     <el-button type="danger">xxx</el-button>
+    <el-button type="danger"
+               circle></el-button>
+
+    <el-input></el-input>
+
+    <!-- <el-input type="textarea"></el-input> -->
+
+    <h2>{{msg}}</h2>
+
+    <!-- hahh -->
+
   </div>
 </template>
 <script>
 export default {
   data () {
-     return {}
+     return {
+       msg: 'hello Vue'
+     }
   }
 }
 </script>
@@ -27,4 +40,9 @@ export default {
 #app {
   color: tomato;
 }
+
+h2 {
+  color: #eee;
+}
+
 </style>

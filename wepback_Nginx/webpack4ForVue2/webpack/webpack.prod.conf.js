@@ -1,61 +1,71 @@
 /*
  * @Author: huangyingli
- * @Date: 2022-02-19 15:16:33
+ * @Date: 2022-02-22 11:03:00
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-21 22:45:50
+ * @LastEditTime: 2022-02-22 14:31:23
  * @Description:
  */
-
 const path = require('path');
 const { merge } = require('webpack-merge');
-const baseConfig = require('./webpack.base.conf');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
+const TerserPlugin = require('terser-webpack-plugin');
 
-const webpackConfig = merge(baseConfig, {
+let baseConfig = require('./webpack.base.conf');
+
+let webpackConfig = merge(baseConfig, {
   devtool: 'nosources-source-map',
+  mode: 'production',
   output: {
-    filename: 'js/[name].[hash].js',
+    filename: 'js/[name].[chunkhash].js',
     path: path.resolve(__dirname, '../dist'),
     /* 非入口文件的名称 */
-    chunkFilename: 'js/chunk/[name]_[id].[chunkhash].js',
+    chunkFilename: 'js/chunk/[id].[chunkhash].js',
+    // sourceMapFilename: 'sourceMap/[name].[chunkhash].map.js'
   },
-
   optimization: {
     minimize: true,
     minimizer: [
       /* 压缩css */
       new CssMinimizerPlugin(),
-      new UglifyJsPlugin({
-        // 优化JS的, 将js压缩, 开启了css的优化, 这个必须手动开启
-        cache: true, // 是否使用缓存
-        parallel: true, // 并发打包
-        sourceMap: true, // 是否使用源码映射
-      }),
+      new TerserPlugin(),
     ],
     splitChunks: {
       chunks: 'all',
-      // 分割代码块
+      minSize: 30000,
+      minChunks: 1,
+      maxInitialRequests: 3,
+      maxAsyncRequests: 5,
+      automaticNameDelimiter: '~',
+      name: true,
       cacheGroups: {
-        jquery: {
-          name: 'jquery',
-          test: /jquery/,
-          priority: 1,
-        },
-        vue: {
-          name: 'vue',
-          test: /vue/,
-          priority: 1,
+        vendors: {
+          chunks: 'initial',
+          test: /[\\/]node_modules[\\/]/,
+          name: 'common/vender',
+          minChunks: 1,
+          priority: -10,
+          enforce: true,
         },
         element: {
-          name: 'element',
+          chunks: 'initial',
           test: /element-ui/,
-          priority: 1,
+          name: 'common/element',
+          priority: 10,
+        },
+        vue: {
+          chunks: 'initial',
+          test: /vue.*/,
+          name: 'common/vue',
+          priority: 10,
         },
       },
+    },
+    runtimeChunk: {
+      name: 'common/manifest',
     },
   },
   plugins: [
@@ -65,10 +75,42 @@ const webpackConfig = merge(baseConfig, {
       {
         from: path.resolve(__dirname, '../public'),
         to: 'public',
+        ignore: ['index.html'],
       },
     ]),
+    new DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'), // 在这里字符串会被直接解析为代码
+      NODE_ENV: JSON.stringify('production'),
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[chunkhash:7].css',
+      chunkFilename: 'css/chunk/[id].[chunkhash:7].css',
+    }),
   ],
-  module: {},
+  module: {
+    rules: [
+      {
+        test: /\.(le|c)ss$/i,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'postcss-loader', // 用来处理css的兼容
+          },
+          {
+            loader: 'less-loader',
+          },
+        ],
+      },
+    ],
+  },
 });
 
 module.exports = webpackConfig;
