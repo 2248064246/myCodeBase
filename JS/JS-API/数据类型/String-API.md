@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-30 17:16:50
- * @LastEditTime: 2021-10-12 21:40:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-24 16:10:49
+ * @LastEditors: huangyingli
  * @Description: In User Settings Edit
  * @FilePath: \my-code-base\JS\JS-API\数据类型\String-API.md
 -->
@@ -117,6 +117,9 @@
   + 返回 匹配字符的 index 位置
 + `localeCompare(otherStr)`
   + 可以比较本地字符(例如 可以比较中文, 按照拼音比较)
++ `at(index)`
+  + 获取对应位置字符, 可以为负数
+  + 更加方便了获取字符的操作
 ## String 原型属性
 
 + length 
