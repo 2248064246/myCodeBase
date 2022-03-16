@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-14 10:45:17
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-02-14 16:54:31
+ * @LastEditTime: 2022-03-16 11:24:36
  * @Description:
  */
 
@@ -52,6 +52,14 @@ interface BST {
    * @param cb
    */
   postOrderTraverse(cb: Function): void;
+
+  /**
+   * 层序遍历, 每一层从左到右访问每一个节点
+   * @param cb
+   */
+  levelOrder(cb: Function): void;
+
+  maxDep(): number;
 }
 
 /* 左节点小于父节点, 父节点小于右节点 */
@@ -185,6 +193,42 @@ class BST {
     BST.postOrderTraverseNode(node.right, cb);
     cb(node.value);
   }
+
+  levelOrder(cb: Function) {
+    BST.levelOrder(this.root, cb);
+  }
+
+  static levelOrder(node: TreeNode | null, cb: Function) {
+    if (node === null) return null;
+    let result: Array<Array<any>> = [];
+
+    BST._levelOrder(node, 0, result);
+    cb(result);
+  }
+  static _levelOrder(
+    node: TreeNode | null,
+    level: number,
+    array: Array<Array<any>>
+  ) {
+    if (node === null) return;
+    if (!array[level]) array[level] = [];
+    array[level].push(node.value);
+    BST._levelOrder(node.left, level + 1, array);
+    BST._levelOrder(node.right, level + 1, array);
+  }
+
+  maxDep(): number {
+    let level = 0;
+    level = BST.maxDep(this.root, level);
+    return level;
+  }
+
+  static maxDep(node: TreeNode | null, level: number): number {
+    if (node === null) return level;
+    let left = BST.maxDep(node.left, level + 1);
+    let right = BST.maxDep(node.right, level + 1);
+    return Math.max(left, right)
+  }
 }
 
 let tree = new BST();
@@ -214,3 +258,9 @@ tree.inOrderTraverse((v: number) => console.log(v));
 
 console.log('后序遍历:');
 tree.postOrderTraverse((v: number) => console.log(v));
+
+console.log('层序遍历');
+tree.levelOrder((v: any) => console.log(v));
+
+
+console.log('最大深度: ', tree.maxDep())
