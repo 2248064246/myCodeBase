@@ -1,8 +1,8 @@
 /*
  * @Author: ys4225/黄迎李
  * @Date: 2021-09-03 10:11:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-03 14:31:03
+ * @LastEditors: huangyingli
+ * @LastEditTime: 2022-03-20 13:18:19
  * @Description: 
  */
 
@@ -58,17 +58,17 @@ function minCoinChange(coins, amount) {
  * @param {*} amount 
  * @returns 
  */
-function minCoinChange(coins, amount) {
-  const change = [];
-  let total = 0;
-  for (let i = coins.length; i >= 0; i--) {
-    const coin = coins[i];
-    while (total + coin <= amount) {
-      change.push(coin);
-      total += coin;
-    }
-  }
-  return change;
-}
+// function minCoinChange(coins, amount) {
+//   const change = [];
+//   let total = 0;
+//   for (let i = coins.length; i >= 0; i--) {
+//     const coin = coins[i];
+//     while (total + coin <= amount) {
+//       change.push(coin);
+//       total += coin;
+//     }
+//   }
+//   return change;
+// }
 
 console.log(minCoinChange([1, 5, 10, 25], 36))

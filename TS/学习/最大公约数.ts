@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-03-02 17:38:22
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-03-02 18:03:28
+ * @LastEditTime: 2022-03-20 13:18:01
  * @Description:
  */
 
@@ -23,6 +23,10 @@ function divisor(m: number, n: number): number {
 
   return m;
 }
+
+/**
+ * 最小公倍数 == a * b / 最大公约数
+ */
 
 console.log(divisor(8251, 6105));
 console.log(divisor(125, 73));
