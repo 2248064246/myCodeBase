@@ -1,8 +1,8 @@
 /*
  * @Author: huangyingli
  * @Date: 2022-02-03 13:34:57
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-02-04 20:12:11
+ * @LastEditors: huangyingli
+ * @LastEditTime: 2022-03-27 17:32:29
  * @Description:
  */
 let source, drawVisual;
@@ -319,6 +319,7 @@ var Visualizer = function () {
       'rgba(' + brightness + ', ' + brightness + ', ' + brightness + ', 1)';
     this.ctx.beginPath();
     this.ctx.moveTo(this.x, this.y);
+    console.log('audioSource.volume', audioSource.volume)
     var lengthFactor =
       1 +
       Math.min(
