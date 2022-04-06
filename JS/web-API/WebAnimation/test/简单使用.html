@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box {
+      width: 30px;
+      height: 30px;
+      background: tomato;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+  <script>
+    // var move = [{
+    //     transform: 'translateX(0px)'
+    //   },
+    //   {
+    //     transform: 'translateX(500px)'
+    //   },
+    // ]
+    // var moveTiming = {
+    //   duration: 1500,
+    //   iterations: Infinity,
+    //   direction: 'alternate',
+    //   easing: 'ease-in-out'
+    // }
+
+    // document.getElementById('box').animate(move, moveTiming)
+
+    const whiteRabbit = document.getElementById('box');
+
+    const rabbitDownKeyframes = new KeyframeEffect(
+      whiteRabbit, // element to animate
+      [{
+          transform: 'translateX(0px)'
+        }, // keyframe
+        {
+          transform: 'translateX(500px)'
+        } // keyframe
+      ], {
+        duration: 3000,
+        iterations: Infinity,
+        direction: 'alternate',
+        // fill: 'forwards'
+      } // keyframe options
+    );
+
+    const rabbitDownAnimation = new Animation(rabbitDownKeyframes, document.timeline);
+
+    // Play rabbit animation
+    rabbitDownAnimation.play();
+  </script>
+</body>
+
+</html>

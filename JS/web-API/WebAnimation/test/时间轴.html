@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box {
+      width: 30px;
+      height: 30px;
+      background: tomato;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+  <div id="box"></div>
+  <div id="box"></div>
+  <div id="box"></div>
+
+  <script>
+    const cats = document.querySelectorAll('#box');
+    // const sharedTimeline = new DocumentTimeline();
+    let animeQueues = []
+
+    let i = 0
+    for (const cat of cats) {
+      const catKeyframes = new KeyframeEffect(cat, [{
+          transform: 'translateX(0px)'
+        }, // keyframe
+        {
+          transform: 'translateX(500px)'
+        } // keyframe
+      ], {
+        duration: 1500,
+        iterations: Infinity,
+        direction: 'alternate',
+        delay: 50 * i++,
+        easing: 'ease-in-out'
+        // fill: 'forwards'
+      })
+      const catAnimation = new Animation(catKeyframes, document.timeline);
+      catAnimation.play();
+
+      animeQueues.push(catAnimation)
+    }
+  </script>
+</body>
+
+</html>
