@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    html {
+      background-color: #000;
+    }
+
+    #particles {
+      height: 100vh;
+      width: 100vw;
+      /* background-color: #000; */
+    }
+  </style>
+</head>
+
+<body>
+
+  <script src="/node_modules/particlesjs/dist/particles.js"></script>
+
+  <canvas id="particles"></canvas>
+  <script>
+    window.onload = function () {
+      Particles.init({
+        selector: '#particles',
+        color: '#DA0463',
+        connectParticles: true
+      })
+    };
+  </script>
+
+</body>
+
+</html>
