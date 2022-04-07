@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h3>求两数的乘积</h3>
+  <label for="one">
+    第一个值
+  </label>
+  <input type="number" name="one" id="one">
+  <br>
+  <br>
+  <label for="two">
+    第二个值
+    <input type="number" name="two" id="two">
+  </label>
+
+  <br>
+  <br>
+  <div>
+    <span>结果: </span> <span id="result"></span>
+  </div>
+
+  <script>
+    let myWorker = new SharedWorker('./add.js')
+
+    let oneInput = document.querySelector('#one')
+    let twoInput = document.querySelector('#two')
+    let result = document.querySelector('#result')
+
+    oneInput.addEventListener('change', (e) => {
+      /* 注意多个数据需要通过数组或者对象形式发送 */
+      myWorker.port.postMessage([e.target.value, twoInput.value])
+    })
+    twoInput.addEventListener('change', (e) => {
+      myWorker.port.postMessage([e.target.value, oneInput.value])
+    })
+
+    myWorker.port.onmessage = function (data) {
+      console.log(data)
+      result.textContent = data.data
+    }
+  </script>
+
+</body>
+
+</html>

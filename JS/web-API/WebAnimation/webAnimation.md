@@ -138,3 +138,23 @@ DOM 的 `animate` 方法也会返回一个 `Animation` 对象实例
 ## 动画时间轴
 
 > 目前感觉没有什么用处
+
+## keyframeEffect
+
+描述动画属性的几何
+
+`new KeyframeEffect(target, keyframes[, options])`
+
+## Animation
+
+此构造函数返回一个新的 Animation 对象实例, 用于控制动画
+
+`new Animation(effect, timeline)`
+
+effect: kyeframeEffect 实例
+
+timeline: 可以自定义, 目前只有`DocumentTimeLine`(也无效). (现在能用的只有 document.timeline)
+
+## 总结
+
+> 目前这个 API 只能替代 css 动画, 还无法和第三方的 JS 动画库媲美, 例如: animejs 这种
