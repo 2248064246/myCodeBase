@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-07 20:12:26
+ * @LastEditTime: 2022-04-08 09:47:57
  * @Description:
  */
 
@@ -52,7 +52,16 @@ function connect() {
 }
 
 loginBtn.addEventListener('click', () => {
-  connect();
+  // connect();
+  let loginName = loginNameEl.value;
+  ws.send(
+    JSON.stringify({
+      type: 'username',
+      name: loginName,
+      id: userId,
+      date: Date.now(),
+    })
+  );
 });
 
 msgSubmitBtn.addEventListener('click', () => {
@@ -94,5 +103,5 @@ function setMsgList(msg) {
 
 window.onload = function () {
   console.log('页面');
-  // connect();
+  connect();
 };

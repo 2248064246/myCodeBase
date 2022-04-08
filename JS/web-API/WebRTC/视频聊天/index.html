@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="./adapter.js"></script>
+
+  <style>
+    .container {
+      width: 800px;
+      height: 500px;
+      border: 1px solid #ddd;
+      display: flex;
+    }
+
+    .user-list {
+      width: 200px;
+      height: 100%;
+      border-right: 1px solid #ddd;
+    }
+
+    .msg-box {
+      flex-grow: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .msg-box .msg-list {
+      flex-grow: 1;
+    }
+
+    .msg-box .msg-input {
+      position: relative;
+      height: 120px;
+      border-top: 1px solid #ddd;
+    }
+
+    textarea {
+      box-sizing: border-box;
+      height: 100%;
+      width: 100%;
+      resize: none;
+    }
+
+    .msg-box #msg-submit {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+    }
+
+    video {
+      width: 300px;
+      height: 300px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chat-room">
+    <div class="login-box">
+      <label for="login-name">请输入用户名: </label>
+      <input type="text" name="login-name" id="login-name">
+
+      <button id="login-btn">登录</button>
+    </div>
+
+    <br>
+
+    <div class="container">
+      <div class="user-list">
+
+      </div>
+
+      <div class="msg-box">
+
+        <ul class="msg-list">
+        </ul>
+        <div class="msg-input">
+          <textarea name="textarea" id="textarea"></textarea>
+          <button id="msg-submit" disabled>发送</button>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="video-box">
+      <div>
+        <label for="user-name">请输入要呼叫的用户</label>
+        <input type="text" name="user-name" id="user-name">
+        <button id="" onclick="invite()">呼叫</button>
+        <button id="">挂断</button>
+      </div>
+      <br>
+      <div>
+        <video autoplay id="local_video"></video>
+        <video autoplay id="received_video"></video>
+      </div>
+    </div>
+  </div>
+
+  <script src="./clientServer.js"></script>
+
+</body>
+
+</html>
