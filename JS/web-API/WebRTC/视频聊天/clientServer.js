@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-09 14:40:19
+ * @LastEditTime: 2022-04-09 14:46:18
  * @Description:
  */
 
@@ -179,7 +179,7 @@ async function invite(evt) {
 }
 
 async function handleVideoOfferMsg(msg) {
-  let targetUsername = msg.name;
+  targetUsername = msg.name;
 
   if (!myPeerConnection) {
     createPeerConnection();

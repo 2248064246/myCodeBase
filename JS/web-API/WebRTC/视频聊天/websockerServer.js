@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 16:31:23
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-08 12:15:38
+ * @LastEditTime: 2022-04-09 14:44:03
  * @Description:
  */
 
@@ -64,11 +64,10 @@ wsServer.on('request', (request) => {
 
       let msg = JSON.parse(message.utf8Data);
       let connect = getConnectionForID(msg.id);
-
+     
       switch (msg.type) {
         case 'message':
           msg.name = connect.username;
-
           sendMsgToAll(JSON.stringify(msg));
 
           break;
@@ -86,8 +85,9 @@ wsServer.on('request', (request) => {
           }
           break;
       }
-      console.log('msg', msg.target)
+      console.log('msg', msg.target);
       if (msg.target) {
+        msg.name = connect.username;
         sendToOneUser(msg.target, msg);
       }
     } else if (message.type === 'binary') {
