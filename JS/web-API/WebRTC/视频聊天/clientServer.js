@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-09 12:34:03
+ * @LastEditTime: 2022-04-09 12:41:17
  * @Description:
  */
 
@@ -442,7 +442,7 @@ function closeVideoCall() {
 
   // Disable the hangup button
 
-  document.getElementById('hangup-button').disabled = true;
+  // document.getElementById('hangup-button').disabled = true;
   targetUsername = null;
 }
 
