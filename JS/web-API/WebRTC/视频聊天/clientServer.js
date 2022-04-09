@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-09 14:23:23
+ * @LastEditTime: 2022-04-09 14:35:31
  * @Description:
  */
 
@@ -232,7 +232,7 @@ async function handleVideoOfferMsg(msg) {
 
   sendToServer({
     name: document.querySelector('#login-name').value,
-    target: targetUsername,
+    target: document.querySelector('#user-name').value,
     type: 'video-answer',
     sdp: myPeerConnection.localDescription,
   });
@@ -320,7 +320,7 @@ async function handleNegotiationNeededEvent() {
     console.log('本地sdp', myPeerConnection.localDescription);
     sendToServer({
       name: document.querySelector('#login-name').value,
-      target: targetUsername,
+      target: document.querySelector('#user-name').value,
       type: 'video-offer',
       sdp: myPeerConnection.localDescription,
     });
