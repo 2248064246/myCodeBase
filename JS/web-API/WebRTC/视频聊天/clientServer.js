@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-09 14:35:31
+ * @LastEditTime: 2022-04-09 14:40:19
  * @Description:
  */
 
@@ -232,13 +232,14 @@ async function handleVideoOfferMsg(msg) {
 
   sendToServer({
     name: document.querySelector('#login-name').value,
-    target: document.querySelector('#user-name').value,
+    target: targetUsername,
     type: 'video-answer',
     sdp: myPeerConnection.localDescription,
   });
 }
 
 async function handleVideoAnswerMsg(msg) {
+  console.log('设置answer');
   var desc = new RTCSessionDescription(msg.sdp);
   await myPeerConnection.setRemoteDescription(desc).catch((err) => {
     console.warn('设置answer错误', err);
