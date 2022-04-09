@@ -2,11 +2,11 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-08 14:17:19
+ * @LastEditTime: 2022-04-09 12:34:03
  * @Description:
  */
 
-const remote = 'ws://192.168.144.190:6504';
+const remote = 'ws://192.168.124.2:6504';
 
 let loginNameEl = document.querySelector('#login-name');
 let loginBtn = document.querySelector('#login-btn');
@@ -221,12 +221,12 @@ async function handleVideoOfferMsg(msg) {
   }
   if (!webcamStream) {
     try {
-      webcamStream = await navigator.mediaDevices.getUserMedia(
+      webcamStream = await window.navigator.mediaDevices.getUserMedia(
         mediaConstraints
       );
     } catch (err) {
       console.warn('发生错误', err);
-      return;
+      // return;
     }
 
     document.getElementById('local_video').srcObject = webcamStream;
