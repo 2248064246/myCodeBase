@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-09 13:24:02
+ * @LastEditTime: 2022-04-09 14:23:23
  * @Description:
  */
 
@@ -40,8 +40,8 @@ function connect() {
   });
 
   ws.addEventListener('message', (data) => {
-    console.log('服务端数据: ', data);
     let msg = JSON.parse(data.data);
+    console.log('服务端数据: ', msg);
     switch (msg.type) {
       case 'id':
         userId = msg.id;
@@ -138,36 +138,20 @@ function sendToServer(msg) {
 }
 
 async function invite(evt) {
-  log('Starting to prepare an invitation');
   if (myPeerConnection) {
-    alert("You can't start a call because you already have one open!");
+    alert('已经有一个链接正在进行, 无法开始新的连接');
   } else {
     var clickedUsername = document.querySelector('#user-name').value;
 
-    // Don't allow users to call themselves, because weird.
-
     if (clickedUsername === document.querySelector('#login-name').value) {
-      alert(
-        "I'm afraid I can't let you talk to yourself. That would be weird."
-      );
+      alert('不能打给自己');
       return;
     }
 
-    // Record the username being called for future reference
-
     targetUsername = clickedUsername;
-    log('Inviting user ' + targetUsername);
 
-    // Call createPeerConnection() to create the RTCPeerConnection.
-    // When this returns, myPeerConnection is our RTCPeerConnection
-    // and webcamStream is a stream coming from the camera. They are
-    // not linked together in any way yet.
-
-    log('Setting up connection to invite user: ' + targetUsername);
+    log('建立连接邀请用户: ' + targetUsername);
     createPeerConnection();
-
-    // Get access to the webcam stream and attach it to the
-    // "preview" box (id "local_video").
 
     try {
       webcamStream = await navigator.mediaDevices.getUserMedia(
@@ -175,7 +159,7 @@ async function invite(evt) {
       );
       document.getElementById('local_video').srcObject = webcamStream;
     } catch (err) {
-      // handleGetUserMediaError(err);
+      console.warn('获取本地视频出错', err);
       return;
     }
 
@@ -189,7 +173,7 @@ async function invite(evt) {
             myPeerConnection.addTransceiver(track, { streams: [webcamStream] }))
         );
     } catch (err) {
-      handleGetUserMediaError(err);
+      console.warn('添加本地视频到RTC出错', err);
     }
   }
 }
@@ -206,17 +190,13 @@ async function handleVideoOfferMsg(msg) {
   var desc = new RTCSessionDescription(msg.sdp);
 
   if (myPeerConnection.signalingState != 'stable') {
-    log("  - But the signaling state isn't stable, so triggering rollback");
-
-    // Set the local and remove descriptions for rollback; don't proceed
-    // until both return.
     await Promise.all([
       myPeerConnection.setLocalDescription({ type: 'rollback' }),
       myPeerConnection.setRemoteDescription(desc),
     ]);
     return;
   } else {
-    log('  - Setting remote description');
+    console.log('设置远程 sdp');
     await myPeerConnection.setRemoteDescription(desc);
   }
   if (!webcamStream) {
@@ -225,7 +205,7 @@ async function handleVideoOfferMsg(msg) {
         mediaConstraints
       );
     } catch (err) {
-      console.warn('发生错误', err);
+      console.warn('启动本地视频发生错误', err);
       // return;
     }
 
@@ -241,12 +221,10 @@ async function handleVideoOfferMsg(msg) {
             myPeerConnection.addTransceiver(track, { streams: [webcamStream] }))
         );
     } catch (err) {
-      console.log('发生错误');
+      console.log('设置本地视频到RTC发生错误', err);
       // handleGetUserMediaError(err);
     }
   }
-
-  log('---> Creating and sending answer to caller');
 
   await myPeerConnection.setLocalDescription(
     await myPeerConnection.createAnswer()
@@ -261,16 +239,14 @@ async function handleVideoOfferMsg(msg) {
 }
 
 async function handleVideoAnswerMsg(msg) {
-  log('*** Call recipient has accepted our call');
-
-  // Configure the remote description, which is the SDP payload
-  // in our "video-answer" message.
-
   var desc = new RTCSessionDescription(msg.sdp);
-  await myPeerConnection.setRemoteDescription(desc).catch(reportError);
+  await myPeerConnection.setRemoteDescription(desc).catch((err) => {
+    console.warn('设置answer错误', err);
+  });
 }
 
 async function createPeerConnection() {
+  log('启动RTC');
   myPeerConnection = new RTCPeerConnection({
     iceServers: [
       {
@@ -280,13 +256,17 @@ async function createPeerConnection() {
       },
     ],
   });
-  log('启动RTC');
+  /* ICE候选者发生变化 */
   myPeerConnection.onicecandidate = handleICECandidateEvent;
+  /* 连接状态发生改变 */
   myPeerConnection.oniceconnectionstatechange =
     handleICEConnectionStateChangeEvent;
+  /* ICE收集状态 */
   myPeerConnection.onicegatheringstatechange =
     handleICEGatheringStateChangeEvent;
+  /* RTC通信状态的结构体，这个结构体描述了本地连接的通信状态 */
   myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
+  /* 需要进行连接时触发, 它的作用是创建 SDP 产品/服务，并通过信令通道将其发送到远程对等方 */
   myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
   myPeerConnection.ontrack = handleTrackEvent;
   myPeerConnection.onicecandidateerror = function (error) {
@@ -296,8 +276,6 @@ async function createPeerConnection() {
 
 function handleICECandidateEvent(event) {
   if (event.candidate) {
-    log('*** Outgoing ICE candidate: ' + event.candidate);
-
     sendToServer({
       type: 'new-ice-candidate',
       target: targetUsername,
@@ -307,29 +285,21 @@ function handleICECandidateEvent(event) {
 }
 
 function handleICEConnectionStateChangeEvent(event) {
-  log(
-    '*** ICE connection state changed to ' + myPeerConnection.iceConnectionState
-  );
-
   switch (myPeerConnection.iceConnectionState) {
     case 'closed':
     case 'failed':
     case 'disconnected':
       closeVideoCall();
       break;
+    case 'checking':
+    case 'connect':
+    case 'completed':
   }
 }
 
-function handleICEGatheringStateChangeEvent(event) {
-  log(
-    '*** ICE gathering state changed to: ' + myPeerConnection.iceGatheringState
-  );
-}
+function handleICEGatheringStateChangeEvent(event) {}
 
 function handleSignalingStateChangeEvent(event) {
-  log(
-    '*** WebRTC signaling state changed to: ' + myPeerConnection.signalingState
-  );
   switch (myPeerConnection.signalingState) {
     case 'closed':
       closeVideoCall();
@@ -338,34 +308,16 @@ function handleSignalingStateChangeEvent(event) {
 }
 
 async function handleNegotiationNeededEvent() {
-  log('*** Negotiation needed');
-
   try {
-    log('---> Creating offer');
     const offer = await myPeerConnection.createOffer();
 
-    // If the connection hasn't yet achieved the "stable" state,
-    // return to the caller. Another negotiationneeded event
-    // will be fired when the state stabilizes.
-
     if (myPeerConnection.signalingState != 'stable') {
-      log("     -- The connection isn't stable yet; postponing...");
       return;
     }
 
-    // Establish the offer as the local peer's current
-    // description.
-
-    log('---> Setting local description to the offer');
     await myPeerConnection.setLocalDescription(offer);
 
-    // Send the offer to the remote peer.
-
-    log('---> Sending the offer to the remote peer');
-    console.log(
-      'myPeerConnection.localDescription',
-      myPeerConnection.localDescription
-    );
+    console.log('本地sdp', myPeerConnection.localDescription);
     sendToServer({
       name: document.querySelector('#login-name').value,
       target: targetUsername,
@@ -373,22 +325,18 @@ async function handleNegotiationNeededEvent() {
       sdp: myPeerConnection.localDescription,
     });
   } catch (err) {
-    log(
-      '*** The following error occurred while handling the negotiationneeded event:'
-    );
+    console.log('本地offer生成失败', err);
     // reportError(err);
   }
 }
 
 function handleTrackEvent(event) {
-  log('*** Track event');
   document.getElementById('received_video').srcObject = event.streams[0];
 }
 
 async function handleNewICECandidateMsg(msg) {
   var candidate = new RTCIceCandidate(msg.candidate);
 
-  log('*** Adding received ICE candidate: ' + JSON.stringify(candidate));
   try {
     await myPeerConnection.addIceCandidate(candidate);
   } catch (err) {
@@ -399,13 +347,9 @@ async function handleNewICECandidateMsg(msg) {
 function closeVideoCall() {
   var localVideo = document.getElementById('local_video');
 
-  log('Closing the call');
-
   // Close the RTCPeerConnection
 
   if (myPeerConnection) {
-    log('--> Closing the peer connection');
-
     // Disconnect all our event listeners; we don't want stray events
     // to interfere with the hangup while it's ongoing.
 
