@@ -18,6 +18,7 @@
 
 ## 关于 scoped
 
+> 没有卵用
 ```html
 <div>
   <!-- style 中的css值会应用于这个div及其子元素 -->
