@@ -16,15 +16,17 @@ WebRTC 连接上的端点配置称为 `会话描述`. 该描述包括关于要�
 
 以下是交换提议和应答所必须的基本步骤
 
+> 这个只是 A 端到 B 端的视频流传输(不是两端互通, 要想 B 端到 A 端, 需要 B 给 A 发 offer, 然后 A 回复)
+
 1. 呼叫着通过 `navigator.mediaDevices.getUserMedia()`捕捉本地媒体
 2. 呼叫着创建一个`RTCPeerConnection`并调用`RTCPeerConnection.addTrack()`
-3. 呼叫着调用`RTCPeerConnection.createOffer()` 来创建一个提议(offer)(需要通过ICE获取绘画描述信息)
+3. 呼叫着调用`RTCPeerConnection.createOffer()` 来创建一个提议(offer)(需要通过 ICE 获取绘画描述信息)
 4. 呼叫者调用 `RTCPeerConnection.setLocalDescription` 将提议设置为本地描述
 5. 呼叫着请求(STUN/TURN)服务器创建 ice 候选
 6. 呼叫者通过信令服务器将提议(offer)传递至接收者
 7. 接收者收到了提议并调用`RTCPeerConnection.setRemoteDescription()`将其记录为远程描述
 8. 接受者做一些操作: 捕获本地媒体, 然后通过 `RTCPeerConnection.addTrack()` 添加到连接中
-9. 接收者通过 `RTCPeerConnection.createAnswer()` 创建一个应答(需要通过ICE获取绘画描述信息)
+9. 接收者通过 `RTCPeerConnection.createAnswer()` 创建一个应答(需要通过 ICE 获取绘画描述信息)
 10. 接受者调用 `RTCPeerConnection.setLocalDescription()` 将应答设置为本地描述. 此时, 接收者已经知道了连接双方的配置
 11. 接收者通过信令服务器将应答传递到呼叫者
 12. 呼叫者接受应答
