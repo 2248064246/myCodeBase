@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-09 14:46:18
+ * @LastEditTime: 2022-04-10 12:17:42
  * @Description:
  */
 
@@ -239,11 +239,13 @@ async function handleVideoOfferMsg(msg) {
 }
 
 async function handleVideoAnswerMsg(msg) {
-  console.log('设置answer');
-  var desc = new RTCSessionDescription(msg.sdp);
-  await myPeerConnection.setRemoteDescription(desc).catch((err) => {
+  console.log('设置answer', msg);
+  try {
+    var desc = new RTCSessionDescription(msg.sdp);
+    myPeerConnection.setRemoteDescription(desc);
+  } catch (err) {
     console.warn('设置answer错误', err);
-  });
+  }
 }
 
 async function createPeerConnection() {
@@ -321,7 +323,7 @@ async function handleNegotiationNeededEvent() {
     console.log('本地sdp', myPeerConnection.localDescription);
     sendToServer({
       name: document.querySelector('#login-name').value,
-      target: document.querySelector('#user-name').value,
+      target: targetUsername,
       type: 'video-offer',
       sdp: myPeerConnection.localDescription,
     });
@@ -332,6 +334,7 @@ async function handleNegotiationNeededEvent() {
 }
 
 function handleTrackEvent(event) {
+  console.log('设置B方轨道', event);
   document.getElementById('received_video').srcObject = event.streams[0];
 }
 
