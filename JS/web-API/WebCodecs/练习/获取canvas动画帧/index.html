@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <canvas id="source" width="400" height="300"></canvas>
+
+  <div id="video-box"></div>
+
+  <script>
+    let cnv = document.getElementById('source');
+
+    function startDrawing() {
+      let ctx = cnv.getContext('2d');
+
+      ctx.fillStyle = '#ddd';
+      let width = cnv.width;
+      let height = cnv.height;
+
+      let cx = width / 2;
+      let cy = height / 2;
+      let r = Math.min(width, height) / 5;
+
+      ctx.font = '30px 宋体';
+
+      let text = 'Hello WebCodecs';
+      let size = ctx.measureText(text).width;
+
+      let drawFrame = function (time) {
+        /* 旋转一圈的周期为 5000 ms */
+        let angle = Math.PI * 2 * (time / 5000);
+
+        let scale = 1 + 0.3 * Math.sin(angle);
+
+        ctx.save();
+        ctx.fillRect(0, 0, width, height);
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        ctx.scale(scale, scale);
+        // ctx.fillStyle = "hsl(" + (angle * 40) + ",80%,50%)";
+        ctx.fillStyle = "#333";
+        ctx.fillRect(-size / 2, 10, size, 25);
+
+        ctx.fillStyle = 'black';
+        ctx.fillText(text, -size / 2, 0);
+        ctx.restore();
+        window.requestAnimationFrame(drawFrame);
+      }
+
+      drawFrame();
+
+    }
+
+    function startWorker() {
+      let worker = new Worker('./video-worker.js');
+
+      worker.onmessage = function (e) {
+        console.log('Worker Error: ', e.data);
+        worker.terminate();
+        // startWorker();
+      }
+
+      let fps = 60;
+      /* 这个canvas上一个捕获画布当前帧的方法, 返回一个MediaStream*/
+      let stream = cnv.captureStream(fps)
+      /* 返回流中的所有视频轨道, 一般情况视频只有一个视频轨道 */
+      let track = stream.getVideoTracks()[0];
+      /* 通过轨道生成媒体帧流 */
+      let mediaProcessor = new MediaStreamTrackProcessor(track, fps);
+      console.log('mediaProcessor', mediaProcessor)
+      /* 通过对象上的 readable 可以获取可读流 */
+      let reader = mediaProcessor.readable;
+
+      const dst_cnv = document.createElement('canvas');
+      dst_cnv.width = cnv.width;
+      dst_cnv.height = cnv.height;
+      const dst = document.getElementById("video-box");
+
+      dst.appendChild(dst_cnv);
+
+      /* 方法将控制权转移到主线程或工作线程上的 OffscreenCanvas 对象。 */
+      let offscreen = dst_cnv.transferControlToOffscreen();
+
+      worker.postMessage({
+        canvas: offscreen,
+        /* 将readableStream 共享到worker */
+        frame_source: reader,
+        fps: fps
+      }, [offscreen, reader]);
+
+    }
+
+    function main() {
+      if (window.isSecureContext) {
+
+        if (!("VideoFrame" in window)) {
+          document.body.innerHTML = "<h1>WebCodecs API is not supported.</h1>";
+          return;
+        }
+        startDrawing()
+        startWorker();
+      } else {
+        document.body.innerHTML = "<h1>不是安全上下文环境</h1>";
+        return;
+      }
+    }
+
+    window.onload = function () {
+      main()
+    }
+  </script>
+
+</body>
+
+</html>
