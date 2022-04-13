@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-12 19:28:24
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-12 20:22:32
+ * @LastEditTime: 2022-04-13 10:40:08
  * @Description:
  */
 
@@ -33,9 +33,11 @@ function startDecodingAndRendering(canvas) {
   let ctx = canvas.getContext('2d');
   let readyFrames = [];
   /* 为true表示向下流动 */
+  /* 控制frame能够绘制到canvas上 */
   let underflow = true;
 
   function renderFrame() {
+    /* 当缓存中没有帧需要绘制时, 返回 */
     if (readyFrames.length == 0) {
       underflow = true;
       return;

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <button id="record">录制</button>
+    <button id="stop" disabled>停止</button>
+    <!-- <button id="terminate" disabled>结束</button> -->
+
+    <br />
+
+    <video id="source" autoplay width="1270" height="720"></video>
+
+    <script>
+      let video = document.querySelector('#source');
+      let record = document.querySelector('#record');
+      let stop = document.querySelector('#stop');
+      // let terminate = document.querySelector('#terminate');
+      let encodeWorker;
+
+      record.addEventListener('click', () => {
+        startRecording();
+      });
+
+      stop.addEventListener('click', () => {
+        stopCapture();
+      });
+
+      async function startRecording() {
+        record.setAttribute('disabled', true);
+        stop.removeAttribute('disabled');
+        let stream = await getMedia();
+        let videoTrack = stream.getVideoTracks()[0];
+        let trackSetting = videoTrack.getSettings();
+        console.log('视频配置', trackSetting);
+        let trackProcessor = new MediaStreamTrackProcessor(videoTrack);
+        let frameStream = trackProcessor.readable;
+        /* 显示了一个允许用户保存文件的文件选取器, 返回 FileSystemFileHandle */
+        try {
+          /* 如果取消, 则会抛出错误 */
+          let handle = await window.showSaveFilePicker({
+            /* 建议文件名称 */
+            suggestedName: 'myVideo.webm',
+            /* 文件类型 */
+            types: [
+              {
+                description: 'video file',
+                accept: {
+                  'video/webm': ['.webm'],
+                },
+              },
+            ],
+          });
+          encodeWorker = new Worker('./encode-worker.js');
+          encodeWorker.postMessage(
+            {
+              type: 'start',
+              fileHandle: handle,
+              frameStream: frameStream,
+              trackSetting: trackSetting,
+            },
+            [frameStream]
+          );
+        } catch (err) {
+          console.log('err', err);
+          stopCapture();
+        }
+      }
+
+      async function getMedia() {
+        let constraints = {
+          audio: false,
+          video: { width: 1280, height: 720, frameRate: 30 },
+        };
+        let stream = await window.navigator.mediaDevices.getUserMedia(
+          constraints
+        );
+        video.srcObject = stream;
+
+        return stream;
+      }
+
+      function stopCapture() {
+        let tracks = video.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        video.srcObject = null;
+        record.removeAttribute('disabled');
+        stop.setAttribute('disabled', true);
+
+        if (encodeWorker) {
+          encodeWorker.postMessage({
+            type: 'stop',
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

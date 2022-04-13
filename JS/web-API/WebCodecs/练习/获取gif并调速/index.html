@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <div>
+      <label for="speed">GIF 播放速度</label>
+      <span>Slow</span>
+      <input type="range" name="speed" id="speed" min="0.25" max="4" value="1" step="0.1" />
+      <span>Fast</span>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <div>
+      <h2>
+        Original
+        <code>img 图片</code>
+      </h2>
+      <img src="" alt="" srcset="" />
+    </div>
+    <div>
+      <h2>ImageDecode <code>canvas 图片</code></h2>
+      <canvas></canvas>
+    </div>
+  </div>
+
+  <script>
+    let img = document.querySelector('img');
+    let canvas = document.querySelector('canvas')
+    let range = document.querySelector('input')
+    let url = 'https://cdn.glitch.com/e1b764b8-e537-4b44-9c88-54d005335e5e%2Fgiphy.gif?v=1588252557131'
+
+    let offscreen, offscreenCtx, ctx;
+    let imageDecoder;
+    let imageIndex = 0;
+
+    let speed = parseFloat(range.value);
+
+    range.addEventListener('change', () => {
+      speed = 1 / parseFloat(range.value);
+    })
+
+    async function init() {
+      if (window.isSecureContext) {
+        if (!('ImageDecoder' in window)) {
+          alert('你的浏览器不支持WebCodecs')
+          return;
+        }
+        let response = await fetch(url);
+        let clone = response.clone();
+        let blob = await response.blob();
+        let {
+          width,
+          height
+        } = await getDimensions(blob)
+        console.log(width, height)
+        canvas.width = width;
+        canvas.height = height;
+        ctx = canvas.getContext('2d');
+
+        /* 提供一个canvas可以在屏幕外被渲染 */
+        /* 它可以在window和worker中工作, 并且不会阻塞主线程渲染工作*/
+        offscreen = new OffscreenCanvas(width, height);
+        offscreenCtx = offscreen.getContext('2d');
+
+        decodeImage(clone.body);
+      } else {
+        alert('非安全上下文环境')
+      }
+    }
+
+    async function getDimensions(blob) {
+      return new Promise(resolve => {
+        img.addEventListener('load', () => {
+          return resolve({
+            width: img.width,
+            height: img.height
+          })
+        });
+        img.src = URL.createObjectURL(blob);
+      })
+    }
+
+    async function decodeImage(stream) {
+      /* 提供一种压缩和解码图像的方法 */
+      imageDecoder = new ImageDecoder({
+        /* 一个 BufferSource 或者 ReadableStream 表示已编码的图像 */
+        data: stream,
+        /* 指定图像的mime类型 */
+        type: 'image/gif',
+      });
+      /* 开始解码图像的帧, 返回一个promise, 带有{image, complete} */
+      /* image 时解码图像的视频帧(videoFrame) */
+      let imageFrame = await imageDecoder.decode({
+        frameIndex: imageIndex++
+      });
+      console.log(imageDecoder.tracks)
+      /* 这里是获取图像轨道(ImageTrack) */
+      let track = imageDecoder.tracks.selectedTrack;
+      await renderImage(imageFrame, track);
+    }
+
+    async function renderImage(frame, track) {
+      offscreenCtx.drawImage(frame.image, 0, 0)
+      let temp = offscreenCtx.getImageData(0, 0, offscreen.width, offscreen.height);
+      let len = temp.data.length;
+      for (let i = 0; i < len; i += 4) {
+        const avg = (temp.data[i] + temp.data[i + 1] + temp.data[i + 2]) / 3;
+        temp.data[i] = avg;
+        temp.data[i + 1] = avg;
+        temp.data[i + 2] = avg;
+      }
+
+      ctx.putImageData(temp, 0, 0);
+
+      /* 表示图像帧数 */
+      if (track.frameCount === 1) {
+        return;
+      }
+
+      /* 如果当前获取的帧大于总帧数,则复位 (用于循环) */
+      if (imageIndex + 1 >= track.frameCount) {
+        imageIndex = 0;
+      }
+      const nextImageFrame = await imageDecoder.decode({
+        frameIndex: ++imageIndex
+      });
+      window.setTimeout(() => {
+        renderImage(nextImageFrame, track);
+      }, (frame.image.duration / 1000) * speed);
+    }
+    window.onload = function () {
+      init();
+    }
+  </script>
+</body>
+
+</html>

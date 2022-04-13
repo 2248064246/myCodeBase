@@ -86,6 +86,7 @@
       dst.appendChild(dst_cnv);
 
       /* 方法将控制权转移到主线程或工作线程上的 OffscreenCanvas 对象。 */
+      /* 可以不用阻塞主线程的渲染工作 */
       let offscreen = dst_cnv.transferControlToOffscreen();
 
       worker.postMessage({
