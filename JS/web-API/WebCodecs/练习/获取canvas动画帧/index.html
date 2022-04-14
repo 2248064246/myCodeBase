@@ -73,7 +73,7 @@
       /* 返回流中的所有视频轨道, 一般情况视频只有一个视频轨道 */
       let track = stream.getVideoTracks()[0];
       /* 通过轨道生成媒体帧流 */
-      let mediaProcessor = new MediaStreamTrackProcessor(track, fps);
+      let mediaProcessor = new MediaStreamTrackProcessor(track);
       console.log('mediaProcessor', mediaProcessor)
       /* 通过对象上的 readable 可以获取可读流 */
       let reader = mediaProcessor.readable;

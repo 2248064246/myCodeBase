@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-12 19:28:24
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-13 10:40:08
+ * @LastEditTime: 2022-04-14 15:37:28
  * @Description:
  */
 
@@ -13,9 +13,26 @@ self.onmessage = function (e) {
 
   console.log('worker', e.data);
 
-  main(frame_source, canvas, fps);
+  // main(frame_source, canvas, fps);
+  main2(frame_source, canvas, fps);
 };
 
+function main2(stream, canvas, fps) {
+  let reader = stream.getReader();
+  async function readFrame() {
+    let result = await reader.read();
+    let frame = result.value;
+    // console.log(frame)
+
+    let ctx = canvas.getContext('2d');
+    ctx.drawImage(frame, 0, 0);
+    /* 帧使用后关闭 */
+    frame.close();
+    self.requestAnimationFrame(readFrame);
+  }
+
+  readFrame();
+}
 function main(stream, canvas, fps) {
   let decoder = startDecodingAndRendering(canvas);
   function processChunk(chunk, md) {
@@ -26,7 +43,7 @@ function main(stream, canvas, fps) {
     }
     decoder.decode(chunk);
   }
-  captureAndEncode(stream, canvas, fps, processChunk)
+  captureAndEncode(stream, canvas, fps, processChunk);
 }
 
 function startDecodingAndRendering(canvas) {

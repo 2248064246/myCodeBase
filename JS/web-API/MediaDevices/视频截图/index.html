@@ -1,62 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-
-  <style>
-    video,
-    canvas {
-      height: 300px;
-      width: 500px;
-    }
-
-    canvas {
-      border: 1px solid #ddd;
-    }
-  </style>
-</head>
-
-<body>
-  <video controls></video>
-
-  <button id="takePhoto">截图</button>
-
-  <canvas></canvas>
-  <script>
-    var constraints = {
-      audio: true,
-      video: {
-        width: 500,
-        height: 300,
+    <style>
+      video,
+      canvas {
+        height: 300px;
+        width: 500px;
       }
-    };
 
-    navigator.mediaDevices.getUserMedia(constraints)
-      .then(function (mediaStream) {
-        var video = document.querySelector('video');
-        video.srcObject = mediaStream;
-        video.onloadedmetadata = function (e) {
-          video.play();
-        };
-      })
-      .catch(function (err) {
-        console.log(err.name + ": " + err.message);
-      }); // 总是在最后检查错误
+      canvas {
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
 
-    var takePhoto = document.querySelector('#takePhoto')
-    var canvas = document.querySelector('canvas')
-    var video = document.querySelector('video')
-    takePhoto.addEventListener('click', () => {
-      let context = canvas.getContext('2d')
-      canvas.width = video.offsetWidth
-      canvas.height = video.offsetHeight
-      context.drawImage(video, 0, 0, video.offsetWidth, video.offsetHeight);
-    })
-  </script>
-</body>
+  <body>
+    <video controls></video>
 
+    <button id="takePhoto">截图</button>
+
+    <canvas></canvas>
+    <script>
+      var constraints = {
+        audio: true,
+        video: {
+          width: 500,
+          height: 300,
+        },
+      };
+
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(function (mediaStream) {
+          var video = document.querySelector('video');
+          video.srcObject = mediaStream;
+          video.onloadedmetadata = function (e) {
+            video.play();
+          };
+        })
+        .catch(function (err) {
+          console.log(err.name + ': ' + err.message);
+        }); // 总是在最后检查错误
+
+      var takePhoto = document.querySelector('#takePhoto');
+      var canvas = document.querySelector('canvas');
+      var video = document.querySelector('video');
+      takePhoto.addEventListener('click', () => {
+        // let context = canvas.getContext('2d')
+        // canvas.width = video.offsetWidth
+        // canvas.height = video.offsetHeight
+        // context.drawImage(video, 0, 0, video.offsetWidth, video.offsetHeight);
+
+        /* 这种方式不是很好 */
+        let frame = new VideoFrame(video, {
+          duration: 0,
+          timestamp: 0,
+        });
+        let context = canvas.getContext('2d');
+        canvas.width = video.offsetWidth;
+        canvas.height = video.offsetHeight;
+        context.drawImage(frame, 0, 0, video.offsetWidth, video.offsetHeight);
+      });
+    </script>
+  </body>
 </html>
