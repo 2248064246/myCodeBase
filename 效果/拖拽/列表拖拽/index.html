@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .box {
+      width: 400px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      /* height: 300px; */
+      overflow: auto;
+    }
+
+
+    .box div {
+      height: 50px;
+      margin: 10px 0;
+      text-align: center;
+      line-height: 50px;
+      user-select: none;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    .box div:hover {
+      cursor: pointer;
+    }
+
+    .box .selected {
+      border: 1px solid tomato;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div>HTML</div>
+    <div>CSS</div>
+    <div>JavaScript</div>
+    <div>Ajax</div>
+    <div>WebAPI</div>
+    <div>Vue</div>
+    <div>React</div>
+  </div>
+
+  <script>
+    let divs = document.querySelectorAll('.box > div')
+    let box = document.querySelector('.box')
+
+
+    divs.forEach(el => {
+      el.translateY = 0;
+      el.targetY = el.offsetTop + el.getBoundingClientRect().height / 2 + box.getBoundingClientRect().top + el
+        .scrollTop
+      el.next = el.nextElementSibling
+      el.pre = el.previousElementSibling
+    })
+
+    function exchange(a, b) {
+
+      let temp = b.targetY;
+      b.targetY = a.targetY;
+      a.targetY = temp;
+      let aPre = a.pre;
+      let bNext = b.next;
+
+      a.next = null;
+      b.pre = null;
+
+      a.next = bNext;
+      bNext ? bNext.pre = a : null;
+
+      b.pre = aPre;
+      aPre ? aPre.next = b : null;
+      a.pre = b;
+      b.next = a;
+    }
+
+    box.addEventListener('mousemove', (e) => {
+      // console.log(e)
+      if (e.target.parentElement == box && e.target.leftClicked) {
+        // console.log(e.target.next, e.target.pre)
+        e.target.translateY = e.target.translateY || 0;
+        /* 排除margin影响 */
+        let marginTop = getMarginTop(e.target)
+        let curTop = e.target.getBoundingClientRect().y - marginTop;
+        let curBottom = e.target.getBoundingClientRect().bottom + marginTop;
+        let parentRect = box.getBoundingClientRect()
+        let parentY = parentRect.y;
+        let parentBottom = parentRect.bottom;
+
+        if ((curTop + e.movementY) < parentY || (curBottom + e.movementY) > parentBottom) {
+          return
+        } else {
+          e.target.translateY += e.movementY;
+        }
+        e.target.style.zIndex = 999;
+        e.target.style.transform = `translateY(${e.target.translateY}px)`
+
+        if (e.movementY > 0) {
+          let next = e.target.next;
+          if (next) {
+            if (curBottom - marginTop > next.targetY) {
+              next.style.transition = '.3s'
+              next.translateY = next.translateY - (next.targetY - e.target.targetY)
+              next.style.transform = `translateY(${next.translateY }px)`
+              exchange(e.target, next)
+            }
+          }
+        } else {
+          let pre = e.target.pre;
+          if (pre) {
+            if (curTop + marginTop < pre.targetY) {
+              pre.style.transition = '.3s'
+              pre.translateY = pre.translateY - (pre.targetY - e.target.targetY)
+              pre.style.transform = `translateY(${pre.translateY }px)`
+              exchange(pre, e.target)
+            }
+          }
+        }
+      }
+    })
+
+    box.addEventListener('mousedown', (e) => {
+      if (e.button === 0) {
+        divs.forEach(el => {
+          el.style.transition = ''
+        })
+        e.target.leftClicked = true
+        e.target.classList.add('selected')
+      }
+    })
+
+    box.addEventListener('mouseup', (e) => {
+      e.target.leftClicked = false
+      e.target.style.zIndex = 10;
+      e.target.classList.remove('selected')
+      let offsetTop = e.target.getBoundingClientRect().top + e.target.getBoundingClientRect().height / 2
+      e.target.translateY = e.target.translateY + (e.target.targetY - offsetTop)
+      e.target.style.transition = '.3s'
+      e.target.style.transform = `translateY(${e.target.translateY }px)`
+    })
+
+    box.addEventListener('pointerdown', (e) => {
+      e.target.setPointerCapture(e.pointerId)
+    })
+
+    box.addEventListener('pointerup', (e) => {
+      e.target.releasePointerCapture(e.pointerId)
+    })
+
+    function getMarginTop(el) {
+      return parseInt(window.getComputedStyle(el).marginTop)
+    }
+  </script>
+</body>
+
+</html>
