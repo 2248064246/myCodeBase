@@ -68,8 +68,7 @@
 
     divs.forEach(el => {
       el.translateY = 0;
-      el.targetY = el.offsetTop + el.getBoundingClientRect().height / 2 + box.getBoundingClientRect().top + el
-        .scrollTop
+      el.targetY = el.offsetTop + el.getBoundingClientRect().height / 2;
       el.next = el.nextElementSibling
       el.pre = el.previousElementSibling
     })
@@ -100,14 +99,19 @@
         // console.log(e.target.next, e.target.pre)
         e.target.translateY = e.target.translateY || 0;
         /* 排除margin影响 */
-        let marginTop = getMarginTop(e.target)
-        let curTop = e.target.getBoundingClientRect().y - marginTop;
-        let curBottom = e.target.getBoundingClientRect().bottom + marginTop;
-        let parentRect = box.getBoundingClientRect()
-        let parentY = parentRect.y;
-        let parentBottom = parentRect.bottom;
+        let marginTop = getStyle(e.target)
+        // let curTop = e.target.getBoundingClientRect().y - marginTop;
+        // let curBottom = e.target.getBoundingClientRect().bottom + marginTop;
+        // let parentRect = box.getBoundingClientRect()
+        // let parentTop = parentRect.y;
+        // let parentBottom = parentRect.bottom;
 
-        if ((curTop + e.movementY) < parentY || (curBottom + e.movementY) > parentBottom) {
+        let curTop = e.target.offsetTop + e.target.translateY
+        let curBottom = curTop + e.target.getBoundingClientRect().height;
+        let parentTop = 0;
+        let parentBottom = box.scrollHeight;
+
+        if ((curTop + e.movementY) < parentTop || (curBottom + e.movementY) > parentBottom) {
           return
         } else {
           e.target.translateY += e.movementY;
@@ -115,10 +119,11 @@
         e.target.style.zIndex = 999;
         e.target.style.transform = `translateY(${e.target.translateY}px)`
 
+        console.log(curTop, curBottom, e.target.targetY)
         if (e.movementY > 0) {
           let next = e.target.next;
           if (next) {
-            if (curBottom - marginTop > next.targetY) {
+            if (curBottom > next.targetY) {
               next.style.transition = '.3s'
               next.translateY = next.translateY - (next.targetY - e.target.targetY)
               next.style.transform = `translateY(${next.translateY }px)`
@@ -128,7 +133,7 @@
         } else {
           let pre = e.target.pre;
           if (pre) {
-            if (curTop + marginTop < pre.targetY) {
+            if (curTop < pre.targetY) {
               pre.style.transition = '.3s'
               pre.translateY = pre.translateY - (pre.targetY - e.target.targetY)
               pre.style.transform = `translateY(${pre.translateY }px)`
@@ -153,7 +158,7 @@
       e.target.leftClicked = false
       e.target.style.zIndex = 10;
       e.target.classList.remove('selected')
-      let offsetTop = e.target.getBoundingClientRect().top + e.target.getBoundingClientRect().height / 2
+      let offsetTop = e.target.translateY + e.target.offsetTop + e.target.getBoundingClientRect().height / 2;
       e.target.translateY = e.target.translateY + (e.target.targetY - offsetTop)
       e.target.style.transition = '.3s'
       e.target.style.transform = `translateY(${e.target.translateY }px)`
@@ -167,8 +172,13 @@
       e.target.releasePointerCapture(e.pointerId)
     })
 
-    function getMarginTop(el) {
+    function getStyle(el, key = "marginTop") {
       return parseInt(window.getComputedStyle(el).marginTop)
+    }
+
+    function getTranslateY(el) {
+      let matrix = getStyle(el, 'transform');
+      return matrix.match(/\d+/g).slice(-1)
     }
   </script>
 </body>
