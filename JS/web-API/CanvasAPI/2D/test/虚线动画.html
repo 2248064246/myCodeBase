@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let canvas = document.querySelector('canvas');
+      let ctx = canvas.getContext('2d');
+      let offset = 0;
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.setLineDash([12, 3, 3]);
+
+        ctx.lineDashOffset = offset;
+
+        ctx.rect(0, 0, 100, 100);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      function anime() {
+        offset++;
+        if (offset > 36) {
+          offset = 0;
+        }
+        draw();
+        requestAnimationFrame(anime);
+      }
+
+      anime();
+    </script>
+  </body>
+</html>

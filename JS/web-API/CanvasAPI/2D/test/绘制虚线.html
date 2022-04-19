@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      function draw() {
+        let canvas = document.querySelector('canvas');
+        let ctx = canvas.getContext('2d');
+        let y = 0;
+        drawDashedLine([]);
+        drawDashedLine([1, 1]);
+        drawDashedLine([10, 10]);
+        drawDashedLine([20, 5]);
+        drawDashedLine([15, 3, 3, 3]);
+        drawDashedLine([20, 3, 3, 3, 3, 3, 3, 3]);
+        drawDashedLine([12, 3, 3]); // Equals [12, 3, 3, 12, 3, 3]
+
+        function drawDashedLine(pattern) {
+          ctx.beginPath();
+          ctx.setLineDash(pattern);
+          ctx.moveTo(0, y);
+          ctx.lineTo(200, y);
+          ctx.stroke();
+          y += 20;
+        }
+      }
+
+      draw();
+    </script>
+  </body>
+</html>

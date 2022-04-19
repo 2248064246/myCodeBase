@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <canvas></canvas>
+  <script>
+    function draw() {
+      let ctx = document.querySelector('canvas').getContext('2d')
+
+      let rect = new Path2D();
+      rect.rect(0, 0, 50, 50)
+      ctx.stroke(rect);
+
+      let circle = new Path2D();
+      // circle.moveTo(115, 25)
+      circle.arc(90, 25, 25, 0, Math.PI * 2);
+  
+      ctx.fill(circle)
+
+      let path = 'M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4'
+      let icon = new Path2D(path)
+      ctx.translate(20, 20)
+    
+      ctx.stroke(icon)
+    }
+
+    draw();
+  </script>
+</body>
+</html>
