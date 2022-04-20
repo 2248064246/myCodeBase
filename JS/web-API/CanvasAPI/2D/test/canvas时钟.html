@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function clock() {
+        let canvas = document.createElement('canvas');
+        canvas.width = 300;
+        canvas.height = 300;
+        let ctx = canvas.getContext('2d');
+
+        function draw() {
+          /* 保存默认设置, 在每次调用时, 需要保证没有上次绘画设置的影响 */
+          ctx.save();
+          ctx.clearRect(0, 0, 300, 300);
+          ctx.translate(75, 75);
+          ctx.scale(0.4, 0.4);
+          /* 由于默认是沿X正方向开始, 旋转到0点位置 */
+          ctx.rotate(-Math.PI / 2);
+
+          ctx.strokeStyle = '#000';
+          ctx.fillStyle = '#fff';
+          ctx.lineWidth = 8;
+          ctx.lineCap = 'round';
+
+          /* 这里一个save对应一个restore, 其实都是为了下一次绘制画布状态还原 */
+          ctx.save();
+          for (let i = 0; i < 12; i++) {
+            ctx.beginPath();
+            /* 12 个小时刻度 */
+            ctx.rotate((2 * Math.PI) / 12);
+            ctx.moveTo(100, 0);
+            ctx.lineTo(120, 0);
+            ctx.stroke();
+          }
+          ctx.restore();
+
+          ctx.save();
+          /* 画小刻度 */
+          for (i = 0; i < 60; i++) {
+            if (i % 5 != 0) {
+              ctx.beginPath();
+              ctx.moveTo(117, 0);
+              ctx.lineTo(120, 0);
+              ctx.stroke();
+            }
+            ctx.rotate(Math.PI / 30);
+          }
+          ctx.restore();
+
+          let now = new Date();
+          var sec = now.getSeconds();
+          var min = now.getMinutes();
+          var hr = now.getHours();
+
+          /* 12小时制 */
+          hr = hr >= 12 ? hr - 12 : hr;
+
+          ctx.save();
+          ctx.rotate(
+            hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) * sec
+          );
+          ctx.lineWidth = 14;
+          ctx.beginPath();
+          ctx.moveTo(-20, 0);
+          ctx.lineTo(60, 0);
+          ctx.stroke();
+          ctx.restore();
+
+          ctx.save();
+          ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec);
+          ctx.lineWidth = 10;
+          ctx.beginPath();
+          ctx.moveTo(-28, 0);
+          ctx.lineTo(90, 0);
+          ctx.stroke();
+          ctx.restore();
+
+          ctx.save();
+          ctx.rotate((sec * Math.PI) / 30);
+          ctx.strokeStyle = '#D40000';
+          ctx.fillStyle = '#D40000';
+          ctx.lineWidth = 6;
+          ctx.beginPath();
+          ctx.moveTo(-30, 0);
+          ctx.lineTo(83, 0);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(0, 0, 10, 0, Math.PI * 2, true);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(95, 0, 10, 0, Math.PI * 2, true);
+          ctx.stroke();
+          ctx.fillStyle = '#fff';
+          ctx.arc(0, 0, 3, 0, Math.PI * 2, true);
+          ctx.fill();
+          ctx.restore();
+
+          ctx.beginPath();
+          ctx.lineWidth = 14;
+          ctx.strokeStyle = '#325FA2';
+          ctx.arc(0, 0, 142, 0, Math.PI * 2, true);
+          ctx.stroke();
+
+          /* 用于还原默认设置, 确保下次绘制画布状态为初始值 */
+          ctx.restore();
+
+          window.requestAnimationFrame(draw);
+        }
+
+        document.body.appendChild(canvas);
+
+        draw();
+      }
+
+      clock();
+    </script>
+  </body>
+</html>
