@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+
+    <script>
+      let h = innerHeight;
+      let w = innerWidth;
+      let fw = 100;
+      let food = [];
+      let snake;
+      let keyName;
+      let canvas = document.querySelector('canvas');
+      let ctx = canvas.getContext('2d');
+
+      window.onkeydown = function (t) {
+        let key = t.key;
+        console.log(key);
+        if (key.search('Arrow') > -1) {
+          keyName = key;
+        }
+      };
+
+      init();
+
+      function init() {
+        canvas.height = h;
+        canvas.width = w;
+        ctx.fillRect(0, 0, w, h);
+        snake = new Snake();
+        anima();
+        // snake.draw();
+      }
+
+      function Snake() {
+        this.w = 15;
+        this.h = 15;
+        this.dx = this.dy = this.xf = this.yf = 1;
+        this.sn = [];
+
+        /* 初始化蛇长度 */
+        for (
+          var t = {
+              x: w / 2,
+              y: h / 2,
+            },
+            e = 0;
+          e < 5;
+          e++
+        ) {
+          this.sn.push(Object.assign({}, t)), (t.x += this.w);
+        }
+
+        this.draw = function () {
+          if (keyName) {
+            console.log('keyName', keyName);
+            let cell = { ...this.sn[0] };
+            switch (keyName) {
+              case 'ArrowUp':
+                cell.y -= this.h;
+                break;
+              case 'ArrowDown':
+                cell.y += this.h;
+                break;
+              case 'ArrowLeft':
+                cell.x -= this.w;
+                break;
+              case 'ArrowRight':
+                cell.x += this.w;
+                break;
+            }
+            cell.x >= w ? (cell.x = 0) : cell.x < 0 && (cell.x = w - this.w);
+            cell.y >= h ? (cell.y = 0) : cell.y < 0 && (cell.y = h);
+            /* 增加前面的, 减少后面的来实现移动 */
+            this.sn.unshift(cell);
+            this.sn.pop();
+          }
+          this.sn.forEach((cell, idx, ary) => {
+            if (idx == 0 || ary.length - 1 == idx) {
+              let color = ctx.createLinearGradient(
+                cell.x,
+                cell.y,
+                cell.x + this.w,
+                cell.y + this.h
+              );
+              if (ary.length - 1 == idx) {
+                color.addColorStop(0, 'black');
+                color.addColorStop(1, '#8bc34a');
+              } else {
+                color.addColorStop(0, '#8BC34A');
+                color.addColorStop(1, 'white');
+              }
+              ctx.fillStyle = color;
+            } else {
+              ctx.fillStyle = '#8BC34A';
+            }
+
+            ctx.fillRect(cell.x, cell.y, this.w, this.h);
+          });
+        };
+      }
+
+      function anima() {
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        snake.draw();
+        /* 控制速度 */
+        setTimeout(() => {
+          requestAnimationFrame(anima);
+        }, fw);
+      }
+    </script>
+  </body>
+</html>

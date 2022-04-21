@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      function gc() {
+        let s = '0123456789ABCDEF';
+        let c = '#';
+        for (let i = 0; i < 6; i++) {
+          c += s[Math.floor(Math.random() * s.length)];
+        }
+        return c;
+      }
+
+      /* 记录鼠标位置, 初始化为窗口中心点 */
+      let m = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+      };
+      window.onmousemove = function (e) {
+        m.x = e.clientX;
+        m.y = e.clientY;
+      };
+
+      let canvas = document.querySelector('canvas');
+      let ctx = canvas.getContext('2d');
+
+      let a = [];
+      window.onload = function () {
+        for (var i = 0; i < 1; i++) {
+          var t = new ob(
+            innerWidth / 2,
+            innerHeight / 2,
+            3,
+            'red',
+            Math.random() * 200 + 20,
+            0.1
+          );
+          a.push(t);
+        }
+        //cn.style.backgroundColor = "#700bc8";
+
+        ctx.lineWidth = '2';
+        ctx.globalAlpha = 0.5;
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        // resize();
+        anim();
+      };
+
+      /* 这个画圆轨迹nb */
+
+      function ob(x, y, r, color, o, s) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.cc = color;
+        this.theta = Math.random() * Math.PI * 2;
+
+        this.s = s;
+        this.o = o;
+
+        this.t = Math.random() * 150;
+
+        this.dr = function () {
+          let ls = {
+            x: this.x,
+            y: this.y,
+          };
+          this.theta += this.s;
+          this.x = m.x + Math.cos(this.theta) * this.t;
+          this.y = m.y + Math.sin(this.theta) * this.t;
+          
+          ctx.beginPath();
+          ctx.lineWidth = this.r;
+          ctx.strokeStyle = this.cc;
+          ctx.moveTo(ls.x, ls.y);
+          ctx.lineTo(this.x, this.y);
+          ctx.stroke();
+          ctx.closePath();
+        };
+      }
+
+      function anim() {
+        requestAnimationFrame(anim);
+        // ctx.clearRect(0, 0, canvas.width, canvas.height)
+        /* 通过层叠透明度来看制造轨迹效果 */
+        ctx.fillStyle = 'rgba(0,0,0,0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        a.forEach(function (e, i) {
+          e.dr();
+        });
+
+        // setTimeout(anim, 500)
+      }
+
+      function resize() {
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        for (let i = 0; i < 1; i++) {
+          a[i] = new ob(
+            innerWidth / 2,
+            innerHeight / 2,
+            4,
+            gc(),
+            Math.random() * 200 + 20,
+            0.02
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

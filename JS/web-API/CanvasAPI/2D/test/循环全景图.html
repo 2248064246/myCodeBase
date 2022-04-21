@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let CanvasXSize = 400;
+      let CanvasYSize = 200;
+      let speed = 1;
+      let y = -4.5;
+
+      let dx = 0.5;
+      let imgW, imgH;
+      let x = 0;
+      let clearY, clearX, ctx;
+      let img = new Image();
+      img.src =
+        './img/014d9e5ae19da2a801214a61308a99.JPG@1280w_1l_2o_100sh.jpg';
+
+      img.onload = function () {
+        imgW = img.width;
+        imgH = img.height;
+        if (imgW > CanvasXSize) {
+          /* 计算长度超出多少 */
+          x = CanvasXSize - imgW;
+          clearX = imgW;
+        } else {
+          clearX = CanvasXSize;
+        }
+
+        if (imgH > CanvasYSize) {
+          clearY = imgH;
+        } else {
+          clearY = CanvasYSize;
+        }
+        let canvas = document.querySelector('canvas')
+        canvas.width = CanvasXSize;
+        canvas.height = CanvasYSize
+        ctx = canvas.getContext('2d')
+
+        draw()
+      };
+
+      function draw() {
+        ctx.clearRect(0, 0, clearX, clearY);
+
+        if (imgW <= CanvasXSize) {
+          if (x > CanvasXSize) {
+            x = -imgW + x;
+          }
+          /* 图片比canvas小 */
+          if (x > 0) {
+            ctx.drawImage(img, -imgW + x, y, imgW, CanvasYSize);
+          }
+          if (x - imgW > 0) {
+            ctx.drawImage(img, -imgW * 2 + x, y, imgW, CanvasYSize);
+          }
+        } else {
+          if (x > CanvasXSize) {
+            x = CanvasXSize - imgW;
+          }
+          // draw aditional image
+          if (x > CanvasXSize - imgW) {
+            ctx.drawImage(img, x - imgW + 1, y, imgW, CanvasYSize);
+          }
+        }
+        ctx.drawImage(img, x, y, imgW, CanvasYSize);
+        x += dx;
+        window.requestAnimationFrame(draw)
+      }
+    </script>
+  </body>
+</html>

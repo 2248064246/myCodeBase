@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      function draw() {
+        let canvas = document.querySelector('canvas');
+        let ctx = canvas.getContext('2d');
+
+        let width = canvas.width;
+        let height = canvas.height;
+
+        let chunkNum = 10;
+        let chunkH = height / chunkNum;
+        let chunkW = width / chunkNum;
+        let colorChunk = 255 / chunkNum;
+
+        for (let i = 0; i < chunkNum; i++) {
+          for (let j = 0; j < chunkNum; j++) {
+            ctx.fillStyle = `rgb(${Math.floor(
+              255 - colorChunk * i
+            )}, ${Math.floor(255 - colorChunk * j)}, 0)`;
+            ctx.fillRect(j * chunkW, i * chunkH, chunkW, chunkH);
+          }
+        }
+
+        function pick(event, destination) {
+          var x = event.layerX;
+          var y = event.layerY;
+          var pixel = ctx.getImageData(x, y, 1, 1);
+          var data = pixel.data;
+
+          const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+            data[3] / 255
+          })`;
+          
+          console.log('rgba', rgba)
+
+          return rgba;
+        }
+
+        canvas.addEventListener('mousemove', function (event) {
+          pick(event);
+        });
+      }
+      draw();
+    </script>
+  </body>
+</html>
