@@ -1,0 +1,55 @@
+<!--
+ * @Author: huangyingli
+ * @Date: 2022-04-22 15:22:09
+ * @LastEditors: huangyingli
+ * @LastEditTime: 2022-04-25 17:40:55
+ * @Description:  
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      let canvas = document.querySelector('canvas');
+      let ctx = canvas.getContext('2d');
+      canvas.height = innerHeight;
+      canvas.width = innerWidth;
+      let angle = -45;
+      let bx = 0;
+      let by = 0;
+      let v = 15;
+      let range = 1;
+      let gravity = 0.2;
+      let vy = v * Math.sin((angle * Math.PI) / 180);
+      let vx = v * Math.cos((angle * Math.PI) / 180);
+      function draw() {
+        ctx.save();
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        ctx.translate(0, innerHeight / 2);
+        ctx.beginPath();
+        ctx.arc(bx, by, 8, 0, Math.PI * 2);
+        range += 0.02;
+        let v0 = vy;
+        vy += gravity * range;
+
+        bx += vx;
+        by += vy;
+        console.log(by)
+
+        ctx.fill();
+        ctx.restore();
+
+        // angle += 0.02;
+        window.requestAnimationFrame(draw);
+      }
+
+      draw();
+    </script>
+  </body>
+</html>
