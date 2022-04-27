@@ -40,7 +40,13 @@
         /* 这里translate是在 (150, 150) 基础上移动 */
         ctx.translate(105, 0);
         ctx.fillRect(0, -12, 50, 24); // Shadow
+        ctx.save();
+        ctx.rotate(
+          ((2 * Math.PI) / 12) * time.getSeconds() +
+            ((2 * Math.PI) / 12000) * time.getMilliseconds()
+        );
         ctx.drawImage(earth, -12, -12);
+        ctx.restore();
 
         ctx.save();
         ctx.rotate(
