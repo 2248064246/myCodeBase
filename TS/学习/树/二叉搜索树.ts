@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-14 10:45:17
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-03-16 11:24:36
+ * @LastEditTime: 2022-05-01 22:01:44
  * @Description:
  */
 
@@ -19,6 +19,8 @@ class TreeNode {
     this.right = null;
   }
 }
+
+export { TreeNode };
 
 interface BST {
   root: TreeNode | null;
@@ -227,7 +229,7 @@ class BST {
     if (node === null) return level;
     let left = BST.maxDep(node.left, level + 1);
     let right = BST.maxDep(node.right, level + 1);
-    return Math.max(left, right)
+    return Math.max(left, right);
   }
 }
 
@@ -262,5 +264,4 @@ tree.postOrderTraverse((v: number) => console.log(v));
 console.log('层序遍历');
 tree.levelOrder((v: any) => console.log(v));
 
-
-console.log('最大深度: ', tree.maxDep())
+console.log('最大深度: ', tree.maxDep());
