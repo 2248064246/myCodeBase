@@ -5,10 +5,21 @@
 
 `assign(target, ...sources)`
   + 只会拷贝源对象(source)自身的可枚举属性(包括 Symbol)到目标对象(并且只是浅克隆)
-  + 不会拷贝属性描述, 至拷贝属性值
+  + 不会拷贝属性描述, 只拷贝属性值
 
 `create(prototype[, descriptor])`
   + 使用指定的原型对象和属性创建一个新对象。
+  ```js
+  o2 = Object.create({}, {
+    p: {
+      value: 42,
+      writable: true,
+      enumerable: true,
+      configurable: true
+    }
+  });
+  // 这会创建一个拥有 {p: 42} 这个属性的对象
+  ``` 
 
 `defineProperty(obj, prop, descriptor)`
   + 给对象添加一个属性并制定该属性的配置(描述)
@@ -86,6 +97,40 @@
   > 由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，更改对象的 `[[Prototype]]`在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。 
 
   > 所以应该使用 Object.create() 来创建你想要的 `[[prototype]]`的新对象
+
+  ```js
+  /**
+   * 给对象上增加 prototype(在对象的prototype上层增加其他的prototype)
+   * @see MDN 的 Object.setPrototypeOf() 篇
+   */
+   Object.appendChain = function(oChain, oProto) {
+    if (arguments.length < 2) {
+      throw new TypeError('Object.appendChain - Not enough arguments');
+    }
+    if (typeof oProto !== 'object' && typeof oProto !== 'string') {
+      throw new TypeError('second argument to Object.appendChain must be an object or a string');
+    }
+
+    var oNewProto = oProto,
+        oReturn = o2nd = oLast = oChain instanceof this ? oChain : new oChain.constructor(oChain);
+
+    for (var o1st = this.getPrototypeOf(o2nd);
+      o1st !== Object.prototype && o1st !== Function.prototype;
+      o1st = this.getPrototypeOf(o2nd)
+    ) {
+      o2nd = o1st;
+    }
+
+    if (oProto.constructor === String) {
+      oNewProto = Function.prototype;
+      oReturn = Function.apply(null, Array.prototype.slice.call(arguments, 1));
+      this.setPrototypeOf(oReturn, oLast);
+    }
+
+    this.setPrototypeOf(o2nd, oNewProto);
+    return oReturn;
+  }
+  ```
 
 `values(obj)`
   + 返回给定对象自生可枚举值的数组(不包括 Symbol)
