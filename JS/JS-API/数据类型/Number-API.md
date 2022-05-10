@@ -11,6 +11,13 @@
   + 表示 JS 中能表示的最大数值
 + `MIN_VALUE`
   + 表示 JS 中能表示的最小数值
++ `EPSILON`
+  + 表示 JS 中的最小进度, 用于比较两个浮点数是否相等
+  ```js
+  if (Number.EPSILON === undefined) {
+      Number.EPSILON = Math.pow(2, -52);
+  }
+  ``` 
 ## 静态方法
 
 ### ES6~ES8

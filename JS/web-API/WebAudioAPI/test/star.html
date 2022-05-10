@@ -64,19 +64,22 @@
      * @LastEditTime: 2022-03-27 17:31:53
      * @Description:
      */
+    /*
+     * @Author: huangyingli
+     * @Date: 2022-03-28 11:44:37
+     * @LastEditors: huangyingli
+     * @LastEditTime: 2022-03-28 11:44:38
+     * @Description:
+     */
     var Visualizer = function () {
-      var tileSize;
       var tiles = [];
       var stars = [];
       // canvas vars
       var fgCanvas;
       var fgCtx;
-      var fgRotation = 0.001;
       var bgCanvas;
-      var bgCtx;
       var sfCanvas;
       var sfCtx;
-      var audioSource;
 
       function Star(x, y, starSize, ctx) {
         this.x = x;
@@ -154,49 +157,6 @@
         }
       };
 
-      var drawBg = function () {
-        bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-        var r, g, b, a;
-        var val = audioSource.volume / 1000;
-        r = 200 + (Math.sin(val) + 1) * 28;
-        g = val * 2;
-        b = val * 8;
-        a = Math.sin(val + (3 * Math.PI) / 2) + 1;
-        bgCtx.beginPath();
-        bgCtx.rect(0, 0, bgCanvas.width, bgCanvas.height);
-        // create radial gradient
-        var grd = bgCtx.createRadialGradient(
-          bgCanvas.width / 2,
-          bgCanvas.height / 2,
-          val,
-          bgCanvas.width / 2,
-          bgCanvas.height / 2,
-          bgCanvas.width - Math.min(Math.pow(val, 2.7), bgCanvas.width - 20)
-        );
-        grd.addColorStop(0, 'rgba(0,0,0,0)'); // centre is transparent black
-        grd.addColorStop(
-          0.8,
-          'rgba(' +
-          Math.round(r) +
-          ', ' +
-          Math.round(g) +
-          ', ' +
-          Math.round(b) +
-          ', 0.4)'
-        ); // edges are reddish
-
-        bgCtx.fillStyle = grd;
-        bgCtx.fill();
-        /*
-           // debug data
-           bgCtx.font = "bold 30px sans-serif";
-           bgCtx.fillStyle = 'grey';
-           bgCtx.fillText("val: " + val, 30, 30);
-           bgCtx.fillText("r: " + r , 30, 60);
-           bgCtx.fillText("g: " + g , 30, 90);
-           bgCtx.fillText("b: " + b , 30, 120);
-           bgCtx.fillText("a: " + a , 30, 150);*/
-      };
 
       this.resizeCanvas = function () {
         if (fgCanvas) {
@@ -213,10 +173,6 @@
           sfCanvas.height = window.innerHeight;
           sfCtx.translate(fgCanvas.width / 2, fgCanvas.height / 2);
 
-          tileSize =
-            fgCanvas.width > fgCanvas.height ?
-            fgCanvas.width / 25 :
-            fgCanvas.height / 25;
 
           // drawBg();
           // makePolygonArray();
@@ -265,7 +221,6 @@
       };
 
       this.init = function (options) {
-        audioSource = options.audioSource;
         var container = document.getElementById(options.containerId);
 
         // foreground hexagons layer
@@ -282,7 +237,6 @@
 
         // background image layer
         bgCanvas = document.createElement('canvas');
-        bgCtx = bgCanvas.getContext('2d');
         container.appendChild(bgCanvas);
 
         // makePolygonArray();
@@ -298,24 +252,27 @@
       };
     };
 
-    var SoundCloudAudioAnalyser = function (analyser) {
-      var self = this;
-      // public properties and methods
-      this.volume = 0;
-      this.streamData = new Uint8Array(128);
-      analyser.fftSize = 256;
-      var sampleAudioStream = function () {
-        analyser.getByteFrequencyData(self.streamData);
-        // calculate an overall volume value
-        var total = 0;
-        for (var i = 0; i < 80; i++) {
-          // get the volume from the first 80 bins, else it gets too loud with treble
-          total += self.streamData[i];
-        }
-        self.volume = total;
-      };
-      setInterval(sampleAudioStream, 20);
-    };
+    // eslint-disable-next-line no-unused-vars
+    class SoundCloudAudioAnalyser {
+      constructor(analyser) {
+        var self = this;
+        // public properties and methods
+        this.volume = 0;
+        this.streamData = new Uint8Array(128);
+        analyser.fftSize = 256;
+        var sampleAudioStream = function () {
+          analyser.getByteFrequencyData(self.streamData);
+          // calculate an overall volume value
+          var total = 0;
+          for (var i = 0; i < 80; i++) {
+            // get the volume from the first 80 bins, else it gets too loud with treble
+            total += self.streamData[i];
+          }
+          self.volume = total;
+        };
+        setInterval(sampleAudioStream, 20);
+      }
+    }
 
     function visualize(analyser) {
       var visualizer = new Visualizer();
@@ -323,6 +280,8 @@
         containerId: 'visualizer',
       });
     }
+
+
 
     visualize()
   </script>

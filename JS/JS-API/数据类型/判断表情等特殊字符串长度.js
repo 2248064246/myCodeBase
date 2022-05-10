@@ -1,8 +1,8 @@
 /*
  * @Author: ys4225/黄迎李
  * @Date: 2021-08-08 12:48:35
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-17 10:48:54
+ * @LastEditors: huangyingli
+ * @LastEditTime: 2022-05-09 14:14:32
  * @Description:
  */
 let rsAstralRange = '\\ud800-\\udfff',
@@ -67,7 +67,10 @@ function asciiToArray(val) {
 
 let c = '❤️😂';
 
-toArray(c); // => ['❤️', '😂']
+let artStr = toArray(c); // => ['❤️', '😂']
+console.log(artStr.length);
+
+console.log(toArray('你好世界, xxx').length)
 
 {
   /**
@@ -135,4 +138,6 @@ toArray(c); // => ['❤️', '😂']
       return Array.from(arr);
     }
   };
+
+  console.log(ucs2decode(c), ucs2encode(ucs2decode(c)))
 }
