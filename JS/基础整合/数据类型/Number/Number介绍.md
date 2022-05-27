@@ -67,6 +67,7 @@ Number 原型上的 `toString(base)` 可以指定将当前数转为对应进制�
 
 在 Number.MAX_VALUE 中存储 js 能够表示的最大数值, 超过这个数值的将被转为 Infinity(负数同理)
 
+
 NaN 表示这不是一个数字, 但是注意这是一个 Number 类型值
 
 ```js
