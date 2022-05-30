@@ -9,16 +9,66 @@
 </head>
 
 <body>
+
+  <script src="./判断表情等特殊字符串长度.js"></script>
   <pre class="h3"></pre>
   <script>
-    let h3 = document.querySelector('.h3');
-    let str = 'hello \rworld!';
-    h3.innerHTML = str;
+    let str = '🙃 123❤️'
+    const buf = new ArrayBuffer(str.length * 4);
+    const bufView = new Uint32Array(buf);
+    let i = 0;
+    for (let s of toArray(str)) {
+      for (let r of s) {
+        console.log(r, r.codePointAt())
+        bufView[i] = r.codePointAt()
+        i++;
+      }
+    }
 
-    h3.setAttribute('title', str);
-    let s = '123\
-123\
-123';
+    console.log(buf)
+
+    const asStr = String.fromCodePoint.apply(null, new Uint32Array(buf))
+
+
+    console.log(asStr, asStr.length, str.length, asStr === str)
+
+
+
+    // function base64Encode(str) {
+    //   return btoa(encodeURIComponent(str));
+    // }
+
+    // function base64Decode(base64) {
+    //   return decodeURIComponent(atob(base64));
+    // }
+    let base64 = base64Encode(str)
+    console.log(base64)
+
+    console.log(base64Decode(base64))
+
+
+
+    function strToUTF8Arr(str, encodeType = 'utf-8') {
+      return new TextEncoder(encodeType).encode(str);
+    }
+
+    function bufferToStr(buffer, decodeType = 'utf-8') {
+      return new TextDecoder(decodeType).decode(buffer);
+    }
+
+    function base64Encode(str) {
+      let unit8Ary = strToUTF8Arr(str);
+      return window.btoa(String.fromCharCode.apply(null, unit8Ary));
+    }
+
+    function base64Decode(base64) {
+      let str = window.atob(base64);
+      let unit8Ary = new Uint8Array(str.length);
+      Array.prototype.forEach.call(unit8Ary, function (el, idx, arr) {
+        arr[idx] = str.charCodeAt(idx);
+      });
+      return bufferToStr(unit8Ary.buffer);
+    }
   </script>
 </body>
 
