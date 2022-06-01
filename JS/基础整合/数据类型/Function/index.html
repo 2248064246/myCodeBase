@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    'use strict';
+
+    function a(n = 3) {
+      console.log(arguments[0]); // undefined, 不会跟踪带默认值的参数...
+      arguments[0] = 10;
+      console.log(n); // 1
+
+      n = 20;
+      console.log(arguments[0]); // 这里会是 10, 而不是20
+
+      return {
+        count: function () {
+          console.log(n)
+          return ++n;
+        }
+      }
+    }
+
+    let add = a();
+
+    add.count()
+    add.count()
+    add.count()
+  </script>
+</body>
+
+</html>

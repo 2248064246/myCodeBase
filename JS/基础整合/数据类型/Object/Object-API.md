@@ -8,9 +8,10 @@
   + 不会拷贝属性描述, 只拷贝属性值
 
 `create(prototype[, descriptor])`
+  + 比较常见的是在继承中, 用于隔离子类和父类的原型
   + 使用指定的原型对象和属性创建一个新对象。
   ```js
-  o2 = Object.create({}, {
+  o2 = Object.create({p:'123'}, {
     p: {
       value: 42,
       writable: true,
@@ -19,6 +20,16 @@
     }
   });
   // 这会创建一个拥有 {p: 42} 这个属性的对象
+  // o2结构
+  // p: 42
+  //   prototype
+  //      p: '123'
+  //          prototype
+  ``` 
+  + 它还有另外一种用法-- 创建一个没有原型的对象
+  ```js
+    let a = Object.create(null)
+    dir(a) // a 对象上没有原型
   ``` 
 
 `defineProperty(obj, prop, descriptor)`
