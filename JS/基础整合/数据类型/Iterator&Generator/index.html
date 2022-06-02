@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function map(iterable, fnc) {
+      let iteratorFnc = iterable[Symbol.iterator];
+      if (typeof iteratorFnc !== 'function') {
+        throw new TypeError(`${iterable} is not iterator`);
+      }
+      /* 这里为什么无法直接 iteratorFnc()??? 可能是应为this的原因, 直接调用this是window */
+      let iterator = iteratorFnc.bind(iterable)();
+      return {
+        next() {
+          let n = iterator.next();
+          if (n.done) {
+            return n;
+          } else {
+            return {
+              value: fnc(n.value),
+              done: false,
+            };
+          }
+        },
+        [Symbol.iterator]() {
+          return this;
+        },
+      };
+    }
+
+    let a = '123'
+
+    let b = [
+      ...map(a, (v) => v ** v)
+    ]
+  </script>
+</body>
+
+</html>
