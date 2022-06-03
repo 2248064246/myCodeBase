@@ -54,6 +54,36 @@ let range = new Range(1, 5);
 let a = [...range]; // => [1,2,3,4,5]
 ```
 
+还可以这么写
+
+```js
+class Range {
+  constructor(from, to) {
+    this.from = from;
+    this.to = to;
+    this.next1 = Math.floor(this.from);
+    this.last = this.to;
+  }
+
+  [Symbol.iterator]() {
+    return this;
+  }
+
+  next() {
+    return this.next1 <= this.last
+      ? {
+          value: this.next1++,
+        }
+      : {
+          done: true,
+        }; // 返回迭代结果对象
+  }
+}
+
+let range = new Range(1, 5);
+let xx = [...range]; // => [1,2,3,4,5]
+```
+
 ## 迭代器原理
 
 可迭代对象指的是任何具有专用`迭代器方法`, 且该方法返回`迭代器对象`的对象

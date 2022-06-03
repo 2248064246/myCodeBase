@@ -40,6 +40,32 @@
     let b = [
       ...map(a, (v) => v ** v)
     ]
+
+
+    class Range {
+      constructor(from, to) {
+        this.from = from;
+        this.to = to;
+        this.next1 = Math.floor(this.from);
+        this.last = this.to;
+      }
+
+      [Symbol.iterator]() {
+        console.log('this', this)
+        return this;
+      }
+
+      next() {
+        return this.next1 <= this.last ? {
+          value: this.next1++
+        } : {
+          done: true
+        }; // 返回迭代结果对象
+      }
+    }
+
+    let range = new Range(1, 5);
+    let xx = [...range]; // => [1,2,3,4,5]
   </script>
 </body>
 
