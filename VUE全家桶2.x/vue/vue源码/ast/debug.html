@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function parse(templateString) {
+      // 定义一个指针
+      let i = 0;
+      // 剩余部分
+      let rest = "";
+      // 开始标记正则
+      let startRegExp = /^\<([a-z0-9]+)\>/;
+      // 结束标记正则
+      let endRegExp = /^\<\/([a-z0-9]+)\>/;
+      // 结束标记之前的文字
+      let wordRegExp = /^([^/<]+)\<\/[a-z0-9]+\>/;
+
+      // 准备两个栈
+      let stack1 = []; // 辅助栈，存标签名
+      let stack2 = [{
+        chilren: []
+      }];
+
+      while (i < templateString.length - 1) {
+        rest = templateString.substring(i);
+        // 识别开始标签
+        if (startRegExp.test(rest)) {
+          let tag = rest.match(startRegExp)[1];
+          console.log("检测到开始标记", tag);
+          stack1.push(tag);
+          stack2.push({
+            tag: tag,
+            chilren: []
+          });
+          i += tag.length + 2;
+        } else if (endRegExp.test(rest)) {
+          // 遇见结束标签
+          let tag = rest.match(endRegExp)[1];
+          console.log("检测到结束标记", tag);
+          let pop_tag = stack1.pop();
+          // 此时tag一定与stack1的栈顶相同
+          if (tag === pop_tag) {
+            let pop_arr = stack2.pop();
+            if (stack2.length > 0) {
+              stack2[stack2.length - 1].chilren.push(pop_arr);
+            }
+          } else {
+            throw new Error(pop_tag + "标签没有封闭好");
+          }
+          i += tag.length + 3;
+        } else if (wordRegExp.test(rest)) {
+          let word = rest.match(wordRegExp)[1];
+          // 看word是不是全空
+          if (!/^\s+$/.test(word)) {
+            // 不为空
+            console.log("检测到文字", word);
+            // 改变stack2的栈顶元素
+            stack2[stack2.length - 1].chilren.push({
+              text: word,
+              type: 3
+            });
+          }
+          i += word.length;
+        } else {
+          i++;
+        }
+      }
+      return stack2[0].chilren[0];
+    }
+
+    let templateString = `<div>
+  <h3>你好</h3>
+  <ul>
+    <li>A</li>
+    <li>B</li>
+    <li>C</li>
+  </ul>
+</div>`;
+
+const AST = parse(templateString)
+console.log(AST)
+  </script>
+</body>
+
+</html>

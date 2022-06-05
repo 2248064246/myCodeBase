@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>这是index.html</h1>
+  <div id="container"></div>
+  <script src="xuni/bundle.js"></script>
+  <script>
+    // 模板字符串
+    // var tempalteStr = '<h1>我买了一个{{thing}}，好{{mood}}啊</h1>'
+    var tempalteStr = `
+    <div>
+        <ul>
+          {{#students}}
+          <li class="ii">
+            学生{{name}}的爱好是
+            <ol>
+              {{#hobbies}}
+              <li>{{.}}</li>
+              {{/hobbies}}
+            </ol>
+          </li>
+          {{/students}}
+        </ul>
+      </div>`
+    // 数据
+    var data = {
+      students: [{
+          name: '小红',
+          hobbies: ['羽毛球', '跆拳道']
+        },
+        {
+          name: '小明',
+          hobbies: ['足球']
+        },
+        {
+          name: '小王',
+          hobbies: ['魔术', '学习', '游戏']
+        }
+      ]
+    }
+    let domStr = YK_TemplateEngine.render(tempalteStr, data)
+    console.log(domStr)
+    let container = document.getElementById('container');
+    container.innerHTML = domStr;
+  </script>
+</body>
+
+</html>

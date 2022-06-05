@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script src="/xuni/bundle.js"></script>
+
+    <script>
+        // 模板字符串
+        var templateStr = `
+            <div>
+                <ul>
+                    {{#students}}
+                    <li class="myli">
+                        学生{{name}}的爱好是
+                        <ol>
+                            {{#hobbies}}
+                            <li>{{.}}</li>
+                            {{/hobbies}}
+                        </ol>
+                    </li>
+                    {{/students}}
+                </ul>
+            </div>
+        `;
+
+        // 数据
+        var data = {
+            students: [
+                { 'name': '小明', 'hobbies': ['编程', '游泳'] },
+                { 'name': '小红', 'hobbies': ['看书', '弹琴', '画画'] },
+                { 'name': '小强', 'hobbies': ['锻炼'] }
+            ]
+        };
+
+        // 调用render
+        var domStr = SSG_TemplateEngine.render(templateStr, data);
+        console.log(domStr);
+
+        // 渲染上树
+        var container = document.getElementById('container');
+        container.innerHTML = domStr;
+    </script>
+</body>
+
+</html>
