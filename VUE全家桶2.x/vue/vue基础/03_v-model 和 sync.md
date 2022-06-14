@@ -8,7 +8,10 @@ v-model的实现
 
 ```HTML
 
-  <input type="test" value="userName" @input="userName=$event">
+  <input v-model="userName">
+
+  <!-- 等同于下面 -->
+  <input type="test" value="userName" @input="userName=$event.target.value">
 
   v-model 有默认行为, 例如输入框是 value 值, 但是单选框是 checked
 
