@@ -24,6 +24,7 @@
     "swiper": "^6.8.4",
     "tailwindcss": "^2.1.2",
     "tailwindcss-cli": "^0.1.2",
+    "tslab": "^1.0.15",
     "web-push": "^3.4.5"
   },
   "dependencies": {
