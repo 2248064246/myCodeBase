@@ -15,3 +15,5 @@ nodeModule
 .history
 node_modules
 
+.ipynb_checkpoints
+Untitled*.ipynb
