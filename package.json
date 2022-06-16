@@ -25,6 +25,7 @@
     "tailwindcss": "^2.1.2",
     "tailwindcss-cli": "^0.1.2",
     "tslab": "^1.0.15",
+    "urijs": "^1.19.11",
     "web-push": "^3.4.5"
   },
   "dependencies": {
