@@ -29,6 +29,7 @@
     "web-push": "^3.4.5"
   },
   "dependencies": {
+    "basic-auth": "^2.0.1",
     "crypto-js": "^4.1.1",
     "express": "^4.17.2",
     "fabric": "^4.6.0",
