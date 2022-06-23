@@ -1,8 +1,8 @@
 /*
  * @Author: 洛水赋神
  * @Date: 2020-11-09 15:57:08
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-09 16:19:51
+ * @LastEditors: huangyingli
+ * @LastEditTime: 2022-06-23 10:38:17
  * @Description: 
  * @Email: 2248064246@qq.com
  * @Company: 3xData
@@ -26,7 +26,6 @@ function A(name = 'a') {
 A.prototype.getName = function () {
   console.log('my name is: ', this.name)
 }
-
 function B(name) {
   A.call(this, name)        // 这里将 A中的私有属性this改为 B => 相当于把A中的代码拿到B中执行
   // 所以, 不会造成原型链继承中到的问题 => 引用继承问题 (在这里再次创建了一次A中的代码)
