@@ -9,6 +9,15 @@
 编辑配置文件 `/etc/samba/smb.conf`
 
 
+## 设置 samba 登录用户
+
+```shell
+# 按照提示操作
+smbpasswd -a ggbone
+
+```
+
+
 ```conf
 # 这个是全局设置， 保持原有的就行
 [global]

@@ -98,6 +98,6 @@ Writing default config to: C:\Users\22480\.jupyter\jupyter_notebook_config.py
 
 ## 设置自己的密码
 
-到jupyter的web页面上, 退出然后设置自己的密码
-
-也可以到配置文件中指定密码(那个需要百度百度)
+```
+jupyter notebook password 
+```
