@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-24 15:29:17
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-24 18:12:30
+ * @LastEditTime: 2022-06-24 18:16:26
  * @Description: 
  */
 const consola = require('consola');
@@ -12,4 +12,3 @@ const consola = require('consola');
 consola.success('Built!');
 consola.info('Reporter: Some info');
 consola.error(new Error('Foo'));
-
