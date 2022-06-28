@@ -98,6 +98,10 @@ IndexedDB 的作用域限定为包含文档的来源, 同源之间可以互相�
     + readonly
     + readwrite
   + 立即返回 `IDBTransaction` 对象, 
++ objectStoreNames 
+  + 获取当前数据库下的对象store列表 (**也就是数据表**)
+  + 原型方法
+    + contains(storeName) 判断是否包含某个对象store
 ## IDBObjectStore
 
 此对象表示数据库中的一个 对象库, 

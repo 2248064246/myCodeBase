@@ -21,7 +21,7 @@
       {
         ssn: "444-44-5555",
         name: "Bill",
-        age: 39,
+        age: 390,
         email: "bill2@company.com"
       },
       {
@@ -35,7 +35,7 @@
 
     const dbName = 'test_name'
 
-    let request = indexedDB.open(dbName, 8)
+    let request = indexedDB.open(dbName)
 
     request.onerror = function (event) {
       console.log('request error', event)
