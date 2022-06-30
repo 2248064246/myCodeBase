@@ -3,7 +3,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-27 15:57:51
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-28 17:35:33
+ * @LastEditTime: 2022-06-29 09:59:16
  * @Description:
  */
 var data = [
@@ -163,7 +163,7 @@ objStore
     };
 })
     .then(function (handle) {
-    console.log(handle.transaction.durability);
+    // console.log(handle.transaction.durability);
     console.log('处理');
     // data.forEach((d) => {
     //   handle.add(d);
