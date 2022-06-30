@@ -2,18 +2,11 @@
  * @Author: huangyingli
  * @Date: 2022-06-29 09:58:51
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-30 17:54:34
+ * @LastEditTime: 2022-06-30 23:59:03
  * @Description:
  */
 
 import _ from 'lodash';
-
-interface testData {
-  ssn: string;
-  name: string;
-  age: number;
-  email: string;
-}
 
 interface IDBIndexes {
   name: string;
@@ -26,21 +19,21 @@ interface IDBStore {
   transaction: IDBTransaction;
 }
 
-interface HandleType<T> {
+interface HandleType {
   /**
    * 通过设定的 keyPath 值取得指定对象
    */
-  get(key: string): Promise<T>;
+  get<T>(key: string): Promise<T>;
   /**
    * 给对象存储增加对象
    */
-  add(obj: T): Promise<string>;
+  add<T>(obj: T): Promise<string>;
   /**
    * 修改指定存储值
    */
-  put(obj: T, key: string): Promise<T>;
-  delete(key: string): Promise<T>;
-  clear(): Promise<undefined>;
+  put<T>(obj: T, key: string): Promise<string>;
+  delete(key: string): Promise<any>;
+  clear(): Promise<any>;
   /**
    * 统计对象存储记录的条目数量
    */
@@ -48,24 +41,22 @@ interface HandleType<T> {
   /**
    * 通过 index 获取指定值
    */
-  index(name: string): Promise<T>;
-  getAll(): Promise<Array<T>>;
-}
+  index(name: string): Promise<any>;
+  getAll<T>(): Promise<Array<T>>;
 
-let data: Array<testData> = [
-  {
-    ssn: '1111',
-    name: 'Tom',
-    age: 18,
-    email: 'sss@qq.com',
-  },
-  {
-    ssn: '2222',
-    name: 'Joy',
-    age: 19,
-    email: 'xxxx@qq.com',
-  },
-];
+  /* 关闭连接 */
+  close(): void;
+
+  /**
+   * 数据库名称
+   */
+  dbName: string;
+
+  /**
+   * 对象存储名称
+   */
+  storeName: string;
+}
 
 function connectDB(
   dbname: string,
@@ -101,8 +92,6 @@ function connectDB(
 
   /* 初始化和版本变更的时候触发, 优先于success*/
   request.onupgradeneeded = function (event) {
-    console.log('变化');
-    /* 只有存在要名字才创建 */
     if (storeName) {
       let store = request.result.createObjectStore(storeName as string, {
         keyPath: mainKey,
@@ -218,19 +207,17 @@ function handleStore(
   storeName: string,
   mainKey?: string,
   indexes?: Array<IDBIndexes>
-) {
+): Promise<HandleType> {
   let objStore = objStoreWrap(dbName)(
     storeName,
     mainKey,
     indexes
   ) as Promise<IDBStore>;
   let res: Function, rej: Function;
-  let promise: Promise<HandleType<testData>> = new Promise(
-    (resolve, reject) => {
-      res = resolve;
-      rej = reject;
-    }
-  );
+  let promise: Promise<HandleType> = new Promise((resolve, reject) => {
+    res = resolve;
+    rej = reject;
+  });
   objStore.then(({ store, transaction }) => {
     res({
       add: _.partial(handleFactory, store, transaction, 'add'),
@@ -241,77 +228,21 @@ function handleStore(
       count: _.partial(handleFactory, store, transaction, 'count'),
       index: _.partial(handleFactory, store, transaction, 'index'),
       getAll: _.partial(handleFactory, store, transaction, 'getAll'),
-    });
+      close: transaction.db.close.bind(transaction.db),
+      dbName: transaction.db.name,
+      storeName: store.name,
+    } as unknown as HandleType);
   });
   return promise;
 }
 
-let indexDB = _.partial(
+/**
+ * 可以打开或创建indexDB
+ * 创建时mainKey必填
+ */
+const IndexDB = _.partial(
   handleStore,
   _.flow([connectDB, _.curry(createObjectStore)])
 );
 
-/* 打开或新增一个对象存储 */
-/* 新增时 keyPath 是必须的 */
-indexDB('test-db', 'user', 'ssn').then((handle: HandleType<testData>) => {
-  // handle.get('1111').then((res: testData) => {
-  //   console.log(res);
-  // });
-  // handle.get('666666').then((res: testData) => {
-  //   console.log(res);
-  // });
-  // handle.get('6666898').then((res: testData) => {
-  //   console.log(res);
-  // });
-
-  // handle.getAll().then((res: Array<testData>) => {
-  //   console.log(res);
-  // });
-
-  handle.clear().then((res) => {
-    console.log(res);
-  });
-
-  handle.count().then((res) => {
-    console.log(res);
-  });
-
-  // handle
-  // .add({
-  //   ssn: '666666',
-  //   age: 128,
-  //   email: 'qqdx222x@gmail.com',
-  //   name: 'Bin3',
-  // } as testData)
-  // .then((res: any) => {
-  //   console.log(res);
-  // });
-
-  setTimeout(() => {
-    handle.get('3333').then((res: testData) => {
-      console.log(res);
-    });
-
-    setTimeout(() => {
-      handle
-        .add({
-          ssn: '666689888',
-          age: 128,
-          email: 'qqdx558886x@gmail.com',
-          name: 'Bin3',
-        } as testData)
-        .then((res: any) => {
-          console.log(res);
-        });
-    }, 3000);
-  }, 3000);
-
-  // handle.add({
-  //   ssn: '555',
-  //   age: 18,
-  //   email: 'qq@gmail.com',
-  //   name: 'Bin'
-  // } as testData)
-});
-
-export {};
+export default IndexDB;

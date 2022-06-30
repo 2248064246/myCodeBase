@@ -2,30 +2,24 @@
  * @Author: huangyingli
  * @Date: 2022-06-29 09:58:51
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-30 17:54:34
+ * @LastEditTime: 2022-06-30 23:59:03
  * @Description:
  */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-define(["require", "exports", "lodash"], function (require, exports, lodash_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "lodash"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    lodash_1 = __importDefault(lodash_1);
-    var data = [
-        {
-            ssn: '1111',
-            name: 'Tom',
-            age: 18,
-            email: 'sss@qq.com',
-        },
-        {
-            ssn: '2222',
-            name: 'Joy',
-            age: 19,
-            email: 'xxxx@qq.com',
-        },
-    ];
+    var lodash_1 = __importDefault(require("lodash"));
     function connectDB(dbname, version, storeName, mainKey, indexes) {
         var request = window.indexedDB.open(dbname, version);
         var res, rej;
@@ -50,8 +44,6 @@ define(["require", "exports", "lodash"], function (require, exports, lodash_1) {
         };
         /* 初始化和版本变更的时候触发, 优先于success*/
         request.onupgradeneeded = function (event) {
-            console.log('变化');
-            /* 只有存在要名字才创建 */
             if (storeName) {
                 var store_1 = request.result.createObjectStore(storeName, {
                     keyPath: mainKey,
@@ -156,64 +148,17 @@ define(["require", "exports", "lodash"], function (require, exports, lodash_1) {
                 count: lodash_1.default.partial(handleFactory, store, transaction, 'count'),
                 index: lodash_1.default.partial(handleFactory, store, transaction, 'index'),
                 getAll: lodash_1.default.partial(handleFactory, store, transaction, 'getAll'),
+                close: transaction.db.close.bind(transaction.db),
+                dbName: transaction.db.name,
+                storeName: store.name,
             });
         });
         return promise;
     }
-    var indexDB = lodash_1.default.partial(handleStore, lodash_1.default.flow([connectDB, lodash_1.default.curry(createObjectStore)]));
-    /* 打开或新增一个对象存储 */
-    /* 新增时 keyPath 是必须的 */
-    indexDB('test-db', 'user', 'ssn').then(function (handle) {
-        // handle.get('1111').then((res: testData) => {
-        //   console.log(res);
-        // });
-        // handle.get('666666').then((res: testData) => {
-        //   console.log(res);
-        // });
-        // handle.get('6666898').then((res: testData) => {
-        //   console.log(res);
-        // });
-        // handle.getAll().then((res: Array<testData>) => {
-        //   console.log(res);
-        // });
-        handle.clear().then(function (res) {
-            console.log(res);
-        });
-        handle.count().then(function (res) {
-            console.log(res);
-        });
-        // handle
-        // .add({
-        //   ssn: '666666',
-        //   age: 128,
-        //   email: 'qqdx222x@gmail.com',
-        //   name: 'Bin3',
-        // } as testData)
-        // .then((res: any) => {
-        //   console.log(res);
-        // });
-        setTimeout(function () {
-            handle.get('3333').then(function (res) {
-                console.log(res);
-            });
-            setTimeout(function () {
-                handle
-                    .add({
-                    ssn: '666689888',
-                    age: 128,
-                    email: 'qqdx558886x@gmail.com',
-                    name: 'Bin3',
-                })
-                    .then(function (res) {
-                    console.log(res);
-                });
-            }, 3000);
-        }, 3000);
-        // handle.add({
-        //   ssn: '555',
-        //   age: 18,
-        //   email: 'qq@gmail.com',
-        //   name: 'Bin'
-        // } as testData)
-    });
+    /**
+     * 可以打开或创建indexDB
+     * 创建时mainKey必填
+     */
+    var IndexDB = lodash_1.default.partial(handleStore, lodash_1.default.flow([connectDB, lodash_1.default.curry(createObjectStore)]));
+    exports.default = IndexDB;
 });
