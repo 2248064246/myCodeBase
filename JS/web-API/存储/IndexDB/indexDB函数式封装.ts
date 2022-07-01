@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-29 09:58:51
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-30 23:59:03
+ * @LastEditTime: 2022-07-01 17:55:43
  * @Description:
  */
 
@@ -30,6 +30,8 @@ interface HandleType {
   add<T>(obj: T): Promise<string>;
   /**
    * 修改指定存储值
+   * @param obj 新对象
+   * @param key keyPath 值
    */
   put<T>(obj: T, key: string): Promise<string>;
   delete(key: string): Promise<any>;
@@ -39,9 +41,11 @@ interface HandleType {
    */
   count(): Promise<Boolean>;
   /**
-   * 通过 index 获取指定值
+   * 通过 index 和对应值 获取指定对象
+   * @param name 索引名称
+   * @param value 要查找的值
    */
-  index(name: string): Promise<any>;
+  index(name: string, value: string): Promise<any>;
   getAll<T>(): Promise<Array<T>>;
 
   /* 关闭连接 */
@@ -166,7 +170,8 @@ function handleFactory(
   store: IDBObjectStore,
   transaction: IDBTransaction,
   type: keyof IDBObjectStore,
-  value: any
+  value: any,
+  real: any
 ) {
   let res: Function, rej: Function;
   let promise: Promise<IDBStore> = new Promise((resolve, reject) => {
@@ -174,10 +179,41 @@ function handleFactory(
     rej = reject;
   });
   let fnc = store[type] as Function;
+  let cursorAry: Array<any> = [];
+  let hasIndex: Boolean = false;
   function _handle(store: IDBObjectStore) {
     let element = fnc.bind(store)(value);
+    switch (type) {
+      case 'index':
+        element = element.openCursor() as IDBRequest;
+        break;
+    }
     element.onsuccess = function () {
-      res(element.result);
+      switch (type) {
+        case 'index':
+          let cursor = element.result as IDBCursorWithValue;
+          if (!cursor) {
+            console.log(cursorAry, hasIndex);
+            if (hasIndex) {
+              res(cursorAry);
+            } else {
+              rej(Error('Not found index: ' + real));
+            }
+            hasIndex = false;
+            cursorAry = [];
+            return;
+          }
+          if (cursor.key === real) {
+            console.log(element.result.value);
+            // res(element.result.value);
+            hasIndex = true;
+            cursorAry.push(element.result.value);
+          }
+          cursor.continue();
+          break;
+        default:
+          res(element.result);
+      }
     };
     element.onerror = function (ev: Event) {
       let target = ev.target as IDBRequest;
@@ -245,4 +281,5 @@ const IndexDB = _.partial(
   _.flow([connectDB, _.curry(createObjectStore)])
 );
 
+window.IndexDB = IndexDB;
 export default IndexDB;

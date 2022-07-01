@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-29 09:58:51
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-30 23:59:03
+ * @LastEditTime: 2022-07-01 17:55:43
  * @Description:
  */
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -100,17 +100,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
         });
         return promise;
     }
-    function handleFactory(store, transaction, type, value) {
+    function handleFactory(store, transaction, type, value, real) {
         var res, rej;
         var promise = new Promise(function (resolve, reject) {
             res = resolve;
             rej = reject;
         });
         var fnc = store[type];
+        var cursorAry = [];
+        var hasIndex = false;
         function _handle(store) {
             var element = fnc.bind(store)(value);
+            switch (type) {
+                case 'index':
+                    element = element.openCursor();
+                    break;
+            }
             element.onsuccess = function () {
-                res(element.result);
+                switch (type) {
+                    case 'index':
+                        var cursor = element.result;
+                        if (!cursor) {
+                            console.log(cursorAry, hasIndex);
+                            if (hasIndex) {
+                                res(cursorAry);
+                            }
+                            else {
+                                rej(Error('Not found index: ' + real));
+                            }
+                            hasIndex = false;
+                            cursorAry = [];
+                            return;
+                        }
+                        if (cursor.key === real) {
+                            console.log(element.result.value);
+                            // res(element.result.value);
+                            hasIndex = true;
+                            cursorAry.push(element.result.value);
+                        }
+                        cursor.continue();
+                        break;
+                    default:
+                        res(element.result);
+                }
             };
             element.onerror = function (ev) {
                 var target = ev.target;
@@ -160,5 +192,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
      * 创建时mainKey必填
      */
     var IndexDB = lodash_1.default.partial(handleStore, lodash_1.default.flow([connectDB, lodash_1.default.curry(createObjectStore)]));
+    window.IndexDB = IndexDB;
     exports.default = IndexDB;
 });

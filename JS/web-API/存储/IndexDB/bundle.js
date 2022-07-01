@@ -3,7 +3,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-29 09:58:51
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-30 23:57:33
+ * @LastEditTime: 2022-07-01 15:29:14
  * @Description:
  */
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -101,7 +101,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
         });
         return promise;
     }
-    function handleFactory(store, transaction, type, value) {
+    function handleFactory(store, transaction, type, value, real) {
         var res, rej;
         var promise = new Promise(function (resolve, reject) {
             res = resolve;
@@ -110,8 +110,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
         var fnc = store[type];
         function _handle(store) {
             var element = fnc.bind(store)(value);
+            switch (type) {
+                case 'index':
+                    element = element.openCursor();
+                    break;
+            }
             element.onsuccess = function () {
-                res(element.result);
+                switch (type) {
+                    case 'index':
+                        var cursor = element.result;
+                        if (cursor.key === real) {
+                            res(element.result.value);
+                        }
+                        else {
+                            cursor.continue();
+                        }
+                        break;
+                    default:
+                        res(element.result);
+                }
             };
             element.onerror = function (ev) {
                 var target = ev.target;
