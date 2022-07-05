@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 这里确实会带上这个站点的cookie, 前提是需要设置 samesite 为 none -->
+  <form action="http://localhost:8088/xxx" method="post">
+    <input type="text" name="age">
+    <input type="submit" value="提交">
+  </form>
+
+  <!-- 这种方式也会 -->
+  <iframe src="http://localhost:8088/" frameborder="0"></iframe>
+
+  <script>
+
+    /* 但是手动调用 xhr, 却会触发跨域错误 */
+    /* 在增加了跨域处理后, 虽然能够调通接口, 但是cookie无法拿到... */
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('post', 'http://localhost:8088/xxx')
+    xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded')
+    let formData = {
+      name: 'xxx'
+    }
+    xhr.send(JSON.stringify(formData));
+  </script>
+</body>
+</html>
