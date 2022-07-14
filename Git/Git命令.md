@@ -1,7 +1,8 @@
 # Git 命令
 
-- `git clone url [workspaceName[`
+- `git clone url [workspaceName] -b [branch]`
   克隆仓库, 后面可以指定本地工作区的名字
+  通过 `-b` 可以指定检出的分支
 
 - `git add [文件名]`
   将文件添加到暂存区, `git add .` 添加所有文件
@@ -14,6 +15,8 @@
 
 - `git commit -m [message]`
   提交暂存区文件到服务器, 可以填写描述
+
+- `git checkout -- file` 撤销文件的修改  
 
 ```bash
 # 提交暂存区的指定文件到仓库区

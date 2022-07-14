@@ -54,3 +54,21 @@
   +  是由代理服务器添加的，适用于正向和反向代理，在请求和响应首部中均可出现
   +  当客户端请求到达第一个代理服务器时，该服务器会在自己发出的请求里面添加 Via 头部，并填上自己的相关信息，当下一个代理服务器 收到第一个代理服务器的请求时，会在自己发出的请求里面复制前一个代理服务器的请求的Via头部，并把自己的相关信息加到后面，以此类推，当 服务器 收到最后一个代理服务器的请求时，检查 Via 头部，就知道该请求所经过的路由。
   
+
+## 额外的关于 Access-Control-Expose-Headers
+
+响应首部 Access-Control-Expose-Headers 列出了哪些首部可以作为响应的一部分暴露给外部。
+
+默认情况下，只有七种 simple response headers（简单响应首部）可以暴露给外部：
++ Cache-Control
++ Content-Type
++ Content-Length
++ Content-Language
++ Expires
++ Last-Modified
++ Pragma
+
+如果想要让客户端可以访问到其他的首部信息，可以将它们在 Access-Control-Expose-Headers 里面列出来。
+
+`Access-Control-Expose-Headers: *`
+
