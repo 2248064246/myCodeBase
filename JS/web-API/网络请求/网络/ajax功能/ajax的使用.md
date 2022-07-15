@@ -142,8 +142,53 @@ xhr.onreadystatechange = function () {
 使用 ajax 则不再限制与 form 表单的方法, 更加灵活更加强大(但是没了form表单的跨站特性)
 
 
+使用 ajax 发送 `application/json` 格式数据
+```js
+xhr.setRequestHeader('content-type', 'application/json')
+xhr.send(JSON.stringify({a: 123}));
+```
+
+使用 ajax 发送 `multipart/form-data` 数据
+```js
+// 不需要指定 content-type, 会自动设置
+let form = new FormData();
+form.append('a', '123')
+xhr.send(form)
+```
 
 
+使用 ajax 发送 `application/x-www-form-urlencoded` 数据
+```js
+let obj = {a: 123}
+xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded')
+function obj2search(obj, decode) {
+  if (typeof obj !== 'object') return ''
+  let searchAry = []
+  for (const key in obj) {
+    let value = obj[key]
+    value = (typeof value === 'object' ? JSON.stringify(value) : value)
+    let searchItem = (key + '=') + (decode ? encodeURIComponent(value) : value)
+    searchAry.push(searchItem)
+  }
+  return searchAry.join('&')
+}
+/* 需要将数组转为 查询字符串形式  */
+xhr.send(obj2search(obj, true))
+```
 
 
+## 进度
 
+在使用 ajax 获取文件/图片等的时候, 可以使用 `onpregress` 来获取进度
+
+```js
+xhr.onprogress = function (res) {
+  console.log(res)
+  console.log(res.loaded / res.total * 100 + '%')
+  // 在这里并不能通过这种方式将数据写入DOM
+  // 并且此时 responseText 不清楚是从头到loaded 的数据还是分块的数据
+
+  // document.body.innerHTML = ''
+  // document.body.append(xhr.responseText)
+}
+```
