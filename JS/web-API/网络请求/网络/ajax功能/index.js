@@ -2,15 +2,15 @@
  * @Author: huangyingli
  * @Date: 2022-07-14 15:10:10
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-07-15 10:49:12
+ * @LastEditTime: 2022-07-18 16:40:56
  * @Description:
  */
 
 let xhr = new XMLHttpRequest();
 
-// xhr.open('post', 'http://localhost:8088/postJson');
+xhr.open('post', 'http://localhost:8088/postJson');
 // xhr.open('post', 'http://localhost:8088/postFormData');
-xhr.open('post', 'http://localhost:8088/postFormUrl');
+// xhr.open('post', 'http://localhost:8088/postFormUrl');
 
 xhr.setRequestHeader('Access-Control-Expose-Headers', '*')
 // xhr.setRequestHeader('Content-Type', 'text/plain')

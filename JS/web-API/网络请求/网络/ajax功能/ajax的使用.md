@@ -89,6 +89,8 @@ xhr.ontimeout = function () {
 ```javascript
 // 可以在请求头中设置一些控制类头部, 这需要服务端允许请求端能够这个头部(Access-Control-Allow-Headers)
 xhr.setRequestHeader('Access-Control-Expose-Headers', '*')
+
+// 这样做不太行, 必须由服务器设置
 ```
 
 ## 设置响应类型

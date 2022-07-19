@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 浏览器实现断点续传需要基于 文件分片 技术 */
+
+      function xhrPromise(
+        url,
+        headers,
+        responseType = 'json',
+        cb,
+        progress = null
+      ) {
+        let rej, res;
+        let promise = new Promise((resolve, reject) => {
+          rej = reject;
+          res = resolve;
+        });
+        let xhr = new XMLHttpRequest();
+        xhr.open('get', url);
+        for (key in headers) {
+          xhr.setRequestHeader(key, headers[key]);
+        }
+        xhr.responseType = responseType;
+        xhr.onload = function (ev) {
+          if (/^2\d{2}$/.test(xhr.status)) {
+            res(cb(xhr));
+          } else {
+            rej(ev);
+          }
+        };
+        xhr.onprogress = progress;
+        xhr.onerror = rej;
+        xhr.timeout = rej;
+        xhr.onabort = rej;
+
+        xhr.send();
+
+        return promise;
+      }
+
+      function getHeader(url) {
+        return xhrPromise(url, {}, 'json', (xhr) => {
+          return xhr.getAllResponseHeaders();
+        });
+      }
+
+      getHeader('http://localhost:8088/fileOne').then((res) => {
+        console.log('header', res);
+
+        let headersAry = res.split(/\r\n/g).filter((h) => !!h);
+
+        let headers = headersAry.reduce((cur, next) => {
+          let obj = {};
+          let hs = next.split(': ');
+          if (hs.length === 2) {
+            cur = Object.assign({}, cur, { [hs[0]]: hs[1] });
+          }
+          return cur;
+        }, {});
+        console.log(headers);
+
+        // 文件大小
+        let fileSize = headers['content-length'];
+
+        /* 对文件分片 */
+        let chunkSize = 1024 * 100; // 100k
+
+        let buffer = new ArrayBuffer(fileSize);
+
+        let isDownloadAll = false;
+        let progressAll = 0;
+
+        let chunks = cutChunk(Number(fileSize), chunkSize);
+        let chunkObj = {};
+        chunks.forEach((c) => {
+          chunkObj[c.join('-')] = {
+            progress: 0,
+            buffer: undefined,
+            isDownload: false,
+          };
+        });
+
+        console.log(chunks);
+
+        console.log(chunkObj);
+
+        let getFiles = chunks.map((ranges) => {
+          let range = ranges.join('-');
+          return downloadFileByRange(
+            'http://localhost:8088/fileOne',
+            range,
+            (res) => {
+              // console.log('loaded', res.loaded)
+              chunkObj[range].progress = res.loaded / res.total;
+
+              console.log(
+                '当前chunk ' + range + ' 进度: ',
+                chunkObj[range].progress
+              );
+              let total = 0;
+              for (key in chunkObj) {
+                total += chunkObj[key].progress;
+              }
+              progressAll = total / chunks.length;
+              console.log('总进度: ', progressAll);
+            }
+          ).then((res) => {
+            console.log('response', res);
+            chunkObj[range].buffer = res;
+            chunkObj[range].isDownload = true;
+            return true;
+          });
+        });
+
+        Promise.all(getFiles).then(() => {
+          console.log('全部获取成功');
+          let fileBuf = new ArrayBuffer(fileSize);
+          let view = new Int8Array(fileBuf);
+
+          for (key in chunkObj) {
+            console.log(key.split('-')[0]);
+            view.set(new Int8Array(chunkObj[key].buffer), key.split('-')[0]);
+          }
+          console.log('view', view)
+
+          // window.open(URL.createObjectURL(new Blob([view.buffer]), {type: 'text/plain'}))
+          // console.log(new TextDecoder().decode(view.buffer))
+
+          let fileReader = new FileReader();
+
+          fileReader.onload = () => {
+            // window.open(fileReader.result)
+            // console.log(fileReader.result)
+            // window.open(URL.createObjectURL(new Blob([fileReader.result])))
+
+            let a = document.createElement('a')
+            a.download = 'test.txt';
+            a.href = fileReader.result;
+            a.click();
+          }
+
+          fileReader.readAsDataURL(new Blob([view.buffer]))
+        });
+      });
+
+      function downloadFileByRange(url, range, progress) {
+        return xhrPromise(
+          url,
+          { Range: range },
+          'arraybuffer',
+          (xhr) => {
+            return xhr.response;
+          },
+          progress
+        );
+      }
+
+      function cutChunk(totalSize, chunkSize) {
+        let start = 0;
+        end = chunkSize;
+        let ary = [];
+        while (end < totalSize) {
+          ary.push([start, end]);
+          start = end;
+          end += chunkSize;
+        }
+        ary.push([start, totalSize]);
+        return ary;
+      }
+    </script>
+  </body>
+</html>
