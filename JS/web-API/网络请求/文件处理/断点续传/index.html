@@ -115,6 +115,8 @@
             console.log('response', res);
             chunkObj[range].buffer = res;
             chunkObj[range].isDownload = true;
+            /* 这里可以将数据存放 IndexDB, js对象只存放一些简单信息 */
+            /* 分片获取需要一个队列, 在 */
             return true;
           });
         });

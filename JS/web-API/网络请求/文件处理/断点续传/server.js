@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-18 21:27:01
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-07-18 17:28:48
+ * @LastEditTime: 2022-07-20 16:38:39
  * @Description:
  */
 const express = require('express');
@@ -28,6 +28,7 @@ app.get('/fileOne', function (req, res) {
   let range =  req.header('range')
   console.log(range)
   fs.readFile('../log_info.log', function(err, data)  {
+    res.header('fileName', 'log_info.log')
     if(range) {
       let [start, end] = range.split('-')
       console.log(start, end)
