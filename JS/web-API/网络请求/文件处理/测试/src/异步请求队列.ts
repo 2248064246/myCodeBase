@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-02-15 17:09:27
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-07-20 17:29:55
+ * @LastEditTime: 2022-07-20 22:31:22
  * @Description:
  */
 
@@ -126,9 +126,9 @@ class AsyncQueue {
   }
 
   close() {
-    while (this.resolveList.length > 0) {
-      this.resolveList.shift()(AsyncQueue.EOS);
-    }
+    // while (this.resolveList.length > 0) {
+    //   this.resolveList.shift()(AsyncQueue.EOS);
+    // }
     this.closed = true;
   }
 }

@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-07-20 15:22:10
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-07-20 15:23:55
+ * @LastEditTime: 2022-07-20 21:59:46
  * @Description:
  */
 const path = require('path');
@@ -39,7 +39,7 @@ module.exports = {
   plugins: [
     /* 配置index模板 */
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './index.html'),
+      template: path.resolve(__dirname, 'index.html'),
       filename: 'index.html',
     }),
   ],

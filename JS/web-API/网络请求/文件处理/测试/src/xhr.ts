@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-07-20 16:02:13
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-07-20 17:59:53
+ * @LastEditTime: 2022-07-20 22:18:52
  * @Description:
  */
 
@@ -13,6 +13,13 @@ import IndexDB from './indexDB函数式封装';
 import { xhrPromise } from './utils';
 
 type xhrMethod = 'GET' | 'POST' | 'HEAD';
+
+enum xhrStatus {
+  STOP = 0,
+  DOWNLOADING = 1,
+  ABORT = 2,
+  ERROR = 9,
+}
 
 interface xhrOptions {
   method?: xhrMethod;
@@ -30,6 +37,8 @@ class xhrBreakpoint extends EventTarget {
   progress: number;
   chunks: Array<number[]>;
   chunksObj: any;
+  status: xhrStatus;
+  stopResolve: any;
   constructor(url: string, options?: xhrOptions) {
     super();
     this.method = options?.method || 'GET';
@@ -40,6 +49,7 @@ class xhrBreakpoint extends EventTarget {
   }
 
   start() {
+    this.status = xhrStatus.DOWNLOADING;
     this.getHeaders()
       .then((headers) => {
         console.log(headers);
@@ -59,12 +69,19 @@ class xhrBreakpoint extends EventTarget {
         let dbHandle = await IndexDB('fileDB', this.fileName, 'range');
 
         let cache = await dbHandle.getAll();
-        console.log(cache);
+        console.log('已缓存的range', cache);
         let needGet = this.chunks.filter(
           (c) => cache.findIndex((m: any) => m?.range === c.join('-')) === -1
         );
 
-        console.log(needGet);
+        cache.forEach((c: any) => {
+          let chunk = this.chunksObj[c.range];
+          if (chunk) {
+            chunk['progress'] = c['progress'];
+          }
+        });
+
+        console.log('需要获取的range: ', needGet);
         let asyncQueue = new AsyncQueue(2, this.downloadFileByRange.bind(this));
 
         needGet.forEach((range) => {
@@ -73,27 +90,49 @@ class xhrBreakpoint extends EventTarget {
 
         for await (const value of asyncQueue) {
           console.log(value);
-          dbHandle.add(
+          await dbHandle.add(
             Object.assign({}, this.chunksObj[value.range], {
               response: value.response,
             })
           );
+          switch (this.status) {
+            case xhrStatus.STOP:
+              this.dispatch('stop');
+              await new Promise((resolve) => (this.stopResolve = resolve));
+              break;
+            case xhrStatus.ABORT:
+              this.dispatch('abort');
+              asyncQueue.close();
+              return;
+          }
         }
         cache = await dbHandle.getAll();
+        this.dispatch('success', cache);
         // this.storeToFile(cache);
+      })
+      .catch((ev) => {
+        this.dispatch('error', ev);
+        this.status = xhrStatus.ERROR;
+        console.error(ev);
       });
   }
 
   stop() {
-
+    this.status = xhrStatus.STOP;
   }
 
   abort() {
-
+    this.status = xhrStatus.ABORT;
   }
 
   restart() {
-    
+    if (this.status === xhrStatus.STOP) {
+      this.stopResolve && this.stopResolve();
+      this.stopResolve = undefined;
+      this.status = xhrStatus.DOWNLOADING;
+    } else {
+      this.start();
+    }
   }
 
   getHeaders(): Promise<any> {
@@ -172,7 +211,7 @@ class xhrBreakpoint extends EventTarget {
     fileReader.readAsDataURL(new Blob([unt8.buffer]));
   }
 
-  dispatch(eventname: string, value: any) {
+  dispatch(eventname: string, value?: any) {
     let event = new CustomEvent(eventname, { detail: value });
     /* 通过自定义事件触发监听事件 */
     this.dispatchEvent(event);
