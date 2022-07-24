@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-18 21:27:01
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-07-15 10:49:24
+ * @LastEditTime: 2022-07-24 21:38:05
  * @Description:
  */
 const express = require('express');
@@ -15,9 +15,10 @@ const app = express();
 app.use(formidable());
 //设置允许跨域访问该服务.
 app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
   res.header('Access-Control-Allow-Headers', '*');
   res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Credentials', true);
   // res.header('Access-Control-Expose-Headers', '*');
   res.header('Content-Type', 'application/json;charset=utf-8');
   next();
@@ -27,6 +28,8 @@ app.get('/xxx', function (req, res) {
   console.log(req.headers);
   res.status(200);
   res.setHeader('name', 'Johnny');
+  console.log(req.cookies)
+  res.setHeader('set-cookie', 'name=123; SameSite=none; Secure;')
   res.send({ a: 123 });
 });
 app.get('/301', function (req, res) {
