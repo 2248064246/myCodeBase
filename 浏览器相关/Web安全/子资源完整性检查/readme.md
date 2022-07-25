@@ -31,3 +31,13 @@ Content-Security-Policy: require-sri-for script;
 ```
 
 > 这条指令规定了所有 JavaScript 都要有 integrity 属性，且通过验证才能被加载。
+
+
+
+### 额外
+
+如果设置了`Content-Security-Policy`, 但是没有指定 `unsafe-eval` 则此类函数无法运行(包括 Function 和 eval)
+
+```json
+可以运行不安全函数
+Content-Security-Policy: script-src 'self' 'unsafe-eval'

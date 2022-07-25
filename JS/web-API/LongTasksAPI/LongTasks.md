@@ -29,3 +29,8 @@ observer.observe({ entryTypes: ['longtask'] });
 // Long script execution after this will result in queueing
 // and receiving "longtask" entries in the observer.
 ```
+
+
+> [关于一些其他的使用](https://blog.csdn.net/weixin_43964148/article/details/124089667)
+
+
