@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-04-22 15:22:09
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-22 15:35:00
+ * @LastEditTime: 2022-07-27 22:18:48
  * @Description:  
 -->
 <!DOCTYPE html>
@@ -24,10 +24,12 @@
       function draw() {
         ctx.save();
         ctx.clearRect(0, 0, innerWidth, innerHeight);
+        /* 移动到中心 */
         ctx.translate(innerWidth / 2, innerHeight / 2);
+        
         ctx.beginPath();
         let r =80;
-
+        /* 计算需要绘制的小球圆心位置 */
         let bx = r * Math.cos(angle);
         let by = r * Math.sin(angle);
 
