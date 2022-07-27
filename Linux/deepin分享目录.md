@@ -91,3 +91,21 @@ smbpasswd -a ggbone
 ## 其他方式
 
 还可以使用 nfs ， 但是不太好用（windows端会很卡， 而且还存在权限问题）
+
+
+## 删除挂载的磁盘
+
+```shell
+# 先查看
+net use
+
+# 删除 Z 盘
+net use Z: /delete
+```
+
+![](img/Snipaste_2022-07-27_20-21-03.png)
+
+
+## 记录坑
+
+window 连不上 linux的samba服务, 很有可能是 linux的防火墙开了
