@@ -57,6 +57,7 @@ systemctl enable frps
 > 特别注意, 正式配置文件需要去掉注释区域
 
 `frps.ini` 文件编辑
+
 ```ini
 [common]
 bind_addr = 0.0.0.0             #服务主机地址(0.0.0.0表示所有地址都有效)
@@ -77,11 +78,9 @@ subdomain_host = luoshuifushen.cn #用于http穿透的顶级端口
 systemctl restart frps
 ```
 
-
 ## 编辑客户端配置
 
 > 注意客户端也需要配置 service
-
 
 `frpc.ini` 文件编辑
 
@@ -105,6 +104,7 @@ type = http
 local_ip = 0.0.0.0
 local_port = 9030
 use_encryption = true
+# 通过 test.luoshuifushen.cn:7012 就能访问到
 subdomain = test
 
 [ttyd]
@@ -112,20 +112,53 @@ type = http
 local_ip = 0.0.0.0
 local_port = 9020
 use_encryption = true
+# 通过 ssr.luoshuifushen.cn:7012 就能访问到
 subdomain = ssr
+```
 
+## 关于 xtcp
+
+> 这是一个 点对点 的传输, 用于大浏览的并且不通过服务端的数据传输(典型的是 rdp)
+
+> 需要注意的是这个模式的连通并不是100%
+
+需要在 A, B 两个客户端都安装 `fprc`
+
+现在假设 B 需要通过 xtcp 直接连接 A
+
+A 的`frpc.ini` 配置
+
+```ini
 [common]
-server_addr = x.x.x.x
-server_port = 7000
+server_addr = xxxx      #服务器地址
+server_port = 7010      #frpc端口 (bind_port 那个)
+token = HYL123lh        #秘钥
+tls_enable = true       #是否使用tls加密
+
+[p2p_ssh]
+type = xtcp             #协议使用 xtcp
+sk = ggbone             #相当于秘钥, 两个客户端需要相同
+local_ip = 127.0.0.1
+local_port = 22
+```
+
+B 的`frpc.ini` 配置
+```ini
+[common]
+server_addr = xxxx      #服务器地址
+server_port = 7010      #frpc端口 (bind_port 那个)
+token = HYL123lh        #秘钥
+tls_enable = true       #是否使用tls加密
 
 [p2p_ssh_visitor]
-type = xtcp
-# xtcp 的访问者
-role = visitor
-# 要访问的 xtcp 代理的名字
-server_name = p2p_ssh
-sk = ggbone
-# 绑定本地端口用于访问 ssh 服务
-bind_addr = 127.0.0.1
-bind_port = 6000
+type = xtcp             #协议使用 xtcp
+sk = ggbone             #相当于秘钥, 两个客户端需要相同
+role = visitor        
+bind_addr = 127.0.0.1   #这是本地服务ip
+bind_port = 6000        #这是本地服务端口
+```
+
+通过如下使B 连通A
+```shell
+ssh root@127.0.0.1 -p 6000
 ```
