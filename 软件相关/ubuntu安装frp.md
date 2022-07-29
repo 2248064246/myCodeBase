@@ -162,3 +162,22 @@ bind_port = 6000        #这是本地服务端口
 ```shell
 ssh root@127.0.0.1 -p 6000
 ```
+
+
+## 手机使用 frpc 
+
+[软件地址](https://github.com/qiuhaotc/frp_android/releases/tag/v1.0)
+
+配置和电脑端的一致就OK
+
+
+## 某些情况下可能导致 xtcp 无法打通
+
+路由器尽量开启 DMZ(指向路由器的请求会被转发到设置的ip) (这个在p2p直连中比较重要)
+
+NAT 模式???
+
+
+> 这个和 WebRTC 比起来还是不太行, WebRTC基本上可以做到任何 NAT 网络的穿透
+
+> 这个 xtcp 在多个子路由的情况下, 需要开启路由器的 DMZ 设置, 不然穿不透...

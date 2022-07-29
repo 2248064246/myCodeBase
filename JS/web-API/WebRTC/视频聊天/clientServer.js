@@ -2,11 +2,11 @@
  * @Author: huangyingli
  * @Date: 2022-04-07 17:23:56
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-04-10 12:17:42
+ * @LastEditTime: 2022-07-29 17:43:39
  * @Description:
  */
 
-const remote = 'ws://192.168.124.2:6504';
+const remote = 'ws://ssr.luoshuifushen.cn:6504';
 
 let loginNameEl = document.querySelector('#login-name');
 let loginBtn = document.querySelector('#login-btn');
@@ -154,7 +154,7 @@ async function invite(evt) {
     createPeerConnection();
 
     try {
-      webcamStream = await navigator.mediaDevices.getUserMedia(
+      webcamStream = await navigator.mediaDevices.getDisplayMedia(
         mediaConstraints
       );
       document.getElementById('local_video').srcObject = webcamStream;
@@ -201,7 +201,7 @@ async function handleVideoOfferMsg(msg) {
   }
   if (!webcamStream) {
     try {
-      webcamStream = await window.navigator.mediaDevices.getUserMedia(
+      webcamStream = await window.navigator.mediaDevices.getDisplayMedia(
         mediaConstraints
       );
     } catch (err) {
