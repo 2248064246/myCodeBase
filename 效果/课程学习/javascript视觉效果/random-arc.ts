@@ -1,4 +1,3 @@
-import { cwd } from 'process';
 
 /*
  * @Author: huangyingli
@@ -81,3 +80,6 @@ function draw(canvas: MCanvas) {
 }
 
 canvasSketch(sketch, settings);
+
+
+export {};
