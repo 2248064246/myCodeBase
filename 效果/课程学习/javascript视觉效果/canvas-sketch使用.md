@@ -12,7 +12,7 @@ npm i canvas-sketch
 
 ```shell
 # 启动文件, 并热跟新(然而还是需要手动更新)
-canvas-sketch sketch.js --hot
+npx canvas-sketch sketch.js --hot
 ```
 
 
