@@ -101,3 +101,20 @@ Writing default config to: C:\Users\22480\.jupyter\jupyter_notebook_config.py
 ```
 jupyter notebook password 
 ```
+
+> 这会生成一个 .json 文件, 位置同 .py 的配置文件. 作用都是用来配置jupyter的
+
+> 这个文件比 .py 的配置文件要方便
+
+比如要修改ip和目录可以直接这么操作
+```json
+{
+  "NotebookApp": {
+    "password": "xxxx",
+    "ip": "192.168.124.4",
+    "notebook_dir": "/media/ggbone/My Passport/notebook",
+    // 这个配置很重要, 在使用nginx代理的时候要配置, 不然会出现问题
+    "allow_origin": "*"
+  }
+}
+```

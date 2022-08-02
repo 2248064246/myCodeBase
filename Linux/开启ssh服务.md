@@ -1,6 +1,8 @@
 # 开启 ssh 服务
 
 ```shell
+# 安装服务
+apt-get install openssh-server
 # 开启服务
 systemctl start ssh
 ```

@@ -29,8 +29,28 @@ cd Python-3.10.0
 make & make install
 ```
 
-检查python3 版本
+检查 python3 版本
 
 ```shell
 python3 --version
+```
+
+## pip 换源解决下载过慢问题
+
+```shell
+# 在更目录创建 .pip 文件夹
+mkdir ~/.pip
+
+# 创建配制文件
+vim ~/.pip/pip.conf
+```
+
+写入如下内容
+
+```bash
+  [global]
+  index-url = http://mirrors.aliyun.com/pypi/simple
+  [install]
+  trusted-host=mirrors.aliyun.com
+
 ```

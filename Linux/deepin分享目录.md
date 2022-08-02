@@ -62,7 +62,9 @@ smbpasswd -a ggbone
 
 ```
 
-我们可以直接使用deepin自身的账户就可， 不用新建账户
+> 我们可以直接使用deepin自身的账户就可， 不用新建账户
+
+> ubuntu 下需要设置账户, 不然连不上去
 
 设置登录samba的账户
 `sudo smbpasswd -a ggbone` 然后输入两次密码就可以了
