@@ -84,6 +84,7 @@ sudo apt install nodejs npm
 
 6. 建立软连接, 方便全局调用
 
+> 这里一定要用绝对路径, 不然会报 "符号链接的层数过多" 
    ```shell
     ln -s /usr/local/nodejs/local/npm /user/local/bin
     ln -s /usr/local/nodejs/local/node /user/local/bin
