@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-05 19:33:13
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-05 19:39:58
+ * @LastEditTime: 2022-08-11 16:24:31
  * @Description: 
  */
 import Dep from "./Dep.js";
@@ -18,6 +18,7 @@ export default class Watcher {
         this.value = this.get();
     }
     update() {
+        console.log('通知更新')
         this.run();
     }
     get() {
