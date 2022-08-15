@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:40:52
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-12 17:54:38
+ * @LastEditTime: 2022-08-15 10:27:47
  * @Description:
  *
  */
@@ -15,12 +15,14 @@ export interface VueOptions {
   el?: string | Element;
   data?: object | OptionsData;
   watch?: object;
+  computed?: object;
 }
 
 export interface VueInstance {
   $data: any;
   $watch: object;
   $options: VueOptions;
+  $computed: object;
 }
 
 export interface WatchInstance {
@@ -30,11 +32,13 @@ export interface WatchInstance {
   update(newVal: any): void;
 
   value: any;
-  key: string;
+  getter: Function | undefined;
   vm: VueInstance;
   cb: Function;
-
+  deps: Array<DepInstance>;
   get(): any;
+  depend(): void;
+  addDep(dep:DepInstance):void;
 }
 
 export interface DepInstance {

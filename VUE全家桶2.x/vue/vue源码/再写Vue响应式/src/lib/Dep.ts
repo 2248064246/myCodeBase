@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 15:48:52
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-12 17:54:29
+ * @LastEditTime: 2022-08-15 10:27:57
  * @Description:
  */
 
@@ -23,6 +23,7 @@ export class Dep implements DepInstance {
   depend() {
     if (Dep.target) {
       this.addSub(Dep.target);
+      Dep.target.addDep(this);
     }
   }
 
