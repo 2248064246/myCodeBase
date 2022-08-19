@@ -2,14 +2,14 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:59:23
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-15 10:05:02
+ * @LastEditTime: 2022-08-19 14:58:37
  * @Description:
  */
 
 import { isObject } from './Common';
 
 import { Observer } from '../lib/Observer';
-import { ObserverInstance } from '../interface/Index';
+import { ObserverInstance, VueInstance } from '../interface/Index';
 import { Dep } from '../lib/Dep';
 
 export function getData(fn: Function, target: object): object {
@@ -116,4 +116,16 @@ export function parsePath(path: string): any {
     }
     return obj;
   };
+}
+
+export function callHook(vm: VueInstance, hook: string) {
+  let hooks = vm.$options[hook];
+
+  if (Array.isArray(hooks)) {
+    hooks.forEach((h) => h.call(vm));
+  } else if (typeof hooks === 'function') {
+    hooks.call(vm);
+  } else {
+    throw Error('hook error: ' + hook + ' is not a hook');
+  }
 }

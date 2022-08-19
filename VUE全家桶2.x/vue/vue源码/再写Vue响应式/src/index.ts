@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:36:01
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-15 10:52:33
+ * @LastEditTime: 2022-08-19 14:57:45
  * @Description:
  */
 
@@ -30,6 +30,10 @@ const vm = new Vue({
       return this.a + this.b;
     },
   },
+
+  created() {
+    console.log('crated')
+  }
 });
 
 console.log(vm.$data.a);
