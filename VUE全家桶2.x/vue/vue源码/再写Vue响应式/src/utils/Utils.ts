@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:59:23
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-19 14:58:37
+ * @LastEditTime: 2022-08-22 17:19:20
  * @Description:
  */
 
@@ -59,7 +59,7 @@ export function defineReactive(data: object, key: string, val: any) {
     enumerable: true,
     configurable: true,
     get() {
-      console.log('试图访问 ', key, getter);
+      console.log('试图访问 ', key, val);
       /* 最重要的是通过闭包记录 val值 */
       const value = getter ? getter.call(data) : val;
       if (Dep.target) {
@@ -126,6 +126,20 @@ export function callHook(vm: VueInstance, hook: string) {
   } else if (typeof hooks === 'function') {
     hooks.call(vm);
   } else {
-    throw Error('hook error: ' + hook + ' is not a hook');
+    console.warn('hook warn: ' + hook + ' is not defined');
+  }
+}
+
+export function queryEl(el: string | Element):Element {
+  if (typeof el === 'string') {
+    let dom = document.querySelector(el);
+    if(!dom) {
+      throw Error(`不存在此选择器 ${el}`)
+    }
+    return dom;
+  } else if (el.nodeName) {
+    return el;
+  } else {
+    throw Error(`不存在此元素 ${el}`);
   }
 }

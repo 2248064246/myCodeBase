@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 15:48:52
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-18 14:42:57
+ * @LastEditTime: 2022-08-23 10:29:09
  * @Description:
  */
 
@@ -13,13 +13,14 @@ export class Dep implements DepInstance {
   static target: WatchInstance;
 
   subs: Array<WatchInstance>;
-  id: Number;
+  id: number;
   constructor() {
     this.subs = [];
     this.id = ++uid;
   }
 
   addSub(watcher: WatchInstance) {
+    console.log('dep添加 watcher', watcher)
     this.subs.push(watcher);
   }
 
@@ -37,6 +38,7 @@ export class Dep implements DepInstance {
   }
 
   notify(newVal: any) {
+    console.log('通知watcher更新', this.subs)
     this.subs.forEach((watcher) => {
       watcher.update(newVal);
     });

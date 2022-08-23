@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:40:52
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-18 18:30:17
+ * @LastEditTime: 2022-08-23 11:06:26
  * @Description:
  *
  */
@@ -22,6 +22,10 @@ export interface VueOptions {
   mounted?: Array<Function> | Function;
   beforeDestroy?: Array<Function> | Function;
   destroyed?: Array<Function> | Function;
+  render?: Function;
+  template?: string | Element;
+  beforeUpdate?: Array<Function> | Function;
+  updated?:Array<Function> | Function;
 }
 
 export interface VueInstance {
@@ -29,10 +33,14 @@ export interface VueInstance {
   $watch: object;
   $options: VueOptions;
   $computed: object;
+  $el?: Element;
+  $template?: Element;
+  $render?: Function;
   $emit(eventName: string, ...args: any): void;
   $on(eventName: string | Array<string>, callback: Function): void;
   $once(eventName: string | Array<string>, callback: Function): void;
   $off(eventName: string | Array<string>, callback?: Function): void;
+  $mount(el: string | Element): void;
 }
 
 export interface WatchInstance {
@@ -54,7 +62,7 @@ export interface WatchInstance {
    * 用于判断是执行watcher回调还是执行组件更新
    */
   sync: Boolean;
-  id: Number;
+  id: number;
   /**
    * 获取watcher观察的值, 并在此时触发依赖收集
    */
@@ -70,10 +78,13 @@ export interface WatchInstance {
    * 用于执行绑定的watcher回调
    */
   run(): void;
+
+  before?: Function;
 }
 
 export interface WatchOptions {
   sync?: Boolean;
+  before?(): void;
 }
 
 export interface DepInstance {
@@ -91,7 +102,7 @@ export interface DepInstance {
   /**
    * 用于标识 dep 的id(递增)
    */
-  id: Number;
+  id: number;
   /**
    * 通知subs中的watcher更新
    */

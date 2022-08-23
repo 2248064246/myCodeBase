@@ -2,13 +2,13 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:39:45
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-19 14:57:28
+ * @LastEditTime: 2022-08-23 11:16:01
  * @Description:
  */
 
 import { VueOptions, VueInstance, WatchInstance } from '../interface/Index';
 import { mergeOptions } from '../utils/Options';
-import { getData, proxy, observe, callHook } from '../utils/Utils';
+import { getData, proxy, observe, callHook, queryEl } from '../utils/Utils';
 import { Dep } from './Dep';
 import { Watcher } from './Watcher';
 
@@ -32,6 +32,7 @@ export class Vue implements VueInstance {
     mergeOptions(this, this.$options);
 
     console.log(this.$options);
+    callHook(this, 'beforeCreate');
 
     let data = this.$options.data;
     this.$data = typeof data === 'function' ? getData(data, this) : data;
@@ -44,6 +45,8 @@ export class Vue implements VueInstance {
     this._initWatch();
 
     callHook(this, 'created');
+
+    this.$mount(options.el);
   }
   private _init(): void;
   private _init() {
@@ -138,6 +141,9 @@ export class Vue implements VueInstance {
         this.$on(event, callback);
       });
     } else {
+      if (!this._events[eventName]) {
+        this._events[eventName] = [];
+      }
       this._events[eventName].push(callback);
     }
   }
@@ -148,5 +154,46 @@ export class Vue implements VueInstance {
     }
 
     this.$on(eventName, on);
+  }
+
+  $mount(el: string | Element): void {
+    let options = this.$options;
+    el = el && queryEl(el);
+
+    // if (!options.render) {
+    //   let template: any = options.template && queryEl(options.template);
+    //   if (template) {
+    //     template = template.innerHTML;
+    //   } else if (el) {
+    //     template = el.outerHTML;
+    //   }
+
+    //   if (template) {
+
+    //   }
+    // }
+
+    callHook(this, 'beforeMount');
+
+    const updateComponent = () => {
+      
+      console.log('开始挂载');
+      /* 通过在这边进行render操作, 获取当前组件的所有依赖 */
+      /* 一旦有数据变动, 直接触发watcher */
+      this.$data.a
+      this.$data.b
+    };
+
+    /* 这里 sync设置为false, 表示是组件级别的watcher */
+    /* 在触发update的时候, 然后不调用watcher的回调, 调用特别的方法执行组件更新 */
+    new Watcher(this, updateComponent, () => {
+      console.log('component 更新')
+    }, {
+      sync: false,
+      before() {
+        console.log('开始更新')
+        callHook(this, 'beforeUpdate')
+      }
+    });
   }
 }
