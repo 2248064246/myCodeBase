@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:40:52
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-23 11:06:26
+ * @LastEditTime: 2022-08-25 11:03:15
  * @Description:
  *
  */
@@ -26,6 +26,7 @@ export interface VueOptions {
   template?: string | Element;
   beforeUpdate?: Array<Function> | Function;
   updated?:Array<Function> | Function;
+  methods?: object;
 }
 
 export interface VueInstance {

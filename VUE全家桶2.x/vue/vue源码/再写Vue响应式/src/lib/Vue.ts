@@ -2,13 +2,15 @@
  * @Author: huangyingli
  * @Date: 2022-08-12 14:39:45
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-23 11:16:01
+ * @LastEditTime: 2022-08-25 11:03:01
  * @Description:
  */
 
+import { template } from 'lodash';
 import { VueOptions, VueInstance, WatchInstance } from '../interface/Index';
 import { mergeOptions } from '../utils/Options';
 import { getData, proxy, observe, callHook, queryEl } from '../utils/Utils';
+import { createCompiler } from './Compiler';
 import { Dep } from './Dep';
 import { Watcher } from './Watcher';
 
@@ -21,8 +23,9 @@ export class Vue implements VueInstance {
   $data: any;
   $options: VueOptions;
   $computed: object;
-
+  $el: Element;
   private _events: VueEvents;
+  private _render: Function;
 
   constructor(options: VueOptions) {
     this._events = {};
@@ -43,6 +46,9 @@ export class Vue implements VueInstance {
 
     this.$watch = this.$options.watch;
     this._initWatch();
+
+
+    this._initMethod();
 
     callHook(this, 'created');
 
@@ -107,6 +113,13 @@ export class Vue implements VueInstance {
     }
   }
 
+  private _initMethod():void {
+    for(let key in this.$options.methods) {
+      let fn = this.$options.methods[key];
+      this.$on(key, fn)
+    }
+  }
+
   $emit(eventName: string, ...args: any): void {
     let ev = this._events[eventName];
     if (ev) {
@@ -159,41 +172,55 @@ export class Vue implements VueInstance {
   $mount(el: string | Element): void {
     let options = this.$options;
     el = el && queryEl(el);
+    this.$el = el;
+    if (!options.render) {
+      let template: any = options.template && queryEl(options.template);
+      if (template) {
+        template = template.innerHTML;
+      } else if (el) {
+        template = el.innerHTML;
+      }
 
-    // if (!options.render) {
-    //   let template: any = options.template && queryEl(options.template);
-    //   if (template) {
-    //     template = template.innerHTML;
-    //   } else if (el) {
-    //     template = el.outerHTML;
-    //   }
-
-    //   if (template) {
-
-    //   }
-    // }
+      console.log('template type', typeof template)
+      if (template) {
+        this.mountComponent(template);
+        this.$template = template;
+      }
+    }
 
     callHook(this, 'beforeMount');
 
     const updateComponent = () => {
-      
       console.log('开始挂载');
       /* 通过在这边进行render操作, 获取当前组件的所有依赖 */
       /* 一旦有数据变动, 直接触发watcher */
-      this.$data.a
-      this.$data.b
+      this.$data.a;
+      this.$data.b;
+
+       this.mountComponent(this.$template);
     };
 
     /* 这里 sync设置为false, 表示是组件级别的watcher */
     /* 在触发update的时候, 然后不调用watcher的回调, 调用特别的方法执行组件更新 */
-    new Watcher(this, updateComponent, () => {
-      console.log('component 更新')
-    }, {
-      sync: false,
-      before() {
-        console.log('开始更新')
-        callHook(this, 'beforeUpdate')
+    new Watcher(
+      this,
+      updateComponent,
+      () => {
+        console.log('component 更新');
+      },
+      {
+        sync: false,
+        before() {
+          console.log('开始更新');
+          callHook(this, 'beforeUpdate');
+        },
       }
-    });
+    );
+  }
+
+  private mountComponent(template: string) {
+    const { render } = createCompiler(template);
+    this._render = render;
+    render.call(this, this.$el);
   }
 }
