@@ -18,7 +18,7 @@
 + `top`
   + 同 y
 + `bottom`
-  + 等同 y + height (等边离屏幕左上顶点的高度)
+  + 等同 y + height (底边离屏幕左上顶点的高度)
 + `right`
   + 同 x + width
 + `left`
