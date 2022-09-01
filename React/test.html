@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 加载 React。-->
+    <!-- 注意: 部署时，将 "development.js" 替换为 "production.min.js"。-->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <div id="root"></div>
+    <div id="time"></div>
+    <style>
+      .liked {
+        background-color: tomato;
+      }
+    </style>
+    <script type="text/babel">
+      const e = React.createElement;
+      class likeButton extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            liked: false,
+          };
+        }
+        render() {
+          return (
+            <button
+              onClick={() => this.setState({ liked: !this.state.liked })}
+              className={this.state.liked ? 'liked' : ''}
+            >
+              Liked
+            </button>
+          );
+        }
+      }
+
+      function setState(data) {
+        console.log('like button click', data);
+      }
+
+      /* 调用DOM渲染函数渲染 */
+      ReactDOM.render(e(likeButton), document.querySelector('#root'));
+
+      function tick() {
+        const element = (
+          <div>
+            <h1>Hello, world!</h1>
+            <h2>It is {new Date().toLocaleTimeString()}.</h2>
+          </div>
+        );
+        ReactDOM.render(element, document.getElementById('time'));
+      }
+
+      setInterval(tick, 1000);
+    </script>
+  </body>
+</html>
