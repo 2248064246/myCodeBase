@@ -22,6 +22,8 @@
 
     <div id="root"></div>
     <div id="time"></div>
+    <div id="test"></div>
+
     <style>
       .liked {
         background-color: tomato;
@@ -43,8 +45,21 @@
               className={this.state.liked ? 'liked' : ''}
             >
               Liked
+              <a href='https://www.baidu.com' onClick={(e) => this.click2(e)}>
+                默认link阻止事件
+              </a>
             </button>
           );
+        }
+
+        click = (e) => {
+          console.log('xxxss', e, this);
+          // return false;
+          e.preventDefault();
+        };
+
+        click2(e) {
+          console.log('222', e, this);
         }
       }
 
@@ -52,20 +67,126 @@
         console.log('like button click', data);
       }
 
+      class Clock extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { date: new Date(), addrs: [1, 2, 3, 4], pots: [1] };
+          this.timerID = '';
+        }
+
+        componentDidMount() {
+          this.setState({
+            addrs: [5, 6, 7],
+          });
+          this.setState({
+            pots: [2, 3, 4],
+          });
+          this.timerID = setInterval(() => {
+            // console.log(this.state.addrs, this.state.pots);
+            this.setState({
+              date: new Date(),
+            });
+          }, 1000);
+        }
+
+        render() {
+          return (
+            <div>
+              <h1>Hello, world!</h1>
+              <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            </div>
+          );
+        }
+      }
+
+      class Toggle extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { isToggleOn: true };
+
+          // 为了在回调中使用 `this`，这个绑定是必不可少的
+          this.handleClick = this.handleClick.bind(this);
+        }
+
+        handleClick() {
+          this.setState((prevState) => ({
+            isToggleOn: !prevState.isToggleOn,
+          }));
+        }
+
+        render() {
+          return (
+            <button onClick={this.handleClick}>
+              {this.state.isToggleOn ? 'ON' : 'OFF'}
+            </button>
+          );
+        }
+      }
       /* 调用DOM渲染函数渲染 */
       ReactDOM.render(e(likeButton), document.querySelector('#root'));
 
-      function tick() {
-        const element = (
-          <div>
-            <h1>Hello, world!</h1>
-            <h2>It is {new Date().toLocaleTimeString()}.</h2>
-          </div>
-        );
-        ReactDOM.render(element, document.getElementById('time'));
-      }
+      class NameForm extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            name: '',
+            select: ['lime', 'coconut'],
+          };
+        }
 
-      setInterval(tick, 1000);
+        handleChange(e) {
+          console.log(e.target.value);
+        }
+
+        handleSelectChange(e) {
+          console.log(e.target.value);
+        }
+
+        render() {
+          /* react for 属性是 htmlFor */
+          return (
+            <form>
+              <label htmlFor='name'>名字: </label>
+              <input
+                id='name'
+                type='text'
+                value='aaa'
+                onChange={this.handleChange}
+              />
+
+              <select
+                value={this.state.value}
+                multiple={true}
+                onChange={this.handleSelectChange}
+              >
+                <option value='grapefruit'>葡萄柚</option>
+                <option value='lime'>酸橙</option>
+                <option value='coconut'>椰子</option>
+                <option value='mango'>芒果</option>
+              </select>
+            </form>
+          );
+        }
+      }
+      ReactDOM.render(
+        <div>
+          <Clock />
+          <Toggle />
+          <NameForm />
+        </div>,
+        document.getElementById('time')
+      );
+    </script>
+
+    <script type="text/babel">
+      class Welcome extends React.Component {
+        render() {
+          return <h1>hello {this.props.tag}</h1>;
+        }
+      }
+      const ele = <Welcome tag='React' />;
+
+      ReactDOM.render(ele, document.querySelector('#test'));
     </script>
   </body>
 </html>

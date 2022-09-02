@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 加载 React。-->
+    <!-- 注意: 部署时，将 "development.js" 替换为 "production.min.js"。-->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <div id="root"></div>
+
+    <div id="app"></div>
+
+    <script type="text/babel">
+      function toCelsius(fahrenheit) {
+        return ((fahrenheit - 32) * 5) / 9;
+      }
+
+      function toFahrenheit(celsius) {
+        return (celsius * 9) / 5 + 32;
+      }
+      class Fahrenheit extends React.Component {
+        constructor(props) {
+          super(props);
+        }
+        render() {
+          return (
+            <fieldset>
+              <legend>输入华氏度:</legend>
+              <input
+                type='text'
+                value={this.props.fa}
+                onChange={this.props.faChange}
+              />
+            </fieldset>
+          );
+        }
+      }
+      class Temperature extends React.Component {
+        constructor(props) {
+          super(props);
+        }
+        render() {
+          return (
+            <fieldset>
+              <legend>输入摄氏度:</legend>
+              <input
+                type='text'
+                value={this.props.fa}
+                onChange={this.props.faChange}
+              />
+            </fieldset>
+          );
+        }
+      }
+
+      class Calculator extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            fa: '',
+            te: '',
+          };
+        }
+
+        faChange(e) {
+          let v = e.target.value;
+          let te = toCelsius(v);
+          this.setState({
+            fa: e.target.value,
+            te: te,
+          });
+        }
+
+        teChange(e) {
+          let v = e.target.value;
+          let fa = toFahrenheit(v);
+          this.setState({
+            te: e.target.value,
+            fa: fa,
+          });
+        }
+
+        render() {
+          return (
+            <div>
+              {' '}
+              <Fahrenheit
+                fa={this.state.fa}
+                faChange={this.faChange.bind(this)}
+              />
+              <Temperature
+                fa={this.state.te}
+                faChange={this.teChange.bind(this)}
+              />
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<Calculator />, root);
+    </script>
+
+    <script type="text/babel">
+      /* 这里会初始化一个初始值, 这个值可以是任意类型 */
+      const ThemeContext = React.createContext('light');
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            value: 'dark',
+            toggleTheme: () => {
+              this.setState((state) => {
+                console.log(state);
+                return {
+                  value: state.value === 'dark' ? 'default' : 'dark',
+                };
+              });
+            },
+          };
+        }
+        render() {
+          /* xxx.Provider 可以重新设置给定的初始值 */
+          return (
+            <ThemeContext.Provider value={this.state}>
+              <Toolbar />
+            </ThemeContext.Provider>
+          );
+        }
+      }
+
+      /* 中间组件不用指明要向下传递的值 */
+      function Toolbar() {
+        return (
+          <div>
+            <ThemedButton />
+          </div>
+        );
+      }
+
+      // class ThemedButton extends React.Component {
+      //   /* 在后续的组件中, 通过获取 ThemeContext 就能获取到这个全局值 */
+      //   /* 在这个例子中, 值是 `dark` */
+      //   static contextType = ThemeContext;
+      //   render() {
+      //     return <button theme={this.context}>xxx</button>;
+      //   }
+      // }
+      class ThemedButton extends React.Component {
+        render() {
+          return (
+            <ThemeContext.Consumer>
+              {(value) => {
+                console.log('value', value);
+                return (
+                  <button id={value.value} onClick={value.toggleTheme}>
+                    {value.value}
+                  </button>
+                );
+              }}
+            </ThemeContext.Consumer>
+          );
+        }
+      }
+
+      ReactDOM.render(<App />, app);
+    </script>
+  </body>
+</html>
