@@ -10,8 +10,7 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/dou
 
 kcptun一键安装脚本
 ```shell
-wget --no-check-certificate -O kcptun.sh https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh
-sh kcptun.sh
+wget --no-check-certificate -O kcptun.sh https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh && bash kcptun.sh
 ```
 [详细博客教程](https://visoon0012.github.io/2017/Shadowsocks/Ubuntu%E4%BD%BF%E7%94%A8KCPTUN%E4%B8%BASS%E5%8A%A0%E9%80%9F/)
 
