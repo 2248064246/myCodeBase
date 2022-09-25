@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    123
+    <video
+      src="http://127.0.0.1:5502/JS/web-API/MediaSourceExtensions/官方示例/frag_bunny.mp4"
+      controls
+      autoplay
+      preload="auto"
+      crossorigin="anonymous"
+    ></video>
+
+    <script>
+      let videoElement = document.querySelector('video');
+      videoElement.addEventListener('play', () => {
+        console.log('播放')
+        videoElement.play();
+        try {
+          requestPictureInPicture();
+        } catch (e) {
+          console.log(e);
+        }
+      });
+      function requestPictureInPicture() {
+        if (document.pictureInPictureEnabled) {
+          videoElement.requestPictureInPicture();
+        } else {
+          console.log('Your browser cannot use picture-in-picture right now');
+        }
+      }
+    </script>
+  </body>
+</html>

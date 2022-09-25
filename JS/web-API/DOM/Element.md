@@ -30,7 +30,12 @@
   + 返回大写的标签名
   
 ## 方法
-
++ `append((Node or DOMString)`
+  + 在当前元素末尾插入一组Node节点或DOMString对象, DOMString等价Text节点.
+  + 与 `Node.appendChild`的差别
+    + `Element.append`允许插入DOMString, `Node.appendChild` 只允许插入Node节点
+    + `Element.append`允许插入多个, `Node.appendChild`只允许插入一个
+    + `Element.append`没有返回值, `Node.appendChild`返回插入的节点
 + `attachShadow()`
   + 和 shadowDOM 有关的方法
 + `getAnimations()`

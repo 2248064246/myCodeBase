@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+      class ErrorWrapper extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            errorInfo: 'xxx',
+            errorState: false,
+          };
+        }
+
+        static getDerivedStateFromError(error) {
+          return { errorState: true };
+        }
+
+        componentDidCatch(error, errorInfo) {
+          console.log(error.toString());
+          console.log(errorInfo.componentStack);
+        }
+
+        render() {
+          if (this.state.errorState) {
+            return <h1>Something has Wrong</h1>;
+          }
+          return <Number />;
+        }
+      }
+
+      class Number extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            num: 0,
+          };
+        }
+
+        handleClick(e) {
+          this.setState((state) => {
+            return {
+              num: ++state.num,
+            };
+          });
+        }
+        render() {
+          if (this.state.num === 5) {
+            throw new Error('throw a error');
+          }
+          return (
+            <h2 onClick={this.handleClick.bind(this)}>{this.state.num}</h2>
+          );
+        }
+      }
+
+      class MyComponent extends React.Component {
+        constructor(props) {
+          super(props);
+          this.myRef = React.createRef();
+        }
+        render() {
+          const { forwardedRef } = this.props;
+
+          return (
+            <div>
+              <input
+                type='text'
+                ref='age'
+                onClick={this.handleClick.bind(this)}
+              />
+              <Xx ref={this.myRef} onClick={this.handleClick.bind(this)} />
+            </div>
+          );
+        }
+        handleClick() {
+          console.log(this.refs);
+
+          console.log(this.myRef)
+        }
+      }
+
+      class NameInput extends React.Component {
+        render() {
+          const { forwardedRef, onClick } = this.props;
+          return (
+            <input
+              type='text'
+              placeholder='请输入name'
+              onClick={onClick}
+              ref={forwardedRef}
+            />
+          );
+        }
+      }
+
+      function abc() {
+        return React.forwardRef((props, ref) => {
+          return <NameInput forwardedRef={ref} {...props} />;
+        });
+      }
+
+      let Xx = abc();
+
+      ReactDOM.render(
+        <div>
+          <ErrorWrapper />
+          <MyComponent />
+        </div>,
+        root
+      );
+    </script>
+  </body>
+</html>

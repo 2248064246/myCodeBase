@@ -5,7 +5,7 @@
 
  Document 接口描述了任何类型的文档的通用属性与方法(包括 HTML, XML, SVG)
 
- HTML 文档还实现了 HTMLDocument 即接口
+ HTML 文档还实现了 HTMLDocument 接口
 
  ## 构造函数
 
@@ -51,8 +51,26 @@
     + hidden
     + prerender
     + unloaded
-
-
++ `readyState`
+  + 描述document的状态变化, 有以下三个值:
+    + loading
+    + interactive: 此时文档已经被解析, 但是诸如图片,样式表, iframe等可能还在加载中.
+      + 相当于 `DOMContentLoaded` 事件
+    + complete
+      + 相当于 `load` 事件
+  + readyState 变化会触发 `readystatechange` 事件
++ `pictureInPictureEnabled`
+    + 返回一个boolean值, 表示画中画功能是否可用
+    + 一般情况下这个功能是默认可用的, 但是现在可以通过 `Feature-Policy: picture-in-picture none` 请求头来在`全局范围`内关闭这个功能.
+    + 也可以单独通过`video`元素的`disablepictureinpicture` 属性来关闭(针对单个元素)
++ `pointerLockElement`
+  + 返回锁定了鼠标指针的元素或者null
++ `referrer`
+  + 返回一个URL或空字符
+  + 表示当前页面是通过什么地址跳转过来的. 如果是直接通过地址栏输入则为空
++ `fullscreenEnabled`
+  + 同 `pictureInPictureEnabled`
++ 
 
 ## 方法
 
@@ -61,6 +79,12 @@
   + 返回一个可以插入当前文档的节点
 + `createAttribute(attrName)`
   + 创建一个新的 `Attr`对象并返回
+  ```js
+    let div = document.createElement('div')
+    let attr = document.createAttribute('name');
+    attr.value = 'tom'
+    div.setAttributeNode(attr);
+  ```
 + `createComment(commentData)`
   + commentData: 注释内容, 返回一个注释节点
 + `createDocumentFragment()`

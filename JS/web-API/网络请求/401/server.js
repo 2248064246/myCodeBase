@@ -2,11 +2,12 @@
  * @Author: huangyingli
  * @Date: 2022-06-18 21:27:01
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-06-19 00:36:47
+ * @LastEditTime: 2022-08-30 16:09:42
  * @Description:
  */
 const express = require('express');
 const basicAuth = require('basic-auth');
+const fs = require('fs');
 
 const app = express();
 //设置允许跨域访问该服务.
@@ -26,8 +27,14 @@ app.get('/', function (req, res) {
   const credentials = basicAuth(req);
   console.log(credentials);
   if (credentials && credentials.name === 'ggbone') {
+    res.header('Content-Type', 'text/html');
+    /* 通过http响应头禁用video的画中画功能 */
+    res.header('Feature-Policy', 'picture-in-picture none')
     res.status(200);
-    res.send('授权成功');
+    // res.send('授权成功');
+    fs.readFile('./test.html', (err, data) => {
+      res.send(data);
+    });
   } else {
     res.send('需要授权');
   }

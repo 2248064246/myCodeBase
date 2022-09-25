@@ -8,7 +8,7 @@ Node 是一个接口，各种类型的 DOM API 对象会从这个接口继承
 ## 属性
 
 + `baseURI` 
-  + 返回当前 节点 所在文档的 URI(注意会受)
+  + 返回当前节点的`绝对基址URI`, 当浏览器获取绝对URL时, 就需要用基URL去解析相对URL。默认情况下是文档地址(注意会受 base 元素影响)
 + `childNodes` 
   + 返回一个包含该节点所有字节点的实时 `NodeList`. 
   + `NodeList` 是动态变化的, 会自动更新
@@ -20,7 +20,7 @@ Node 是一个接口，各种类型的 DOM API 对象会从这个接口继承
 + `nextSibling`
   + 返回与该节点同级的下一个节点
 + `nodeName`
-  + 如果此节点使元素节点, 则返回大写的元素名字
+  + 如果此节点是元素节点, 则返回大写的元素名字
   + [其他类型返回](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeName)
 + `nodeType`
   + 返回一个与该节点对应的数值
@@ -42,6 +42,12 @@ Node 是一个接口，各种类型的 DOM API 对象会从这个接口继承
   + 返回与该节点同级的上一个节点
 + `textContent`
   + 返回或设置一个元素内所有子节点及后代的文本内容
+  + 与 `innerText` 区别
+    + `innerText` 会受css样式影响,不会获取不可见元素内容(包括style, script 这种元素)
+  + 与 `innerHTML` 区别
+    + `innerHTML`会获取完整标签
+    + `innerHTML`设置的时候会解析标签
+    + `textContent`有更好的效率, 并且可以防止`XSS攻击`
 
 ## 方法
 
