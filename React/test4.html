@@ -1,0 +1,68 @@
+<script
+  src="https://unpkg.com/react@16/umd/react.development.js"
+  crossorigin
+></script>
+<script
+  src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+  crossorigin
+></script>
+
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<div id="root"></div>
+
+<div id="modal"></div>
+
+<script type="text/babel">
+  const root = document.querySelector('#root');
+  const modal = document.querySelector('#modal');
+
+  class Modal extends React.Component {
+    constructor(props) {
+      super(props);
+      this.$el = document.createElement('div');
+    }
+
+    componentDidMount() {
+      /* React完成挂载的时候, 挂载到真实DOM上 */
+      modal.appendChild(this.$el);
+    }
+
+    componentWillUnmount() {
+      modal.removeChild(this.$el);
+    }
+
+    render() {
+      return ReactDOM.createPortal(this.props.children, this.$el);
+    }
+  }
+
+  class Child extends React.Component {
+    render() {
+      return <button>Click</button>;
+    }
+  }
+
+  class App extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+
+    handleClick() {
+      /* Child 里面的按钮点击事件将会冒泡到React父组件 */
+      /* 尽管在实际DOM结构中它们并不是父子关系 */
+      console.log('点击事件');
+    }
+    render() {
+      return (
+        <div onClick={this.handleClick}>
+          <Modal>
+            <Child />
+          </Modal>
+        </div>
+      );
+    }
+  }
+
+  ReactDOM.render(<App />, root);
+</script>
