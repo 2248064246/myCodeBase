@@ -1,0 +1,213 @@
+# 组合式函数
+
+组合式函数时一个利用 Vue 的组合式 API 来封装和复用有状态组件逻辑的函数
+
+Vue 中的`组合式函数`和传统的`JS组合函数`有区别
+
+普通 js 组合函数要求函数是纯的(无状态), 而 Vue 中可需要将一些组件抽离方便复用, 并且组件带有自身的内部状态(比如: 鼠标位置, 连接数据库的状态)
+
+看一个例子:
+
+```js
+// mouse.js
+import { ref, onMounted, onUnmounted } from 'vue';
+
+// 按照惯例，组合式函数名以“use”开头
+export function useMouse() {
+  // 被组合式函数封装和管理的状态
+  const x = ref(0);
+  const y = ref(0);
+
+  // 组合式函数可以随时更改其状态。
+  function update(event) {
+    x.value = event.pageX;
+    y.value = event.pageY;
+  }
+
+  // 一个组合式函数也可以挂靠在所属组件的生命周期上
+  // 来启动和卸载副作用
+  onMounted(() => window.addEventListener('mousemove', update));
+  onUnmounted(() => window.removeEventListener('mousemove', update));
+
+  // 通过返回值暴露所管理的状态
+  return { x, y };
+}
+```
+
+然后在需要的组件中使用
+
+```js
+<script setup>
+import { useMouse } from './mouse.js'
+
+const { x, y } = useMouse()
+</script>
+
+<template>Mouse position is at: {{ x }}, {{ y }}</template>
+```
+
+真的绝 👍!!!
+
+更酷的是，你还可以嵌套多个组合式函数：一个组合式函数可以调用一个或多个其他的组合式函数。这使得我们可以像使用多个组件组合成整个应用一样，用多个较小且逻辑独立的单元来组合形成复杂的逻辑。实际上，这正是为什么我们决定将实现了这一设计模式的 API 集合命名为组合式 API。
+
+例如:
+
+```js
+// event.js
+import { onMounted, onUnmounted } from 'vue';
+
+export function useEventListener(target, event, callback) {
+  // 如果你想的话，
+  // 也可以用字符串形式的 CSS 选择器来寻找目标 DOM 元素
+  onMounted(() => target.addEventListener(event, callback));
+  onUnmounted(() => target.removeEventListener(event, callback));
+}
+```
+
+```js
+// mouse.js
+import { ref } from 'vue';
+import { useEventListener } from './event';
+
+export function useMouse() {
+  const x = ref(0);
+  const y = ref(0);
+
+  useEventListener(window, 'mousemove', (event) => {
+    x.value = event.pageX;
+    y.value = event.pageY;
+  });
+
+  return { x, y };
+}
+```
+
+> 每一个调用 useMouse() 的组件实例会创建其独有的 x、y 状态拷贝，因此他们不会互相影响。如果你想要在组件之间共享状态，请阅读状态管理这一章。
+
+## 异步状态
+
+如何给这种组合式函数添加参数, 以适应不同场景呢??
+
+最简单的方式就是和传统方式传入参数
+
+```js
+// fetch.js
+import { ref } from 'vue';
+
+export function useFetch(url) {
+  const data = ref(null);
+  const error = ref(null);
+
+  fetch(url)
+    .then((res) => res.json())
+    .then((json) => (data.value = json))
+    .catch((err) => (error.value = err));
+
+  return { data, error };
+}
+```
+
+但是, 这不是响应式的.
+
+如果在调用的时候, 我们传入一个 Vue 的响应式数据, 在数据变化之后, `useFetch` 无法重新调用
+
+要实现这个功能需要做一些调整:
+
+```js
+// fetch.js
+import { ref, isRef, unref, watchEffect } from 'vue';
+
+export function useFetch(url) {
+  const data = ref(null);
+  const error = ref(null);
+
+  function doFetch() {
+    // 在请求之前重设状态...
+    data.value = null;
+    error.value = null;
+    // unref() 解包可能为 ref 的值
+    fetch(unref(url))
+      .then((res) => res.json())
+      .then((json) => (data.value = json))
+      .catch((err) => (error.value = err));
+  }
+
+  if (isRef(url)) {
+    // 若输入的 URL 是一个 ref，那么启动一个响应式的请求
+    watchEffect(doFetch);
+  } else {
+    // 否则只请求一次
+    // 避免监听器的额外开销
+    doFetch();
+  }
+
+  return { data, error };
+}
+```
+
+## 约定和最佳实践
+
+### 命名
+
+组合式函数约定用驼峰命名, 并且以 `use` 作为开头
+
+## 输入参数
+
+尽管响应性不依赖 ref, 但是组合式函数可以接收 ref 参数(响应性参数)
+
+因此最后对参数做一下兼容处理
+
+```js
+import { unref } from 'vue';
+
+function useFeature(maybeRef) {
+  // 若 maybeRef 确实是一个 ref，它的 .value 会被返回
+  // 否则，maybeRef 会被原样返回
+  const value = unref(maybeRef);
+}
+```
+
+如果需要对用响应式数据做出变化, ，请确保使用 `watch()` 显式地监听此 `ref`，或者在 `watchEffect()` 中调用 `unref()` 来进行正确的追踪。
+
+### 返回值
+
+推荐组合式函数中返回一个非响应性的对象, 这个对象可以被解构出响应性的属性
+
+```js
+// x 和 y 是两个 ref
+const { x, y } = useMouse();
+```
+
+如果`useMouse()`返回一个响应性的对象, **会导致在对象解构过程中丢失与组合式函数内状态的响应性连接** (??这是为什么呢)
+
+如果需要使用对象, 而不是解构后的值, 可以使用 `reactive()` 方法包裹返回的对象
+
+```js
+const mouse = reactive(useMouse());
+// mouse.x 链接到了原来的 x ref
+console.log(mouse.x);
+```
+
+### 副作用
+
+在组合式函数中可以添加副作用代码(例如: 执行 DOM 操作或监听事件等), 但是要注意下面规则:
+
+- 如果你的应用用到了服务端渲染 (SSR)，请确保在组件挂载后才调用的生命周期钩子中执行 DOM 相关的副作用，例如：onMounted()。这些钩子仅会在浏览器中被调用，因此可以确保能访问到 DOM。
+- 确保在 `onUnmounted()` 时清理副作用
+
+## 使用限制
+
+组合函数在 `<script setup>` 或 `setup()` 钩子中, 应该始终被同步地调用.
+
+在某些场景下，你也可以在像 onMounted() 这样的生命周期钩子中使用他们。
+
+这个限制是为了让 Vue 能够确定当前正在被执行的到底是哪个组件实例，只有能确认当前组件实例，才能够：
+
+- 将生命周期钩子注册到该组件实例上
+- 将计算属性和监听器注册到该组件实例上，以便在该组件被卸载时停止监听，避免内存泄漏。
+
+(?? 不是很理解....)
+
+> <script setup> 是唯一在调用 await 之后仍可调用组合式函数的地方。编译器会在异步操作之后自动为你恢复当前的组件实例。
+
+
