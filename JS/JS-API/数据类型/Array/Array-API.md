@@ -1,8 +1,8 @@
 # 数组方法大全
 
-## 数组静态方法
+[toc]
 
-- `isArray`
+## 数组静态方法
 
 ### ES6 以上
 
@@ -20,7 +20,10 @@
 ## 实例属性
 
 - length
+
   > length 属性的值是一个 0 到 2^32 - 1 的整数。
+
+  > JS 数组有最大长度限制, 也就是 2^32
 
   可以设置 length 属性的值来截断任何数组。当通过改变 length 属性值来扩展数组时，实际元素的数目将会增加。
 
@@ -82,7 +85,7 @@
 
 - `slice(n, m)`
 
-  > 获取指定位置区间的数据元素
+  > 获取指定位置区间的数据元素, 范围: (n, m], 原数组不会改变
 
   > 返回获取的元素数组, 没有返回空数组
 
@@ -109,18 +112,25 @@
 
   > 返回删除的元素数组, 如果是新增, 返回空数组
 
+  index 规则:
+
+  - 如果超出了数组长度, 则从数组末尾开始
+  - 如果时负值
+    - 如果负值的绝对值大于数组长度, 则从 0 开始
+    - 否则等价于 `array.length - n `
+
   > **更改原来数组**
 
   ```javaScript
     let array = [1, 2, 3]
     // 新增
     // array.splice(0, 0, -1, 0) // => 返回 [], 删除0个元素
-    // array => [0, 1, 2, 3]
+    // array => [-1, 0, 1, 2, 3]
     // 向 0索引前面删除0个元素, 并使用 -1, 0 填充 0索引前面
 
     // 删除
-    // array.splice(1, 1) // => 返回 [1]
-    // array => [1, 3]
+    // array.splice(1, 1) // => 返回 [0]
+    // array => [-1, 1, 2, 3]
 
   ```
 
@@ -215,13 +225,29 @@
 
   > 查找数组元素方法 , 没有找到返回 undefined
 
+- `findLast`
+
 - `findIndex`
 
   > 查找数组元素位置方法, 没有找到返回 -1
 
+- `findLastIndex`
+
 - `includes(value[, fromIndex])`
   > 查找数组中是否包含这个值, 返回 Boolean
 - `keys`
+
+> 返回一个包含数组索引的迭代器对象
+
+和 `Object.keys()` 不同的是, `Array.prototype.keys()` 会包含没有数据的 key
+
+```js
+var arr = ['a', , 'c'];
+var sparseKeys = Object.keys(arr);
+var denseKeys = [...arr.keys()];
+console.log(sparseKeys); // ['0', '2']
+console.log(denseKeys); // [0, 1, 2]
+```
 
 - `entries`
 
@@ -250,6 +276,18 @@
 ## ES8 ~ ES10
 
 - `values`
+
+> 返回一个包含数组值的迭代器对象
+
+和`Object.values()` 不同的是, 它会包含数组中的空值
+
+```js
+var arr = ['a', , 'c'];
+var sparseKeys = Object.values(arr);
+var denseKeys = [...arr.values()];
+console.log(sparseKeys); // ['a', 'c']
+console.log(denseKeys); //  ['a', undefined, 'c']
+```
 
 - `flat([depth])`
 

@@ -21,7 +21,7 @@ typeof s3; // object
 ## 模板字面量
 
 ```js
-let a = '123'`${a}456`; // 123456
+let a = `123456`; // 123456
 ```
 
 ## 转义字符
@@ -52,4 +52,16 @@ let s =
   '123\
 123\
 123';
+```
+
+## 基本字符串和字符串对象的区别
+
+- 基本字符串在使用字符串对象上的方法时, js 会自动将其转为字符串对象
+- 在使用 `eval`时, 基本字符串和字符串对象有区别
+
+```js
+s1 = '2 + 2'; // creates a string primitive
+s2 = new String('2 + 2'); // creates a String object
+console.log(eval(s1)); // returns the number 4
+console.log(eval(s2)); // returns the string "2 + 2"
 ```
