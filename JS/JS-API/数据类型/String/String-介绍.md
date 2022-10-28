@@ -65,3 +65,14 @@ s2 = new String('2 + 2'); // creates a String object
 console.log(eval(s1)); // returns the number 4
 console.log(eval(s2)); // returns the string "2 + 2"
 ```
+
+## 转义序列
+
+自 ES2016 起, 带标签的模板字面量遵守下面转义序列规则:
+
+- Unicode 字符以 `\u` 开头, 例如`\u0044`
+- Unicode 码位以 `\u{}` 表示, 例如`\u{1F923}`
+- 16 进制以 `\x` 开头, 例如 `\x44`
+- 8 进制以 `\` 开头, 例如 `\44`
+
+注意除了第二种, 其余三种后面的值有效范围都在 `0 ~ 65535`之间

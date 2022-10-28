@@ -65,7 +65,7 @@ let str = '🙃 123❤️';
 const buf = new ArrayBuffer(str.length * 4);
 const bufView = new Uint32Array(buf);
 let i = 0;
-/* 这里 for...of 虽然可以遍历 四字节表情, 但是对于代理对表情无能为力 */
+/* 这里 for...of 虽然可以遍历 四字节表情, 但是对于一些特殊表情无能为力 */
 
 for (let s of str) {
   console.log(s, s.codePointAt());
