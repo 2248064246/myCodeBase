@@ -10,7 +10,7 @@
 
   > 从可变数量参数创建数组
 
-- `from`
+- `from(arrayLike|iterator [,mapFnc])`
 
   > 从类数组或可迭代对象中创建数组
 
