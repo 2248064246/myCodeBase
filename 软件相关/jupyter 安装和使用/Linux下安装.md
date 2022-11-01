@@ -34,3 +34,9 @@ sudo pip3 install --upgrade pip
 
 
 ## 其余步骤也和 windows 下安装一致
+
+可能出现 `error: command ‘x86_64-linux-gnu-gcc‘ failed with exit status 1` 错误, 此时执行如下命名进行安装
+
+```shell
+sudo apt-get install build-essential python3-dev libssl-dev libffi-dev libxml2 libxml2-dev libxslt1-dev zlib1g-dev
+```

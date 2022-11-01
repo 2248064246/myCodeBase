@@ -12,7 +12,7 @@ jupyter 默认只支持 python3
 
 这是一个支持最新 ES/TS 的包
 
-``` shell
+```
 npm i -g tslab
 
 # 验证安装是否正确
@@ -66,27 +66,27 @@ sudo apt install nodejs npm
 
 1. 去 nodejs 官网下载 linux 二进制文件(x64) 版本(是 .xz 压缩文件)
 2. 使用 xz 命令解压下载的包
-   ```shell
+```shell
    xz -dv node-v16.15.1-linux-x64.tar.xz
-   ```
+```
 3. 解压后得到一个 tar 包 (node-v16.15.1-linux-x64.tar)
 4. 使用 tar 解压缩
 
-   ```shell
+```shell
     tar -xfv node-v16.15.1-linux-x64.tar
-   ```
+```
 
 5. 解压后将文件移入 `/usr/local/` 下
 
-   ```shell
+```shell
    mv node-v16.15.1-linux-x64 /usr/local/nodejs
-   ```
+```
 
 6. 建立软连接, 方便全局调用
 
 > 这里一定要用绝对路径, 不然会报 "符号链接的层数过多" 
-   ```shell
-    ln -s /usr/local/nodejs/local/npm /user/local/bin
-    ln -s /usr/local/nodejs/local/node /user/local/bin
-    ln -s /usr/local/nodejs/local/npx /user/local/bin
-   ```
+```shell
+    ln -s /usr/local/nodejs/bin/npm /usr/local/bin
+    ln -s /usr/local/nodejs/bin/node /usr/local/bin
+    ln -s /usr/local/nodejs/bin/npx /usr/local/bin
+```
