@@ -58,9 +58,78 @@
         {
             "language": "markdown",
             "source": [
-                "从数组末尾删除一个元素, 返回被删除的元素, 原数组改变.\r\n\r\n"
+                "从数组末尾删除一个元素, 返回被删除的元素, 原数组改变.\r\n\r\n如果对空数组使用, 则会返回`undefiend`\r\n"
             ],
             "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Array.prototype.unshift()\r\n\r\n**语法**\r\n\r\n```js\r\nArray.prototype.unshift(element[, ...elementN])\r\n```\r\n\r\n向数组头部增加元素, 返回变更后的数组长度, 原数组改变"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Arrary.prototye.shift()\r\n\r\n从数组头部删除一个元素, 返回被删除的元素, 原数组改变\r\n\r\n同`pop()` 一样, 对空数组使用, 返回`undefined`"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Array.prototype.splice()\r\n\r\n删除或增加数组元素, 返回一个包含被删除元素的数组, 原数组改变.\r\n\r\n**语法**\r\n\r\n```js\r\n  Array.prototype.splice(start)\r\n  Array.prototype.splice(start, deleteCount)\r\n  Array.prototype.splice(start, deleteCount, newItem[, ...newItemN])\r\n```\r\n\r\n- `start`: 指定要操作的其实位置(从 0 开始). 可以为负数, 计算方法`arrary.length + start`; 如果负数的绝对值大于数组长度, 则从`0`开始\r\n- `deleteCount`: 指定要删除的元素个数, 如果没有值, 则等于数组长度. 如果等于小于 0, 则需要指定需要写入的值.\r\n- `newImte`: 需要替换的数据\r\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let arr = [1, 2, 3, 4, 5];\r\n\r\n// 删除第2个元素, 并在次位置填入元素6\r\nconsole.log(arr.splice(1, 1, 6), arr);\r\n// => [ 2 ] [ 1, 6, 3, 4, 5 ]\r\n\r\n// 移除数组中的所有元素\r\nconsole.log(arr.splice(0), arr);\r\n// => [ 1, 6, 3, 4, 5 ] []\r\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 2 ] [ 1, 6, 3, 4, 5 ]",
+                                "[ 1, 6, 3, 4, 5 ] []",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Arrary.prototype.length--\r\n\r\n通过手动减少数组`length` 也能够起到删除数组元素的作用"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let arr2 = [1, 2, 3, 4, 5];\r\n\r\narr2.length--;\r\n\r\nconsole.log(arr2); // => [ 1, 2, 3, 4 ]\r\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 1, 2, 3, 4 ]",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
