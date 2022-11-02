@@ -1,0 +1,32 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## **Array.isArray()**\r\n\r\n判断给定的值是否是一个数组(仅限 Array, TypeArray 返回 false)\r\n\r\n**语法**\r\n\r\n```ts\r\nArray.isArray(value:any):boolean\r\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "console.log(Array.isArray([])); // true\r\n// 鲜为人知的事实：其实 Array.prototype 也是一个数组。\r\nconsole.log(Array.isArray(Array.prototype)); // true"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "true",
+                                "true",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

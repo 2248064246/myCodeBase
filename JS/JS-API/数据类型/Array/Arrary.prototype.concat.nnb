@@ -1,0 +1,31 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## **Array.prototype.concat()**\r\n\r\n合并数组(不会去重), 返回一个新数组, **不会更改原有数组**.\r\n\r\n如果没有传入值, 则会返回当前数组的一个浅拷贝.\r\n\r\n**语法**\r\n\r\n**`Array.prototype.concat(value[, value1...valueN])`**\r\n\r\n`value`可以是数组,也可以是普通值\r\n\r\n\r\n**使用 `Symbol.isConcatSpreadable` 合并类数组**\r\n\r\nconcat 会在类数组的 `Symbol.isConcatSpreadable` 为`true`时将其视为数组来处理"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const obj1 = {0:0, 1: 1, 2:2, length: 3};\r\nconst obj2 = {0:0, 1: 1, 2:2, length: 3, [Symbol.isConcatSpreadable]: true};\r\n\r\nconsole.log([].concat(obj1, obj2)) // => [{0:0, 1: 1, 2:2, length: 3}, 0,1,2]"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ { '0': 0, '1': 1, '2': 2, length: 3 }, 0, 1, 2 ]",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,84 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## **Array.from()**\r\n\r\n从一个可迭代对象或类数组中创建新数组\r\n\r\n**语法**\r\n\r\n**`Array.from(arrayLike|iterator [, mapFn])`**\r\n\r\n可以增加一个`map`函数, 来对生成的数组做一次处理. 等同于 `Array.from().map()`"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(Array.from('1234', (x) => Number(x) * Number(x)));\r\n// => [1, 4, 9, 16]"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 1, 4, 9, 16 ]",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "Array.from 一个好玩的应用--序列生成器"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const range = (start, stop, step) =>\r\n  Array.from({ length: (stop - start) / step + 1 }, (v, k) => start + k * step);\r\n\r\nconsole.log(range(0, 10, 2)); // => [0,2,4,6,8,10]"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 0, 2, 4, 6, 8, 10 ]",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// amazing\r\nlet letters = range('A'.charCodeAt(0), 'Z'.charCodeAt(0), 1).map((s) =>\r\n  String.fromCharCode(s)\r\n);\r\n\r\nconsole.log(letters);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[",
+                                "  'A', 'B', 'C', 'D', 'E', 'F',",
+                                "  'G', 'H', 'I', 'J', 'K', 'L',",
+                                "  'M', 'N', 'O', 'P', 'Q', 'R',",
+                                "  'S', 'T', 'U', 'V', 'W', 'X',",
+                                "  'Y', 'Z'",
+                                "]",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

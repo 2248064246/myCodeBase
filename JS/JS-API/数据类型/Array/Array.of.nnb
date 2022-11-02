@@ -1,0 +1,45 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## **Array.of()**\r\n\r\n通过给定的值生成数组\r\n\r\n**语法**\r\n\r\n```js\r\nArray.of(...elements);\r\n```\r\n\r\n这个方法主要是用来弥补`Array`构造函数的问题的.\r\n\r\n通过`new Array()`来生成新数组有时候让人困惑.(因为参数有点复杂)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* 快速生成一个类数组 */\r\nArray.of.call(function () {}, 1, 2, 3);\r\n// => {0: 1, 1: 2, 2: 3, length: 3}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "{",
+                                "  \u001b[32m'0'\u001b[39m: \u001b[33m1\u001b[39m,",
+                                "  \u001b[32m'1'\u001b[39m: \u001b[33m2\u001b[39m,",
+                                "  \u001b[32m'2'\u001b[39m: \u001b[33m3\u001b[39m,",
+                                "  length: \u001b[33m3\u001b[39m",
+                                "}"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

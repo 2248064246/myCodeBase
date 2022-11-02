@@ -153,7 +153,8 @@ tls_enable = true       #是否使用tls加密
 [p2p_ssh_visitor]
 type = xtcp             #协议使用 xtcp
 sk = ggbone             #相当于秘钥, 两个客户端需要相同
-role = visitor        
+role = visitor      
+server_name = p2p_ssh  
 bind_addr = 127.0.0.1   #这是本地服务ip
 bind_port = 6000        #这是本地服务端口
 ```

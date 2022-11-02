@@ -1,0 +1,66 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# 数组的增删改"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Array.prototype.push()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "\r\n向数组中增加元素, 改变原数组, 返回改变后的数组长度.\r\n\r\n**语法**\r\n\r\n```js\r\nArray.prototype.push(element[, ...elementN])\r\n```\r\n\r\n\r\n`push` 方法具有通用性. 结合`call` `apply` 一起使用, 可以在类数组上使用.\r\n\r\n唯一的原生类数组（array-like）对象是 Strings，尽管如此，它们并不适用该方法，因为字符串是不可改变的。"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 像数组一样使用对象\r\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let obj = { length: 0 };\r\n\r\nArray.prototype.push.call(obj, 'a', 'b', 'c');\r\n\r\nconsole.log(obj) // => { '0': 'a', '1': 'b', '2': 'c', length: 3 }\r\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{ '0': 'a', '1': 'b', '2': 'c', length: 3 }",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Array.prototype.pop()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "从数组末尾删除一个元素, 返回被删除的元素, 原数组改变.\r\n\r\n"
+            ],
+            "outputs": []
+        }
+    ]
+}
