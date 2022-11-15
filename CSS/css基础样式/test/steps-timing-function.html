@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        height: 50px;
+        width: 0px;
+        background-color: tomato;
+        margin: 20px 10px;
+      }
+
+      .start {
+        animation: identifier 5s steps(5, start) infinite;
+      }
+
+      .end {
+        animation: identifier 5s steps(5, end) infinite;
+      }
+
+      .jump-both {
+        animation: identifier 5s steps(5, jump-both) infinite;
+      }
+
+      .jump-none {
+        animation: identifier 5s steps(5, jump-none) infinite;
+      }
+
+      @keyframes identifier {
+        from {
+          width: 0;
+        }
+
+        to {
+          width: 500px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="start"></div>
+    <div class="end"></div>
+    <div class="jump-both"></div>
+    <div class="jump-none"></div>
+  </body>
+</html>
