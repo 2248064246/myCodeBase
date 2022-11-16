@@ -6,6 +6,8 @@
 
 可以值写其中一个属性, 也可以写多个
 
+## background-color
+
 ## background-image
 
 可以同时指定多个图片
@@ -51,6 +53,8 @@ background-size: cover, container;
 
 控制背景图片的相对位置
 
+`background-position-x` `background-position-y` 的简写
+
 **语法:**
 
 ```css
@@ -87,4 +91,29 @@ background-position: top right 10px;
 
 `text` 可以将背景应用于文字, **需要文字颜色为透明**
 
+## background-attachment
 
+用于控制背景图片的位置是在`视口`内固定还是随着包含它的区块滚动
+
+- fixed: 背景相对于视口固定
+- scroll: 背景相对于元素本身固定
+- local: 背景会随着内容滚动而滚动(相对于元素内容固定)
+
+## 其他相关属性
+
+### background-repeat
+
+有两个值, 第一个定义在 x 轴的重复行为, 第二定义在 y 轴的重复行为
+
+- `repeat`: 图像会按需来覆盖整个背景图片所在的区域. 图像可能会被裁剪, 如果大小不合适.
+- `space`: 图像会尽可能覆盖, 但是不会裁剪. 但是不会裁剪。第一个和最后一个图像会被固定在元素 (element) 的相应的边上，同时空白会均匀地分布在图像之间。background-position 属性会被忽视，除非只有一个图像能被无裁剪地显示。只在一种情况下裁剪会发生，那就是图像太大了以至于没有足够的空间来完整显示一个图像。
+- `round`: 完全覆盖图像所在区域, 图像可能会被拉伸
+- `no-repeat`
+
+### background-blend-mode | chrome 35+
+
+属性定义该元素的背景图片，以及背景色如何混合。
+
+可以定义多个值, 对应多个背景图片.
+
+属性具体参数查看 `blend-mode`
