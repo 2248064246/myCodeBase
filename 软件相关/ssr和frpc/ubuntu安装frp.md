@@ -2,6 +2,8 @@
 
 > 目的是进行内网穿透
 
+> 注意, python3.10 目前不支持
+
 ## 下载 frp 服务端包
 
 [github 地址](https://github.com/fatedier/frp)

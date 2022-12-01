@@ -142,6 +142,7 @@ function map(iterable, fnc) {
       }
     },
     [Symbol.iterator]() {
+      console.log('this', this)
       return this;
     },
   };

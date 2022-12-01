@@ -30,7 +30,7 @@
 - entries()
   返回一个新的迭代器, 包含 `[key, value]` 格式的数组
 
-- forEach()
+- forEach((value, key, map) => {})
 
 
 
