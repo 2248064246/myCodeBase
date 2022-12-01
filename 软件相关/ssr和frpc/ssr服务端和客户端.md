@@ -85,7 +85,7 @@ ssr install
 通过`privoxy`统一代理桌面的所有http/socks 流量
 ```shell
 # 安装
-sudo apt install privoxy
+sudo apt install privox
 # 配置
 sudo vim /etc/privoxy/config
 ```
