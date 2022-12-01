@@ -120,6 +120,21 @@ filter: drop-shadow(0 10px 10px #888);
 filter: grayscale(100%);
 ```
 
+通过 url 方式获取 svg
+
+```css
+/* 这个百度贴吧使用的灰度样式 */
+-webkit-filter: grayscale(100%);
+-moz-filter: grayscale(100%);
+-ms-filter: grayscale(100%);
+-o-filter: grayscale(100%);
+filter: grayscale(100%);
+/* 还可以通过 url 引入一个svg */
+filter: url(data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale);
+filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+-webkit-filter: grayscale(1);
+```
+
 svg 的灰度有点特别, 下面这个使用的是加权平均方式. 这个的结果和 css 的 grayscale(100%) 是一致的
 [参见](https://zhuanlan.zhihu.com/p/384374529)
 
@@ -242,7 +257,6 @@ filter: saturate(200%);
 ```
 
 **为什么低饱和度和灰度会是一样的效果???**
-
 
 ### sepia() 褐色
 

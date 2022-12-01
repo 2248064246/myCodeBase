@@ -8,6 +8,8 @@
 
 > 实际上 hysteria 使用的是 tcp, 要比 kcptun 更加稳定就是
 
+> 但是在手机上表现不如 `ssr + kcptrun`, 就很奇怪
+
 [项目地址](https://github.com/apernet/hysteria)
 
 [文档地址](https://hysteria.network/zh/docs/advanced-usage/)
@@ -168,3 +170,38 @@ socket-timeout 300
 forward-socks5 / 127.0.0.1:1080 .
 forward / 127.0.0.1:1081
 ```
+
+## pc 端客户端
+
+[nekoray](https://github.com/MatsuriDayo/nekoray) 一个支持所有协议的客户端
+
+配置 `hysteria` 是需要注意:
+
+1. 需要下载 hysteria 的 windows 版本核心 [hysteria 核心](https://github.com/apernet/hysteria)
+2. 在编辑页面, `地址`和`端口`需要写 hysteria 的服务地址和端口
+3. 写入如下格式 json 配置
+   ```json
+   {
+     "server": "ip:port",
+     "obfs": "obfs",
+     "up_mbps": 50,
+     "down_mbps": 100,
+     "socks5": {
+       // 切记这里使用 %socks_port%, 不要改
+       "listen": "127.0.0.1:%socks_port%"
+     },
+     "http": {
+       "listen": "127.0.0.1:10800"
+     }
+   }
+   ```
+4. 点击 `首选项` -> `路由设置` -> 点击`左下角的预设`按钮 -> 根据情况选择
+5. 启动服务
+
+## 移动端客户端
+
+[SagerNet](https://sagernet.org/) 一个几乎支持所有流行代理的工具 (包括 ssr/ss v2ray Trojan 等)
+
+需要同时下载对应的 `Hysteria` 插件
+
+> 有一个问题, 使用`sagerNet` 配置 `ss + kcptun` 连不上...
