@@ -46,6 +46,12 @@ supervisorctl stop kcptun
 supervisorctl stop kcptun
 ```
 
+```shell
+Kcptun 相关命令:
+    supervisorctl {start|stop|restart|status} kcptun<id>
+                  {启动|关闭|重启|查看状态}
+```
+
 ## 使用 `udp2raw` 防止被 `Qos`
 
 UDP 流量伪装工具，可以将 udp 流量伪装为 TCP 流量
