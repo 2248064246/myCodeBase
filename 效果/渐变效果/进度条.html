@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .box {
+        width: 600px;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .progress-wrap {
+        width: 100%;
+        height: 20px;
+        border-radius: 10px;
+        background-color: #f0ece4;
+        overflow: hidden;
+      }
+      .progress-enter {
+        height: 100%;
+        width: var(--w);
+        border-radius: 10px;
+        overflow: hidden;
+        background: linear-gradient(
+          -45deg,
+          #d9cfbb 25%,
+          #c3b393 0,
+          #c3b393 50%,
+          #d9cfbb 0,
+          #d9cfbb 75%,
+          #c3b393 0
+        );
+        background-size: 30px 30px;
+        background-position: 0 0;
+        animation: progress 5s linear infinite;
+      }
+
+      @keyframes progress {
+        to {
+          background-position: 100% 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="progress-wrap" style="--w: 80%">
+        <div class="progress-enter"></div>
+      </div>
+    </div>
+  </body>
+</html>
