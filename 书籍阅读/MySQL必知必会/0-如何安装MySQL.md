@@ -8,11 +8,12 @@
 
 下载地址推荐 http://mirrors.ustc.edu.cn/mysql-ftp/Downloads/
 
-### ini配置文件
+### ini 配置文件
 
 在解压后的目录中添加一个名为`my.ini`的配置文件
 
 文件内容为
+
 ```INI
 	[client]
 	#设置端口号
@@ -31,7 +32,7 @@
 	explicit_defaults_for_timestamp=true
 	#跳过授权表格  在第一次 登入时跳过密码
 	#skip-grant-tables
-	#数据库导出目录
+	#数据库导出目录(这里需要自己手动创建一个 export 文件夹, 不然启动会报错)
 	secure-file-priv = "D:/MySQL/mysql-5.7.34-winx64/export"
 	[WinMySQLAdmin]
 	Server ="D:/MySQL/mysql-5.7.34-winx64/bin/mysqld.exe"
@@ -46,7 +47,7 @@
 
 这个不应该手动创建, 而是需要运行 命令
 
-进入`bin`目录下, 在cmd中执行下面命令
+进入`bin`目录下, 在 cmd 中执行下面命令
 
 `.\mysqld --initialize-insecure --user=mysql`
 
@@ -55,34 +56,50 @@
 ### 配置环境
 
 创建新的系统变量
-+ 变量名: `MYSQL_HOME` 
-+ 变量值: 解压目录
-  
-给Path添加新值
-+ `%MYSQL_HOME%\bin`
+
+- 变量名: `MYSQL_HOME`
+- 变量值: 解压目录
+
+给 Path 添加新值
+
+- `%MYSQL_HOME%\bin`
 
 ### 安装 SQL
-**运行管理权限cmd,** 执行 mysqld -install
+
+**运行管理权限 cmd,** 执行 mysqld -install
 
 如果要删除 MySQL 服务 `mysqld -remove`
 
 ### 启动服务
-运行管理员权限cmd, 执行 `net start mysql`
+
+运行管理员权限 cmd, 执行 `net start mysql`
 
 ### 修改 root 密码
 
-首次进入由于跳过了密码, 所以不需要输入密码就能进入. 
+首次进入由于跳过了密码, 所以不需要输入密码就能进入.
 
 这里由于原始密码时随机的, 需要自己设置一下密码
 
 ```sql
 use mysql;
-update user set authentication_string=password('12345') where user='root'; 
+update user set authentication_string=password('12345') where user='root';
 ```
-
 
 ## 错误情况
 
 如果这种安装方式报 3534 错误, 且无法解决(我在笔记本可以安装, 到台式机怎么都成功不了, 而且都是一样的系统)
 
 这是可以尝试去官网安装 msi 的版本, 简单方便 `https://dev.mysql.com/downloads/windows/installer/8.0.html`
+
+## 对于 mysql8 启动报 Can't connect to MySQL server on 'localhost:3306
+
+（以管理员身份运行 cmd）
+
+```
+mysqld --remove mysql，然后手动把data文件夹和my.ini文件删除了
+mysqld --install （安装mysql）
+mysqld --initialize --user=root --console （初始化mysql）
+net start mysql （启动mysql）
+mysql -u root -p （进入mysql，输入初始密码）
+set password=‘password’; （设置密码）
+```

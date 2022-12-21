@@ -43,6 +43,7 @@ certbot certonly
 
 # 前提需要一个与当前机器匹配的域名
 # How would you like to authenticate with the ACME CA? 此选项选 1:
+# 注意需要保证80端口没有被占用
 # 会提示输入域名
 # 成功后会显示生成的证书位置
 ```
