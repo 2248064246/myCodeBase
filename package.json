@@ -45,6 +45,7 @@
     "express": "^4.17.2",
     "express-formidable": "^1.2.0",
     "fabric": "^4.6.0",
+    "js-base64": "^3.7.3",
     "lodash": "^4.17.21",
     "log4js": "^6.5.2",
     "loglevel": "^1.8.0",
