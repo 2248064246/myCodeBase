@@ -1,0 +1,12 @@
+{
+  "listen": "0.0.0.0:40000",
+  "acme": {
+    "domains": ["ssr.luoshuifushen.cn"],
+    "email": "h2248064246@gmail.com"
+  },
+  "obfs": "HYL123lh",
+  "auth": {
+    "mode": "passowrds",
+    "config": ["HYL123xxx"]
+  }
+}
