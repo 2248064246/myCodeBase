@@ -27,20 +27,20 @@ class 声明一个基于原型继承的给定名称的新类
 ## 公有, 私有, 静态属性
 
 私有: 只能在类中访问
-公有: 可以在类中, 实例中方位
+公有: 可以在类中, 实例中访问
 静态: 只能通过类名访问
 受保护: 只能在类和子类中访问
 
 > 私有属性必须先定义
 
-````js
+```js
 class A {
   #size; // 使用 # 定义私有属性
   constructor() {
     this.#size = 1; //
   }
 }
-
+```
 ## 类装饰器
 
 ## 超调用
@@ -52,7 +52,7 @@ class A {
 ```js
 super([arguments]); // calls the parent constructor.
 super.functionOnParent([arguments]); // 调用父级函数
-````
+```
 
 对于继承的类, 通过 super 调用父类构造函数是, 必须先于 this 出现
 
