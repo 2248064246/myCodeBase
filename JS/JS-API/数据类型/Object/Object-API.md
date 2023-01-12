@@ -3,11 +3,11 @@
 
 ## 静态方法
 
-`assign(target, ...sources)`
+`assign(target, ...sources) => Object`
   + 只会拷贝源对象(source)自身的可枚举属性(包括 Symbol)到目标对象(并且只是浅克隆)
   + 不会拷贝属性描述, 只拷贝属性值
 
-`create(prototype[, descriptor])`
+`create(prototype[, descriptor]) => Object`
   + 比较常见的是在继承中, 用于隔离子类和父类的原型
   + 使用指定的原型对象和属性创建一个新对象。
   ```js
@@ -40,12 +40,12 @@
 `defineProperties(obj, props:{prop: descriptor})`
   + 给对象添加多个属性
 
-`entries(obj)`
-  + 返回给定对象自身可枚举属性(不包括 Symbol)的`[key, value]`数组
+`entries(obj) => Iterator`
+  + 返回给定对象`自身可枚举属性`(不包括 Symbol)的`[key, value]`数组
   + 属性的顺序与通过手动循环对象的属性值所给出的顺序相同。
   + 与`for...in`不同的, `for...in`循环还会遍历原型上可枚举的属性(同样枚举 Symbol)
 
-`freeze(obj)`
+`freeze(obj) => Object`
   + 冻结对象: 对象不能增删改, 不能修改对象属性配置
   + 对象原型也不能被修改
   + 返回被冻结的对象
@@ -53,17 +53,17 @@
 `getOwnPropertyDescriptor(obj, prop)`
   + 如果属性(**自身属性, 可以是Symbol**)存在对象上, 则返回对象属性描述, 否则返回 `undefined`
   
-`getOwnPropertyNames(obj)`
+`getOwnPropertyNames(obj) => Array`
   + 返回一个由指定对象的所有**自身属性**的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组
   + 数组中枚举属性的顺序与`for...in`循环迭代时一致
 
-`getOwnPropertySymbols(obj)`
+`getOwnPropertySymbols(obj) => Array`
   + 返回一个给定对象自身的所有 Symbol 属性的数组
 
-`getPrototypeOf(obj)`
+`getPrototypeOf(obj) => Object`
   + 返回指定对象的原型对象, 没有继承属性则返回 null
 
-`is(value1, value2)`
+`is(value1, value2) => Boolean`
   + 判断两个值是否为同一个值
   + 满足一下条件两个值相等
     + 都是 undefined
@@ -81,23 +81,23 @@
 
   > 与=== (en-US) 运算也不相同。 === 运算符 (也包括 == 运算符) 将数字 -0 和 +0 视为相等 ，而将Number.NaN 与NaN视为不相等.
 
-`isExtensible(obj)`
+`isExtensible(obj) => Boolean`
   + 判断对象是否可扩展, 可扩展返回true
 
-`isFrozen(obj)`
+`isFrozen(obj) => Boolean`
   + 判断对象是否被冻结
 
-`isSealed(obj)`
+`isSealed(obj) => Boolean`
   + 判断对象是否被密封
 
-`keys(obj)`
+`keys(obj) => Array`
   + 回一个由一个给定对象的自身可枚举属性组成的数组(不包括 Symbol)
   + 数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致
 
 `preventExtensions(obj)`
   + 让一个对象变的不可扩展(不可添加新属性)
   + 只阻止添加自身的属性, **对象原型依然可以添加新的属性**
-  + 此方法会让原型属性不可写(也就是不能修改已有属性), 可以添加, 无法删除
+  + 此方法会让原型原有属性不可写(也就是不能修改已有属性), 可以添加, 无法删除, 无法覆盖
 
 `seal(obj)`
   + 密封一个对象, 阻止添加新属性, 不可配置(不可删除, 不可修改描述), 但是如果属性原来可写, 则依旧可写
@@ -143,8 +143,8 @@
   }
   ```
 
-`values(obj)`
-  + 返回给定对象自生可枚举值的数组(不包括 Symbol)
+`values(obj) => Array`
+  + 返回给定对象自身可枚举值的数组(不包括 Symbol)
 
 ## 原型属性
 
@@ -155,19 +155,19 @@
 
 ## 原型方法
 
-`hasOwnProperty(prop)`
+`hasOwnProperty(prop) => Boolean`
   + 返回一个Boolean, 表示对象自身上是否包含指定的属性(支持 Symbol)
 
-`isPrototypeOf(object)` 
+`isPrototypeOf(object) => Boolean` 
   + 检查一个对象是否存在于另一个对象的原型上
 
-`propertyIsEnumerable(prop)`
-  + 检测一个属性是否可枚举
+`propertyIsEnumerable(prop) => Boolean`
+  + 检测一个属性是否可枚举(是否可以被 for...in 枚举, 但是通过原型链继承的属性除外)
 
-`toLocalString(参数同 lang 属性)` 
+`toLocalString(参数同 lang 属性) => String` 
   + 将对象转为本地字符串
 
-`toString()`
+`toString() => String`
   + 返回一个表示该对象的字符串:  `[object type]`
 
 `valueOf()`
