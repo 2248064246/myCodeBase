@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-30 17:16:50
- * @LastEditTime: 2022-10-27 21:42:01
+ * @LastEditTime: 2023-01-12 17:44:49
  * @LastEditors: huangyingli
  * @Description: In User Settings Edit
  * @FilePath: \my-code-base\JS\JS-API\数据类型\String-API.md
@@ -17,7 +17,7 @@ JS 使用的 Unicode 使用的是 UTF-16 编码的
 
 ## String 静态方法
 
-- `fromCharCode` 返回由指定的 UTF-16 代码单元序列创建的字符串 | `IE 9`
+- `fromCharCode(code[, code2...])` 返回由指定的 UTF-16 代码单元序列创建的字符串 | `IE 9`
 
   ```js
   /* 可以输入十进制数值, 也可以是16进制 */
@@ -39,7 +39,7 @@ JS 使用的 Unicode 使用的是 UTF-16 编码的
   String.fromCodePoint(0x1f303); // => '🌃'
   ```
 
-- `fromCodePoint` 返回使用指定的代码点序列创建的字符串 | `不支持IE`
+- `fromCodePoint(point[, point...])` 返回使用指定的代码点序列创建的字符串 | `不支持IE`
 
   ```js
 
@@ -79,9 +79,9 @@ JS 使用的 Unicode 使用的是 UTF-16 编码的
 
 ## String 原型方法
 
-- `indexOf(str)`
+- `indexOf(str) => Number`
   - 返回第一个匹配字符的 index, 没有返回 -1
-- `lastIndexOf()`
+- `lastIndexOf() => Number`
   - 返回最后一个匹配的 index, 没有返回 -1
 - `trim()`
   - 去除前后两端的空格
@@ -92,9 +92,9 @@ JS 使用的 Unicode 使用的是 UTF-16 编码的
 - `padStart(len, str)`
   - 向字符前面填充指定字符, 达到指定长度
 - `padEnd(len, str)`
-- `slice(beginIndex[, endIndex])`
+- `slice(beginIndex[, endIndex]) => String`
   - 和数组的这个方法一样, 允许负数, 但是一定要有相交集合
-- `substr(start[, len])`
+- `substr(start[, len]) => String`
 
   > 获取指定长度字符串
 
@@ -104,23 +104,23 @@ JS 使用的 Unicode 使用的是 UTF-16 编码的
 
   > **处于弃用阶段**
 
-- `substring(beginIndex, endIndex)`
+- `substring(beginIndex, endIndex) => String`
   - 和 `slice` 一样, 但是只能是正数
-- `includes(str[, position])`
+- `includes(str[, position]) => Boolean`
   - 判断这个字符是否存在于整个字符串中
   - 返回 Boolean
 - `replace`
   1. replace(str, newStr)
      - 将找到第一个 str 使用 newStr 替换
   2. replace(regexp, fun() => String)
-- `match(regexp)`
+- `match(regexp) => Array`
   - 返回一个数组(匹配的字符串)
-- `split(分隔符)`
+- `split(分隔符) => Array`
   - 通过对应分隔符裁剪字符串, 返回数组
 - `replaceAll`
-- `charAt(index)` 从一个字符串中返回指定的字符
+- `charAt(index) => String` 从一个字符串中返回指定位置的字符
   - 由于存在 (BMP 基本多文种平面), 通过这个方法传入字符下表获取的字符可能不准确
-- `charCodeAt(index)` 返回 0 到 65535 之间的整数，表示给定索引处的 UTF-16 代码单元 (就是返回字符码点)
+- `charCodeAt(index) => Number` 返回 0 到 65535 之间的整数，表示给定索引处的 UTF-16 代码单元 (就是返回字符码点)
   > 注意：，charCodeAt 总是返回一个小于 65,536 的值。这是因为高位编码单元（higher code point）使用一对（低位编码 lower valued）代理伪字符（"surrogate" pseudo-characters）来表示，从而构成一个真正的字符。因此，为了检查（或重现）65536 及以上编码字符的完整字符，需要在获取 charCodeAt(i) 的值的同时获取 charCodeAt(i+1) 的值（如同用两个字母操纵一个字符串），或者改为获取 codePointAt(i) 的值。参看下面例 2 和例 3。
   ```js
   let c = '❤️😂';
@@ -128,16 +128,16 @@ JS 使用的 Unicode 使用的是 UTF-16 编码的
   c.charCodeAt(1); // => 65039
   String.fromCharCode(10084, 65039); // => ❤️
   ```
-- `codePointAt(index)` 返回 一个 Unicode 编码点值的非负整数(和 charCodeAt 非常相似)
-- `toUpperCase`
-- `toLowerCase`
-- `startsWith(str[, position])`
+- `codePointAt(index) => Number` 返回 一个 Unicode 编码点值的非负整数(和 charCodeAt 非常相似)
+- `toUpperCase()`
+- `toLowerCase()`
+- `startsWith(str[, position]) => Boolean`
   - 判断字符串是否以某个字符开头, 返回 Boolean
-- `endsWith(str[, position])`
-- `repeat(num)`
+- `endsWith(str[, position]) => Boolean`
+- `repeat(num) => String`
   - num 重复次数
   - 返回 重复后的字符串
-- `search(regexp)`
+- `search(regexp) => Number`
   - regexp 正则对象
   - 返回 匹配字符的 index 位置
 - `localeCompare(otherStr)`
