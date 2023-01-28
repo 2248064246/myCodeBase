@@ -15,7 +15,7 @@ Node 是一个接口，各种类型的 DOM API 对象会从这个接口继承
 + `firstChild` 
   + 返回该节点的第一个子节点, 没有返回 null
 + `isConnected` 
-  + 返回一个Boolean, 用来检测此节点是否连接(直接或者间接)到一个上下文对象上.
+  + 返回一个Boolean, 用来检测此节点是否连接(直接或者间接)到一个上下文对象上.(就是是否挂载到页面上)
 + `lastChild` 
 + `nextSibling`
   + 返回与该节点同级的下一个节点
@@ -80,7 +80,8 @@ Node 是一个接口，各种类型的 DOM API 对象会从这个接口继承
 + `isSameNode(otherNode)`
   + 返回一个 Boolean 类型值。返回这两个节点的引用比较结果。
 + `normalize()`
-  + 对该元素下的所有文本节点进行整理, 合并相邻的文本节点并清空 空文本节点
+  + 对该元素下的所有文本节点进行整理, 合并相邻的文本节点并清空空的文本节点
+  + 在一个"规范化"后的 DOM 树中，不存在一个空的文本节点，或者两个相邻的文本节点。
 + `removeChild(childNode)`
   + 移除当前节点的一个子节点, 这个子节点必须在当前节点中
 + `replaceChild(newChild, oldChild)`

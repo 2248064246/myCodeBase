@@ -2,7 +2,7 @@
  * @Author: huangyingli
  * @Date: 2022-06-18 21:27:01
  * @LastEditors: huangyingli
- * @LastEditTime: 2022-08-30 16:09:42
+ * @LastEditTime: 2023-01-28 11:50:54
  * @Description:
  */
 const express = require('express');
@@ -16,6 +16,8 @@ app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   res.header('Access-Control-Allow-Methods', '*');
   res.header('Content-Type', 'application/json;charset=utf-8');
+
+  res.header('X-UA-Compatible', 'IE=edge');
   next();
 });
 

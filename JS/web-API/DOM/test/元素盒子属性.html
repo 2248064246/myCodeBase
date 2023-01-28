@@ -51,6 +51,17 @@
   </div>
   <script>
     let box = document.querySelector('.box')
+
+    let controller = new AbortController();
+    box.addEventListener('scroll', (e) => {
+      console.log('event', e)
+      e.stopPropagation();
+      e.preventDefault();
+
+      controller.abort();
+    }, {
+      signal: controller.signal
+    })
     console.log(box.clientHeight)
     console.log(box.clientWidth)
     console.log(box.clientTop)
