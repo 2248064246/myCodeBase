@@ -6,8 +6,20 @@
 + `attributes`
   + 返回一个与该元素相关的所有属性集合 `NameNodeMap` 对象
   + 可以通过数组形式索引, 也可以通过属性名索引
+  + NameNodeMap
+    + `getNamedItem(attrName)` 通过属性名获取属性节点
+    + `setNamedItem(attrNode)` 添加属性节点
+    + `removeNamedItem(attrName)` 删除属性节点
+    + `item(index)` 通过下标获取属性节点
 + `classList`
   + 返回该元素的class属性值, 是一个类数组, `DOMTokenList`
+  + DOMTokenList
+    + `add(class[, class2...])`
+    + `remove(class)`
+    + `replace(old, new)`
+    + `toggle(class, force)`
+      + force: Boolean 如果为false, 则可以删除, 不能添加; 如果为true, 则可以添加, 不能删除; 
+    + `contains(class)`
 + `className`
   + 返回该元素的class属性值, 是一个String
 + `clientHeight`

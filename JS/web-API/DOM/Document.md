@@ -43,7 +43,7 @@
 + `styleSheetSets`
   + 返回文档上可用样式表的列表 (数组元素是 CSSStyleSheet 类型对象)
 + `timeline`
-  + 返回 `DocumentTimeline` 实例, 表示页面加载完成到当前的时间差(即页面打开了多长时间, 刷新会重置)
+  + 返回 `DocumentTimeline` 实例, 表示页面加载完成到当前的时间差(毫秒)(即页面打开了多长时间, 刷新会重置)
 + `visibilityState`
   + 返回一个字符串值表示当前文档的可见性
   + 可能值有
@@ -62,7 +62,7 @@
 + `pictureInPictureEnabled`
     + 返回一个boolean值, 表示画中画功能是否可用
     + 一般情况下这个功能是默认可用的, 但是现在可以通过 `Feature-Policy: picture-in-picture none` 请求头来在`全局范围`内关闭这个功能.
-    + 也可以单独通过`video`元素的`disablepictureinpicture` 属性来关闭(针对单个元素)
+    + 也可以单独通过`video`元素的`disablepictureinpicture` 属性来关闭(针对单个元素)(对此属性无影响)
 + `pointerLockElement`
   + 返回锁定了鼠标指针的元素或者null
 + `referrer`
@@ -74,6 +74,7 @@
 
 ## 方法
 
++ `append(node|string)`
 + `adoptNode(externalNode)`
   + 从其他的document文档中获取一个节点. 该节点及它的子节点都会从原文档删除
   + 返回一个可以插入当前文档的节点
@@ -113,6 +114,7 @@
   + 返回一个包含文档中所有 `Animation` 对象的数组
   + 可以通过这个对象操作页面中的动画
 + `getElementsByClassName()`
++ `getElementsByName()`
 + `getElementsByTagName()`
 + `hasStorageAccess()`
   + 返回一个 promise 用于判断当前文档是否拥有第一方存储权限(就是在 iframe 中能否获取主页面的 storage 和 cookie)

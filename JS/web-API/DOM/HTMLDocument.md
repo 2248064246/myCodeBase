@@ -39,7 +39,6 @@
 + `open()`
   + 以上三个方法用来打开一个文档, 写入数据, 关闭文档的方法
   + open方法会导致先优文档被清空
-+ `getElementsByName()`
 + `queryCommandEnabled(command)`
   + 返回一个Boolean值, 表示该指令是否在当前浏览器可用
   + **该方法在部分浏览器返回的结果是不可预料的。因此，建议使用execCommand的返回值直接判断，或通过其它方式嗅探，而非使用该方法。**

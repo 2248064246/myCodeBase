@@ -9,15 +9,17 @@
   <body>
     123
     <video
-      src="http://127.0.0.1:5502/JS/web-API/MediaSourceExtensions/官方示例/frag_bunny.mp4"
+      src="http://127.0.0.1:5500/JS/web-API/MediaSourceExtensions/官方示例/frag_bunny.mp4"
       controls
       autoplay
       preload="auto"
       crossorigin="anonymous"
+      controlslist="nofullscreen"
     ></video>
 
     <script>
       let videoElement = document.querySelector('video');
+      videoElement.disablePictureInPicture = true;
       videoElement.addEventListener('play', () => {
         console.log('播放')
         videoElement.play();
