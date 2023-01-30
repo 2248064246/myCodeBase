@@ -4,7 +4,7 @@
 
 关键帧动画
 
-animation 属性时 `animation-name`, `animation-duration`, `animation-timing-function`, `animation-delay`, `animation-iteration-count`,`animation-direction`, `animation-fill-mode`,`animation-play-state` 属性的一个简写形式.
+animation 属性由 `animation-name`, `animation-duration`, `animation-timing-function`, `animation-delay`, `animation-iteration-count`,`animation-direction`, `animation-fill-mode`,`animation-play-state` 属性的一个简写形式.
 
 animation 属性的顺序要求:
 
