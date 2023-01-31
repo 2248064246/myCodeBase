@@ -39,6 +39,13 @@ flex-grow 属性可以按比例分配空间。如果第一个元素 flex-grow �
 
 上面这三个属性可以通过`flex`属性进行简写. `flex: flex-grow flex-shrink flex-basis`
 
+## 控制对齐的属性
+
+- `justify-content` 控制主轴上所有元素的对齐
+- `align-items` 控制交叉轴上所有元素的对齐
+- `align-self` 控制交叉轴上单个元素的对齐
+- `align-content` 控制主轴的项目在交叉轴的对齐
+
 ## 元素间的对齐和空间分配
 
 Flexbox 的一个关键特性是能够设置 flex 元素沿主轴方向和交叉轴方向的对齐方式，以及它们之间的空间分配。
@@ -46,21 +53,76 @@ Flexbox 的一个关键特性是能够设置 flex 元素沿主轴方向和交叉
 **align-items**
 此属性可以使元素在交叉轴方向对齐.
 
-默认值为`stretch`, 这就是为什么默认情况下flex元素会默认拉伸到最高元素的高度
+默认值为`stretch`, 这就是为什么默认情况下 flex 元素会默认拉伸到最高元素的高度
 
-+ `stretch`
-+ `center`
-+ `flex-start` flex容器顶部对齐
-+ `flex-end` flex容器底部对齐
+- `stretch`
+- `center`
+- `flex-start` flex 容器顶部对齐
+- `flex-end` flex 容器底部对齐
 
 **justify-content**
 此属性用来使主轴方向上的元素对齐. 初始值是`flex-start`
 
-+ `flex-start`
-+ `flex-end`
-+ `center`
-+ `stretch`
-+ `space-around`
-+ `space-between`
-+ `space-evenly`
+- `flex-start`
+- `flex-end`
+- `center`
+- `stretch`
+- `space-around`
+- `space-between`
+- `space-evenly`
+
+**align-self**
+此属性用于控制单个 flex 元素在交叉轴上的对齐
+
+- `stretch`
+- `center`
+- `flex-start`
+- `flex-end`
+
+**align-content**
+此属性用于控制换行的 flex 容器控制多行主轴元素在交叉轴上的对齐(控制每行之间的空间分配)
+
+- `flex-start`
+- `flex-end`
+- `center`
+- `stretch`
+- `space-around`
+- `space-between`
+- `space-evenly`
+
+## 弹性框额其他布局方法的影响
+
+如果一个元素是浮动的, 然后它的父项成为弹性容器, 此时会发生什么?
+
+答案是: 浮动将不会再影响弹性容器的子元素.
+
+## flex 和 grid
+
+弹性框是一种一维布局方法，而网格布局是一种二维布局方法.
+
+在网格布局中，您可以在容器上执行大部分大小调整规范，设置轨道，然后将项目放入其中。在 flexbox 中，当您创建 flex 容器并在该级别设置方向时，对项目大小的任何控制都需要在项目本身上进行。
+
+## 使用自动的外边距在主轴上对齐
+
+```html
+<style>
+  .box {
+    display: flex;
+  }
+  .push {
+    margin-left: auto;
+  }
+</style>
+
+<div class="box">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div class="push">Four</div>
+  <div>Five</div>
+</div>
+```
+
+效果是 One Two Three 在左边, Four, Five 在右边, `margin-left: auto` 会自动填充flex容器的剩余空间
+
 
