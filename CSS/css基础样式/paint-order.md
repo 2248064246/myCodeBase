@@ -1,6 +1,6 @@
 # paint-order | chrome 35+
 
-用于控制 `fill` 和 `stroke` 的先后顺寻
+用于控制 `fill` 和 `stroke` 的先后顺序
 
 **语法**
 

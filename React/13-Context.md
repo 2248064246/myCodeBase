@@ -42,6 +42,29 @@ class ThemedButton extends React.Component {
 
 > 注意: 如果传递 undefined 给 Provider, 默认值不会生效.
 
+## API
+
+**React.createContext()**
+通过这个方法创建一个context对象. 当 React 渲染一个订阅了这个 Context 对象的组件，这个组件会从组件树中离自身最近的那个匹配的 Provider 中读取到当前的 context 值。
+
+只有所有组件中都没有匹配到 `Provider` 时, 其 `defaultValue` 参数才会生效.
+
+```js
+const MyContext = React.createContext(defaultValue);
+```
+
+**Context.Provider**
+
+```js
+<MyContext.Provider value={/* 某个值 */}>
+```
+
+Provider 接收一个 value 属性，传递给消费组件。一个 Provider 可以和多个消费组件有对应关系。多个 Provider 也可以嵌套使用，里层的会覆盖外层的数据。
+
+**当 Provider 的 value 值发生变化时，它内部的所有消费组件都会重新渲染。**
+
+
+
 ## Context.Consumer
 
 获取 Context 还可以通过 `Consumer`来实现

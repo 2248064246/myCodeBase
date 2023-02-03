@@ -2,7 +2,7 @@
 
 ## jsx
 
-JSX 是一个 JavaScript 的语法扩展, 它可以很好的描述 UI 应该呈现出它应有交互的本质形式. jsx 具有 JS 的全部功能.
+JSX 是一个 JavaScript 的语法扩展, **它可以很好的描述 UI 应该呈现出它应有交互的本质形式**. **jsx 具有 JS 的全部功能.**
 
 以大写字母开头的标签会被解析为 React 组件, 所以，当你使用 JSX `<Foo />` 表达式时，Foo 必须包含在作用域内。
 
@@ -11,6 +11,12 @@ JSX 是一个 JavaScript 的语法扩展, 它可以很好的描述 UI 应该呈�
 React 不强制使用 JSX
 
 每个 JSX 元素只是调用 `React.createElement(component, props, ...children)`的语法糖, 因此, 使用 JSX 可以完成的任何事情都可以通过纯 JavaScript 完成
+
+## 为什么使用 JSX
+
+React 认为渲染逻辑本质上与其它 UI 逻辑内在耦合. (也将就是说 JS 和 HTML 是耦合的, 不应该分离)
+
+所以使用 JSX 语法将二者结合在一起. (这点看起来 Vue 其实更加优秀)
 
 ## 在 jsx 中嵌入表达式
 
@@ -29,7 +35,7 @@ function format(date) {
 
 在编译之后，JSX 表达式会被转为普通 JavaScript 函数调用，并且对其取值后得到 JavaScript 对象。
 
-也就是说，你可以在 if 语句和 for 循环的代码块中使用 JSX，将 JSX 赋值给变量，把 JSX 当作参数传入，以及从函数中返回 JSX：
+也就是说，你可以在 if 语句和 for 循环的代码块中使用 JSX，将 **JSX 赋值给变量，把 JSX 当作参数传入，以及从函数中返回 JSX**：
 
 ```js
 function getGreeting(user) {
@@ -39,6 +45,16 @@ function getGreeting(user) {
   return <h1>Hello, Stranger.</h1>;
 }
 ```
+
+### JSX 特定属性
+
+JSX 中可以通过使用引用来将属性指定为字符串字面量(也就是传入字符串)
+
+通过使用`{}` 来传入 JS 表达式
+
+### 使用 JSX 指定子元素
+
+如果一个标签里面没有内容, 则可以使用 `/>` 来闭合标签
 
 ### JSX 类型中使用点语法
 
@@ -160,7 +176,11 @@ function ListOfTenThings() {
 
 ### JSX 防止注入攻击
 
-React DOM 在渲染所有输入内容之前，默认会进行转义。它可以确保在你的应用中，永远不会注入那些并非自己明确编写的内容。所有的内容在渲染之前都被转换成了字符串.
+可以安全的在 JSX 插入内容.
+
+ReactDOM 在渲染所有输入内容之前, 默认会进行转义.
+
+它可以确保在你的应用中，永远不会注入那些并非自己明确编写的内容。所有的内容在渲染之前都被转换成了字符串。这样可以有效地防止 XSS（cross-site-scripting, 跨站脚本）攻击。
 
 ## 元素渲染
 
@@ -193,13 +213,13 @@ const element = {
 };
 ```
 
-最后通过 `ReactDOM.render` 来将 VDOM 渲染为实际的 DOM
+最后通过 `ReactDOM.render(element, root)` 来将 VDOM 渲染为实际的 DOM
 
 ### 更新已渲染的元素
 
 React 元素是不可变对象。一旦被创建，你就无法更改它的子元素或者属性。一个元素就像电影的单帧：它代表了某个特定时刻的 UI。
 
-根据我们已有的知识，更新 UI 唯一的方式是创建一个全新的元素，并将其传入 ReactDOM.render()。
+根据我们已有的知识，**更新 UI 唯一的方式是创建一个全新的元素，并将其传入 ReactDOM.render()。**
 
 ```js
 function tick() {
@@ -222,3 +242,8 @@ setInterval(tick, 1000);
 ### React 只更新它需要更新的部分
 
 React DOM 会将元素和它的子元素与它们之前的状态进行比较，并只会进行必要的更新来使 DOM 达到预期的状态。
+
+
+**根据我们的经验，考虑 UI 在任意给定时刻的状态，而不是随时间变化的过程，能够消灭一整类的 bug。** (这就话具体应该如何理解??)
+
+(通过状态来改变UI, 而不让UI随时间变化??)
