@@ -6,15 +6,15 @@
 
 ### ES6 以上
 
-- `of(element[, ...])`
+- `of(element[, ...]) => Array`
 
   > 从可变数量参数创建数组
 
-- `from(arrayLike|iterator [,mapFnc])`
+- `from(arrayLike|iterator [,mapFnc]) => Array`
 
   > 从类数组或可迭代对象中创建数组
 
-- `isArray`
+- `isArray(any) => Boolean`
   > 用来判断某个变量是否是一个数组对象
 
 ## 实例属性
@@ -31,9 +31,9 @@
 
 ### ES5
 
-- `push`
+- `push(element[,...]) => length`
 
-  > 向数组尾部增加数据
+  > 向数组尾部增加数据, 返回数组`length`
 
   > **更改原来数组**
 
@@ -44,9 +44,9 @@
    // array => [1, 2, 3, 4, 5]
   ```
 
-- `pop`
+- `pop() => element`
 
-  > 删除数组最后一个元素
+  > 删除并返回数组最后一个元素
 
   > **更改原来数组**
 
@@ -57,9 +57,9 @@
     // array => [1, 2]
   ```
 
-- `shift`
+- `shift() => element`
 
-  > 删除数组第一个元素
+  > 删除并返回数组第一个元素
 
   > **更改原来数组**
 
@@ -70,9 +70,9 @@
     // array => [2, 3]
   ```
 
-- `unshift`
+- `unshift(element[,...]) => length`
 
-  > 向数组头部增加元素
+  > 向数组头部增加元素, 返回数组`length`
 
   > **更改原来数组**
 
@@ -83,9 +83,9 @@
     // array => [-1, 0, 1, 2, 3]
   ```
 
-- `slice(n, m)`
+- `slice(n, m) => Array`
 
-  > 获取指定位置区间的数据元素, 范围: (n, m], 原数组不会改变
+  > 获取指定位置区间的数据元素, 范围: [n, m), 原数组不会改变
 
   > 返回获取的元素数组, 没有返回空数组
 
@@ -104,7 +104,7 @@
     array.slice(-1) // => [3]
   ```
 
-- `splice(index, deleteNumber, item...)`
+- `splice(index, deleteNumber, item...) => Array`
 
   > 即可以新增也可以删除数据元素
 
@@ -117,7 +117,7 @@
   - 如果超出了数组长度, 则从数组末尾开始
   - 如果时负值
     - 如果负值的绝对值大于数组长度, 则从 0 开始
-    - 否则等价于 `array.length - n `
+    - 否则等价于 `array.length - index `
 
   > **更改原来数组**
 
@@ -145,37 +145,37 @@
     array.splice(0, 0, items...)
   ```
 
-- `join`
+- `join(separator) => String`
 
-  > 将数组转为字符串, 接收一个间隔符, 默认为','
+  > 将数组转为字符串, 接收一个分隔符, 没有默认为','
 
-- `indexOf`
+- `indexOf(str) => Number`
 
   > 查找字符第一次出现的位置, 没有返回 -1
 
-- `lastIndexOf`
+- `lastIndexOf(str) => Number`
 
   > 查找字符串最后出现的位置, 没有返回 -1
 
-- `forEach`
+- `forEach(fnc(value, index, array))`
 
-- `map`
+- `map(fnc(value, index, array) => element) => Array`
 
-  > 返回一个数组
+  > 循环执行传入的函数, 并通过函数返回值构建一个新数组
 
-- `filter`
+- `filter(func(value, index, array) => Boolean) => element`
 
   > 返回过滤数组, 回调函数中返回 true 则筛选出这个元素
 
-- `some`
+- `some(func(value, index, array) => Boolean) => Boolean`
 
   > 判断数组中是否有符合要求的元素, 返回 Boolean
 
-- `every`
+- `every(func(value, index, array) => Boolean) => Boolean`
 
   > 判断数组的元素是否全部符合要求, 返回 Boolean
 
-- `reduce(func(accumulator, currentValue, currentIndex, array), startValue)`
+- `reduce(func(accumulator, currentValue, currentIndex, array), startValue) => any`
 
   > 回调函数第一次执行时，accumulator 和 currentValue 的取值有两种情况：如果调用 reduce()时提供了 initialValue，accumulator 取值为 initialValue，currentValue 取数组中的第一个值；如果没有提供 initialValue，那么 accumulator 取数组中的第一个值，currentValue 取数组中的第二个值。
 
@@ -197,7 +197,7 @@
 
   > 从末尾开始的 `reduce`
 
-- `sort`
+- `sort(func(a, b) => Number) => Array`
 
   > 排序方法, b -a 是降序, a-b 是升序
 
@@ -205,51 +205,51 @@
 
   > **更改原来数组**
 
-- `reverse`
+- `reverse() => Array`
 
   > 数组逆序
 
-- `concat`
+- `concat(array|element) => Array`
 
-  > 数组拼接方法
+  > 数组拼接方法, 返回合并后的数组
 
-  > **更改原来数组**
+  > **不会更改原来数组**
 
 ## ES6 ~ ES7
 
-- `fill(value[, start[, end]])`
+- `fill(value[, start[, end]]) => Array`
 
   > **更改原来数组**
 
-- `find`
+- `find(func(value, index, array) => Boolean) => element`
 
   > 查找数组元素方法 , 没有找到返回 undefined
 
-- `findLast`
+- `findLast(func(value, index, array) => Boolean) => element`
 
-- `findIndex`
+- `findIndex(func(value, index, array) => Boolean) => index`
 
   > 查找数组元素位置方法, 没有找到返回 -1
 
 - `findLastIndex`
 
-- `includes(value[, fromIndex])`
+- `includes(value[, fromIndex]) => Boolean`
   > 查找数组中是否包含这个值, 返回 Boolean
-- `keys`
+- `keys() => Array`
 
-> 返回一个包含数组索引的迭代器对象
+  > 返回一个包含数组索引的迭代器对象
 
-和 `Object.keys()` 不同的是, `Array.prototype.keys()` 会包含没有数据的 key
+  和 `Object.keys()` 不同的是, `Array.prototype.keys()` 会包含没有数据的 key
 
-```js
-var arr = ['a', , 'c'];
-var sparseKeys = Object.keys(arr);
-var denseKeys = [...arr.keys()];
-console.log(sparseKeys); // ['0', '2']
-console.log(denseKeys); // [0, 1, 2]
-```
+  ```js
+  var arr = ['a', , 'c'];
+  var sparseKeys = Object.keys(arr);
+  var denseKeys = [...arr.keys()];
+  console.log(sparseKeys); // ['0', '2']
+  console.log(denseKeys); // [0, 1, 2]
+  ```
 
-- `entries`
+- `entries() => Iterator`
 
   > 返回一个 Array Iterator
 
@@ -275,21 +275,21 @@ console.log(denseKeys); // [0, 1, 2]
 
 ## ES8 ~ ES10
 
-- `values`
+- `values() => Array`
 
-> 返回一个包含数组值的迭代器对象
+  > 返回一个包含数组值的迭代器对象
 
-和`Object.values()` 不同的是, 它会包含数组中的空值
+  和`Object.values()` 不同的是, 它会包含数组中的空值
 
-```js
-var arr = ['a', , 'c'];
-var sparseKeys = Object.values(arr);
-var denseKeys = [...arr.values()];
-console.log(sparseKeys); // ['a', 'c']
-console.log(denseKeys); //  ['a', undefined, 'c']
-```
+  ```js
+  var arr = ['a', , 'c'];
+  var sparseKeys = Object.values(arr);
+  var denseKeys = [...arr.values()];
+  console.log(sparseKeys); // ['a', 'c']
+  console.log(denseKeys); //  ['a', undefined, 'c']
+  ```
 
-- `flat([depth])`
+- `flat([depth]) => Array`
 
   > 数组展平方法, depth 默认 1
 
@@ -298,5 +298,5 @@ console.log(denseKeys); //  ['a', undefined, 'c']
 
 ## ES2021
 
-- `at(index)`
+- `at(index) => element`
   > 返回指定位置的数据, index 可以为负值

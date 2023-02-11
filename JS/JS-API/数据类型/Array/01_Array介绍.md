@@ -31,3 +31,38 @@ for (let value of a) {
 
 Object.keys(a); // 能够获取所有属性  ['0', 'A']
 ```
+
+## 数组方法和空槽
+
+稀疏数组中的空槽在数组方法之间行为不一致. 通常, 旧方法会跳过空槽, 而新方法会将其视为`undefined`
+
+**下列方法会跳过空槽**
+
++ `concat()`
++ `forEach()`
++ `map()`
++ `every()`
++ `filter()`
++ `falt()`
++ `some()`
++ `sort()`
++ `splice()`
++ `indexOf()`
++ `lastIndexOf()`
++ `reduce()`
++ `reverse()`
++ `reduceRight()`
+
+**下列方法将空槽视为undefined**
+
++ `slice()`
++ `entries()`
++ `fill()`
++ `find()`
++ `findIndex()`
++ `findLast()`
++ `findLastIndex()`
++ `includes()`
++ `join()`
++ `keys()`
++ `values()`
