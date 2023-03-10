@@ -70,6 +70,8 @@ certbot certonly
 
 - 使用本地的 TLS 证书文件
 
+> 参见`js/web-api/网络请求/网络/HTTPS/TLS证书生成
+
 ```json
 {
   "listen": "0.0.0.0:40000",
